@@ -1,0 +1,35 @@
+##### Skillz - The LightWeight Skills plugin #####
+### Made by Lolmewn ###
+### Please consider a small donation @ sybren_gjaltema@msn.com ###
+### If you need help you can always open a conversation with me ###
+    
+#Messages#
+FallDamageMessage: You roll over, avoiding DMG damage!
+LevelupMessage: You gained a level in SKILL, it is now level LVL
+
+#Databases - if both false, flatfile will be used#
+useSQLite: false
+useMySQL: false
+MySQL:
+    username: root
+    password: root
+    database: minecraft
+    host: localhost
+
+#Rewards when you level up. If no Vault, money will be ignored. If items 0,0 it will be ignored#
+#Items are written like this: item: ID,AMOUNT. If 0,0 it will be ignored#
+#Also, if you want custom rewards for certain Skills, add them to Skills.yml#
+reward:
+    money: 20
+    item: 89,1
+
+#Other Options#
+#NOTE: The lightning strike does NOT harm players or destroy blocks.#
+LightningonLevelup: false
+BroadcastOnLevelup: true
+    
+#Updating and current version
+auto-update: true
+version: 5.0
+debug: false
+#WARNING! debug seems to crash your game! It uses some crazy hax, that's why!#

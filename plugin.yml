@@ -1,0 +1,8 @@
+name: Skillz
+author: Lolmewn
+version: 5.3
+main: nl.lolmen.Skillz.Skillz
+commands:
+  skills:
+    usage: /<command>
+    description: Check your skills!
