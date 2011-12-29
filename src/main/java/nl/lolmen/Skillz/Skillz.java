@@ -3,7 +3,6 @@ package nl.lolmen.Skillz;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -106,7 +105,6 @@ public class Skillz extends JavaPlugin{
 	public boolean hasVault;
 	public boolean broadcast;
 
-	@Override
 	public void onDisable() {
 		if ((useSQL) && (dbManager != null)) {
 			dbManager.close();
@@ -140,7 +138,6 @@ public class Skillz extends JavaPlugin{
 		}
 	}
 
-	@Override
 	public void onEnable() {
 		p = this;
 		makeSettings();

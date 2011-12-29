@@ -24,7 +24,6 @@ public class SkillBase {
 	public void addXP(final Player p, final int XP) {
 		final SkillBase skill = this;
 		Bukkit.getScheduler().scheduleAsyncDelayedTask(Skillz.p, new Runnable() {
-			@Override
 			public void run() {
 				if(CPU.list.contains(p.getName())){
 					waitForIt(p);

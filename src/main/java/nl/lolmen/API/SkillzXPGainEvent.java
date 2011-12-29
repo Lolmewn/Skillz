@@ -23,12 +23,10 @@ public class SkillzXPGainEvent extends Event implements Cancellable{
 		this.setLevelup(levelup);
 	}
 
-	@Override
 	public boolean isCancelled() {
 		return cancelled;
 	}
 
-	@Override
 	public void setCancelled(boolean arg0) {
 		cancelled = arg0;
 	}

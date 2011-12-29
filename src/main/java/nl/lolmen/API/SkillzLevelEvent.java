@@ -22,16 +22,6 @@ public class SkillzLevelEvent extends Event implements Cancellable{
 		this.skill = skill;
 		this.level = level;
 	}
-
-	@Override
-	public boolean isCancelled() {
-		return cancelled;
-	}
-
-	@Override
-	public void setCancelled(boolean arg0) {
-		cancelled = arg0;
-	}
 	
 	/**
 	 * @return Player that leveled up
@@ -52,6 +42,14 @@ public class SkillzLevelEvent extends Event implements Cancellable{
 	 */
 	public String getSkill(){
 		return skill;
+	}
+
+	public boolean isCancelled() {
+		return cancelled;
+	}
+
+	public void setCancelled(boolean arg0) {
+		cancelled = arg0;
 	}
 
 }
