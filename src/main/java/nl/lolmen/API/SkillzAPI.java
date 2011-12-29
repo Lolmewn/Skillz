@@ -6,7 +6,6 @@ public class SkillzAPI {
 	
 	public SkillzAPI() {
 		//Constructor for Skillz
-		
 	}
 	
 	public SkillzSettings getSettings(){
