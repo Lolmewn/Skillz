@@ -28,6 +28,7 @@ import nl.lolmen.API.SkillzAPI;
 import nl.lolmen.API.SkillzSettings;
 import nl.lolmen.Skills.SkillBase;
 import nl.lolmen.Skills.SkillBlockListener;
+import nl.lolmen.Skills.SkillCommandHandler;
 import nl.lolmen.Skills.SkillEntityListener;
 import nl.lolmen.Skills.SkillManager;
 import nl.lolmen.Skills.SkillPlayerListener;
@@ -441,7 +442,7 @@ public class Skillz extends JavaPlugin{
 					}
 					if(new File(maindir + "players/" + p.getName().toLowerCase() + ".txt").exists()){
 						sender.sendMessage(ChatColor.RED + "===Skillz===");
-						getSkills(p);
+						new SkillCommandHandler().sendSkills(p);
 						return true;
 					}
 					return true;
@@ -683,7 +684,7 @@ public class Skillz extends JavaPlugin{
 		return false;
 	}
 
-	private void getSkills(Player name) {
+	/*private void getSkills(Player name) {
 		try {
 			FileInputStream in;
 			if(new File(maindir + "players/"+ name.getName()+ ".txt").exists()){
@@ -716,7 +717,7 @@ public class Skillz extends JavaPlugin{
 			return;
 		}
 		String[] split = strLine.split("=");
-		if(!name.hasPermission("skillz." + split[0])){
+		if(!name.hasPermission("skillz.skill." + split[0])){
 			return;
 		}
 		String[] splitt = split[1].split(";");
@@ -728,7 +729,7 @@ public class Skillz extends JavaPlugin{
 				+ " XP: " + ChatColor.RED + splitt[0]
 						+ ChatColor.WHITE + " Level: "
 						+ ChatColor.RED + splitt[1]);
-	}
+	}*/
 
 	private void getSkills(CommandSender p, String name) {
 		try {

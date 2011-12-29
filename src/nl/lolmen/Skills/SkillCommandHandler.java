@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 public class SkillCommandHandler {
 	
-	public static void sendSkills(Player p){
+	public void sendSkills(Player p){
 		new getSkills(p);
 	}
 }
