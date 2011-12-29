@@ -25,8 +25,12 @@ public class SkillBase {
 		final SkillBase skill = this;
 		Bukkit.getScheduler().scheduleAsyncDelayedTask(Skillz.p, new Runnable() {
 			@Override
-			synchronized public void run() {
-				System.out.println("started.");
+			public void run() {
+				if(CPU.list.contains(p.getName())){
+					waitForIt(p);
+				}else{
+					CPU.list.add(p.getName());
+				}
 				int xp;
 				int lvl;
 				try {
@@ -45,9 +49,7 @@ public class SkillBase {
 								.getName().toLowerCase() + ".txt")),
 								"Skill=XP;lvl");
 					}
-					//System.out.println("Debug[1]");
 					String get = prop.getProperty(skillname);
-					//System.out.println("Got: " + get);
 					String[] array = get.split(";");
 					xp = Integer.parseInt(array[0]);
 					lvl = Integer.parseInt(array[1]);
@@ -59,15 +61,17 @@ public class SkillBase {
 					in.close();
 					out.flush();
 					out.close();
-					System.out.println("stopped.");
+					CPU.list.remove(p.getName());
 					return;
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				
 			}
-
-		}, 2L);
+			private void waitForIt(Player p ) {
+				while(CPU.list.contains(p.getName())){
+				}
+			}
+		}, 1L);
 	}
 
 	public String getSkillName() {

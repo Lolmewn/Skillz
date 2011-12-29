@@ -19,7 +19,7 @@ public class SkillCommandHandler {
 
 class getSkills extends Thread {
 	Player p;
-	synchronized public void run() {
+	public void run() {
 		try{
 			File f = new File("plugins" +File.separator+ "Skillz"+File.separator+ "players"+File.separator + p.getName().toLowerCase() + ".txt");
 			if(!f.exists()){

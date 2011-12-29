@@ -40,7 +40,7 @@ public class SkillEntityListener extends EntityListener{
 				s.addXP(p, damage);
 				if(CPU.getLevel(p, s) > a.getLevelsTillLessDMG()){
 					double deduct = CPU.getLevel(p, s) / a.getLevelsTillLessDMG();
-					int less = (int)deduct;
+					int less = event.getDamage() - (int)deduct;
 					if(less > event.getDamage()){
 						event.setDamage(0);
 					}else{
