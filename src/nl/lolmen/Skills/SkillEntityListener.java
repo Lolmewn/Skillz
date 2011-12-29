@@ -19,6 +19,9 @@ import org.bukkit.event.entity.EntityListener;
 public class SkillEntityListener extends EntityListener{
 
 	public void onEntityDamage(EntityDamageEvent event) {
+		if(event.isCancelled()){
+			return;
+		}
 		Entity e = event.getEntity();
 		if(e instanceof Player){
 			Player p = (Player)e;

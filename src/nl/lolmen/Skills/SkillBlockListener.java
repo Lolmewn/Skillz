@@ -15,6 +15,9 @@ public class SkillBlockListener extends BlockListener{
 
 	@Override
 	public void onBlockBreak(BlockBreakEvent event) {
+		if(event.isCancelled()){
+			return;
+		}
 		for (SkillBase base : SkillManager.getSkills()) {
 			if (base instanceof SkillBlockBase) {
 				SkillBlockBase s = (SkillBlockBase) base;

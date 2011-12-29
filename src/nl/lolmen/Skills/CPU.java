@@ -21,6 +21,7 @@ public class CPU {
 
 	public static void addXP(final Player p, SkillBase skilled, final int XP) {
 		skilled.addXP(p, XP);
+		skilled.addXP(p, XP);
 	}
 
 	public static void checkLeveling(Player p, SkillBase skill, int lvl,

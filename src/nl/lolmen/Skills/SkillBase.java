@@ -25,7 +25,8 @@ public class SkillBase {
 		final SkillBase skill = this;
 		Bukkit.getScheduler().scheduleAsyncDelayedTask(Skillz.p, new Runnable() {
 			@Override
-			public void run() {
+			synchronized public void run() {
+				System.out.println("started.");
 				int xp;
 				int lvl;
 				try {
@@ -58,10 +59,12 @@ public class SkillBase {
 					in.close();
 					out.flush();
 					out.close();
+					System.out.println("stopped.");
 					return;
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				
 			}
 
 		}, 2L);

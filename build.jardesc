@@ -30,7 +30,6 @@
         <javaElement handleIdentifier="=Skillz/src&lt;nl.lolmen.API{SkillzEventListener.java"/>
         <javaElement handleIdentifier="=Skillz/src&lt;nl.lolmen.Skillz{HighScore.java"/>
         <javaElement handleIdentifier="=Skillz/src&lt;nl.lolmen.Skillz.Socketing"/>
-        <javaElement handleIdentifier="=Skillz/src&lt;nl.lolmen.Skillz{CPU.java"/>
         <javaElement handleIdentifier="=Skillz/src&lt;nl.lolmen.Skillz{Configurator.java"/>
     </selectedElements>
 </jardesc>
