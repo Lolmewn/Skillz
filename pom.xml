@@ -32,7 +32,7 @@
             <artifactId>bukkit</artifactId>
             <version>1.0.1-R1</version>
             <scope>system</scope>
-            <systemPath>C:/Libs/Craftbukkit.jar</systemPath>
+            <systemPath>C:/Libs/Craftbukkit.jar</systemPath> 
         </dependency>
         <dependency>
         	<groupId>net.milkbowl.vault</groupId>
