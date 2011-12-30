@@ -6,12 +6,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-@SuppressWarnings("deprecation")
 public class ItemHandler {
 
 	public static void addItems(Player player, ItemStack item) {
 		player.getInventory().addItem(item);
-		player.updateInventory();
+		//player.updateInventory();
 	}
 
 	public static void addItems(Player player, String item, int amount) {
@@ -19,14 +18,14 @@ public class ItemHandler {
 		if (m != null) {
 			ItemStack is = new ItemStack(m, amount);
 			player.getInventory().addItem(is);
-			player.updateInventory();
+			//player.updateInventory();
 		}
 	}
 
 	public static void addItems(Player player, Material item, int amount) {
 		ItemStack is = new ItemStack(item, amount);
 		player.getInventory().addItem(is);
-		player.updateInventory();
+		//player.updateInventory();
 	}
 
 	public static void addItems(Chest chest, ItemStack item) {
@@ -51,7 +50,7 @@ public class ItemHandler {
 
 	public static void removeItems(Player player, ItemStack item) {
 		player.getInventory().remove(item);
-		player.updateInventory();
+		//player.updateInventory();
 	}
 
 	public static void removeItems(Player player, String item, int amount) {
@@ -59,14 +58,14 @@ public class ItemHandler {
 		if (m != null) {
 			ItemStack is = new ItemStack(m, amount);
 			player.getInventory().remove(is);
-			player.updateInventory();
+			//player.updateInventory();
 		}
 	}
 
 	public static void removeItems(Player player, Material item, int amount) {
 		ItemStack is = new ItemStack(item, amount);
 		player.getInventory().remove(is);
-		player.updateInventory();
+		//player.updateInventory();
 	}
 
 	public static void removeItems(Chest chest, ItemStack item) {

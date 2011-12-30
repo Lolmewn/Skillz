@@ -9,6 +9,7 @@ import java.util.Properties;
 import nl.lolmen.Skillz.Skillz;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -83,6 +84,9 @@ public class SkillBase {
 
 	public ItemStack getItemOnLevelup() {
 		String[] arg = itemOnLevelup.split(",");
+		if(arg[0].equals("0") || arg[1].equals("0")){
+			return new ItemStack(Material.AIR, 1);
+		}
 		ItemStack stack = new ItemStack(Integer.parseInt(arg[0]), Integer.parseInt(arg[1]));
 		return stack;
 	}
