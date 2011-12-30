@@ -171,7 +171,7 @@ public class Skillz extends JavaPlugin{
 			dbUser = c.getString("MySQL-User");
 			dbPass = c.getString("MySQL-Pass");
 			dbHost = c.getString("MySQL-Host");
-			dbPort = c.getInt("MySQL-Port", 3306);
+			dbPort = c.getInt("MySQL-Port", 3306); 
 			dbDB = c.getString("MySQL-Database");
 		}catch(Exception e){
 			e.printStackTrace();
