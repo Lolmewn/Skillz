@@ -287,9 +287,4 @@ public class SkillManager {
 		}
 	}
 
-	public static void createFilesAndFolders() {
-		//new File("plugins" + File.separator + "LittleBigPlugin"
-		//		+ File.separator + "Skills" + File.separator).mkdirs();
-	}
-
 }

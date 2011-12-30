@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>Skillz</groupId>
   <artifactId>Skillz</artifactId>
-  <version>5.3</version>
+  <version>0.0.1-SNAPSHOT</version>
     <repositories>
         <repository>
             <id>bukkit-repo</id>

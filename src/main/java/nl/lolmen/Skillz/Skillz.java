@@ -31,6 +31,7 @@ import nl.lolmen.Skills.SkillCommandHandler;
 import nl.lolmen.Skills.SkillEntityListener;
 import nl.lolmen.Skills.SkillManager;
 import nl.lolmen.Skills.SkillPlayerListener;
+import nl.lolmen.Skills.SkillsSettings;
 import nl.lolmen.Skillz.Socketing.ServerSoc;
 import nl.lolmen.database.MySQL;
 import nl.lolmen.database.SQLite;
@@ -590,11 +591,10 @@ public class Skillz extends JavaPlugin{
 						}
 					}
 					if(args[0].equalsIgnoreCase("test")){
-						SkillzSettings set = api.getSettings();
 						sender.sendMessage(itemreward);
 						sender.sendMessage(Integer.toString(reward));
-						set.setItemReward("10,10");
-						set.setMoneyReward(reward++);
+						SkillsSettings.setItemOnLevelup("10,10");
+						SkillsSettings.setMoneyOnLevelup(reward++);
 						sender.sendMessage(itemreward);
 						sender.sendMessage(Integer.toString(reward));
 						return true;						
@@ -680,53 +680,6 @@ public class Skillz extends JavaPlugin{
 		}
 		return false;
 	}
-
-	/*private void getSkills(Player name) {
-		try {
-			FileInputStream in;
-			if(new File(maindir + "players/"+ name.getName()+ ".txt").exists()){
-				in = new FileInputStream(new File(maindir+ "players/"+ name.getName()+ ".txt"));
-			}else{
-				if(new File(maindir+ "players/" + name.getName().toLowerCase()+ ".txt").exists()){
-					in = new FileInputStream(new File(maindir + "players/"+ name.getName().toLowerCase() + ".txt"));
-				}else{
-					name.sendMessage("Something went wrong while fetching your skills.");
-					return;
-				}
-			}
-			DataInputStream dis = new DataInputStream(in);
-			BufferedReader br = new BufferedReader(new InputStreamReader(dis));
-			String strLine;
-			while ((strLine = br.readLine()) != null)   {
-				processLine(strLine, name);
-			}
-			in.close();
-			dis.close();
-			br.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	private void processLine(String strLine, Player name){
-		if(strLine.startsWith("#")){
-			return;
-		}
-		String[] split = strLine.split("=");
-		if(!name.hasPermission("skillz.skill." + split[0])){
-			return;
-		}
-		String[] splitt = split[1].split(";");
-		if(split[0].equalsIgnoreCase("axes") || split[0].equalsIgnoreCase("swords") || split[0].equalsIgnoreCase("unarmed")){
-			split[0] = split[0] + " Combat";
-		}
-		name.sendMessage(split[0].substring(0, 1).toUpperCase()
-				+ split[0].substring(1).toLowerCase()
-				+ " XP: " + ChatColor.RED + splitt[0]
-						+ ChatColor.WHITE + " Level: "
-						+ ChatColor.RED + splitt[1]);
-	}*/
 
 	private void getSkills(CommandSender p, String name) {
 		try {
