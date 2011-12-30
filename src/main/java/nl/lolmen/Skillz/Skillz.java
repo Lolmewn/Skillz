@@ -84,6 +84,7 @@ public class Skillz extends JavaPlugin{
 	public String dbPass;
 	public String dbUser;
 	public String dbDB;
+	public int dbPort;
 	public String noPerm = ChatColor.RED + "You do not have Permissions to do this!";
 	public double version;
 	
@@ -167,6 +168,11 @@ public class Skillz extends JavaPlugin{
 			c.load(skillzFile);
 			version = c.getDouble("version");
 			update = c.getBoolean("update", true);
+			dbUser = c.getString("MySQL-User");
+			dbPass = c.getString("MySQL-Pass");
+			dbHost = c.getString("MySQL-Host");
+			dbPort = c.getInt("MySQL-Port", 3306);
+			dbDB = c.getString("MySQL-Database");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -203,8 +209,10 @@ public class Skillz extends JavaPlugin{
 		return api;
 	}
 	
-	public Skill addSkill(String name){
-		return new Skill(name);
+	public SkillBase addSkill(String name){
+		SkillBase s = new SkillBase();
+		s.setSkillName(name);
+		return s;
 	}
 
 	private void setupPlugins() {
@@ -240,7 +248,7 @@ public class Skillz extends JavaPlugin{
 	}
 
 	public void loadMySQL() {
-		mysql = new MySQL(log, logPrefix, dbHost, Integer.toString(3306), dbDB, dbUser, dbPass);
+		mysql = new MySQL(log, logPrefix, dbHost, Integer.toString(dbPort), dbDB, dbUser, dbPass);
 		if (mysql.checkConnection()) {
 			log.info(logPrefix + "MySQL connection successful");
 			log.info(logPrefix + "MySQL temporarily broken, using flatfile");
