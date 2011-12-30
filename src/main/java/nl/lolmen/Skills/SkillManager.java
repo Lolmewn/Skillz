@@ -32,7 +32,7 @@ public class SkillManager {
 	public static Acrobatics ac = new Acrobatics();
 
 	public SkillManager() {
-
+		log.info("SkillManager - Enabled");
 	}
 
 	public void loadSkillsSettings() {
@@ -268,10 +268,8 @@ public class SkillManager {
 		try {
 			new File("plugins/Skillz/").mkdir();
 			File efile = new File("plugins" + File.separator + "Skillz" + File.separator + "skills.yml");
-			InputStream in = this.getClass().getClassLoader()
-					.getResourceAsStream("skills.yml");
-			OutputStream out = new BufferedOutputStream(new FileOutputStream(
-					efile));
+			InputStream in = this.getClass().getClassLoader().getResourceAsStream("skills.yml");
+			OutputStream out = new BufferedOutputStream(new FileOutputStream(efile));
 			int c;
 			while ((c = in.read()) != -1) {
 				out.write(c);
