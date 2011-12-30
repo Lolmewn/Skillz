@@ -1,5 +1,6 @@
 package nl.lolmen.API;
 
+import nl.lolmen.Skills.SkillsSettings;
 import nl.lolmen.Skillz.Skillz;
 
 public class SkillzSettings {
@@ -8,22 +9,6 @@ private Skillz plugin;
 	
 	public SkillzSettings(Skillz plugin) {
 		this.plugin = plugin;
-	}
-
-	public boolean usePermissions(){
-		return plugin.usePerms;
-	}
-	
-	public boolean useiConomy(){
-		return plugin.useIco;
-	}
-	
-	public boolean use3Co(){
-		return plugin.use3Co;
-	}
-	
-	public boolean useBOSE(){
-		return plugin.useBOSE;
 	}
 	
 	public boolean useMySQL(){
@@ -35,7 +20,7 @@ private Skillz plugin;
 	}
 	
 	public int moneyReward(){
-		return plugin.reward;
+		return SkillsSettings.getMoneyOnLevelup();
 	}
 	
 	/**
@@ -44,11 +29,11 @@ private Skillz plugin;
 	 * 
 	 */
 	public String itemReward(){
-		return plugin.itemreward;
+		return SkillsSettings.getItemOnLevelup();
 	}
 	
 	public void setMoneyReward(int money){
-		plugin.reward = money;
+		SkillsSettings.setMoneyOnLevelup(money);
 	}
 	
 	public void setItemReward(String string){
@@ -69,13 +54,12 @@ private Skillz plugin;
 			plugin.log.info("[Skillz] Failed to set ItemReward, strings AMOUNT is not an int!");
 			return;
 		}
-		plugin.itemreward = string;
+		SkillsSettings.setItemOnLevelup(string);
 	}
 	
 	private boolean isInt(String i){
 		try{
-			@SuppressWarnings("unused")
-			int a = Integer.parseInt(i);
+			Integer.parseInt(i);
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();

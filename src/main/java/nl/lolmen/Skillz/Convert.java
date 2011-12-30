@@ -358,9 +358,9 @@ public class Convert {
 	public void setting(String name, boolean to){
 		YamlConfiguration c = new YamlConfiguration();
 		try {
-			c.load(plugin.settings);
+			c.load(plugin.skillzFile);
 			c.set(name, to);
-			c.save(plugin.settings);
+			c.save(plugin.skillzFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

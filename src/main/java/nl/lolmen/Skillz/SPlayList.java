@@ -174,9 +174,9 @@ public class SPlayList extends PlayerListener{
 	private void set(String string, Object string2) {
 		YamlConfiguration y = new YamlConfiguration();
 		try {
-			y.load(plugin.settings);
+			y.load(plugin.skillzFile);
 			y.set(string, string2);
-			y.save(plugin.settings);
+			y.save(plugin.skillzFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

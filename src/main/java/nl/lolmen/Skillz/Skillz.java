@@ -53,8 +53,7 @@ public class Skillz extends JavaPlugin{
 	
 	//File stuff
 	public String maindir = "plugins" + File.separator + "Skillz" + File.separator;
-	public File settings = new File("plugins/Skillz/settings.yml");
-	private File skillzFile = new File(maindir + "skills.yml");
+	public File skillzFile = new File(maindir + "skills.yml");
 	
 	public static Skillz p;
 	
@@ -79,23 +78,14 @@ public class Skillz extends JavaPlugin{
 	public HashMap<Player, Integer> FCount = new HashMap<Player, Integer>();
 
 	//Settings
-	public boolean usePerms;
-	public boolean useIco;
-	public boolean use3Co;
-	public boolean useBOSE;
 	public boolean useSQL = false;
 	public boolean useMySQL = false;
-	public String lvlupmsg;
-	public String fallmsg;
-	public String itemreward;
 	public String dbHost;
 	public String dbPass;
 	public String dbUser;
 	public String dbDB;
 	public String noPerm = ChatColor.RED + "You do not have Permissions to do this!";
-	public int reward;
 	public double version;
-	public boolean lightning;
 	
 	public boolean update;
 	public boolean configed = true;
@@ -115,7 +105,7 @@ public class Skillz extends JavaPlugin{
 		}
 		high.saveMaps();
 		if(updateAvailable){
-			downloadFile("http://dl.dropbox.com/u/7365249/Skillz.jar", "plugins/Skillz.jar");
+			downloadFile("http://dl.dropbox.com/u/7365249/Skillz-0.0.1-SNAPSHOT.jar", null);
 		}
 		getServer().getScheduler().cancelTasks(this);
 		log.info("[Skillz] Disabled!");
@@ -142,7 +132,6 @@ public class Skillz extends JavaPlugin{
 	public void onEnable() {
 		p = this;
 		makeSettings();
-		loadSettings();
 		loadSkillz();
 		if(update){
 			checkUpdate();
@@ -168,56 +157,19 @@ public class Skillz extends JavaPlugin{
 	}
 
 	private void loadSkillz() {
-		/*
-		YamlConfiguration c = new YamlConfiguration();
-		try{
-			c.load(skillzFile);
-			for(String node: c.getConfigurationSection("").getKeys(false)){
-				Skill s = new Skill(node);
-				s.setEnabled(c.getBoolean(node + ".enabled"));
-				if(c.contains(node + ".block_levels")){
-					s.setAllFromLvl0(c.getBoolean(node + ".MineAllBlocksFromFirstLevel"));
-					for(String block: c.getConfigurationSection(node + ".block_levels").getKeys(false)){
-						int blocked = Integer.parseInt(block);
-						int lvl = c.getInt(node + ".block_levels." + block);
-						s.addLVL(blocked, lvl);
-					}
-				}
-				if(c.contains(node + ".block_XP")){
-					for(String block: c.getConfigurationSection(node + ".block_XP").getKeys(false)){
-						int blocked = Integer.parseInt(block);
-						int lvl = c.getInt(node + ".block_levels." + block);
-						s.addLVL(blocked, lvl);
-					}
-				}
-				if(c.contains(node + ".xp-gain")){
-					s.setXpMulti(c.getInt(node + ".xp-gain"));
-				}else{
-					s.setXpMulti(1);
-				}
-				if(c.contains(node + ".reward.money")){
-					s.setMoneyReward(c.getInt(node + ".reward.money"));
-				}else{
-					s.setMoneyReward(reward);
-				}
-				if(c.contains(node + ".reward.item")){
-					s.setItemReward(c.getString(node + ".reward.item"));
-				}else{
-					s.setItemReward(itemreward);
-				}
-				if(c.contains(node + ".change")){
-					s.setChange(c.getInt(node +".change"));
-				}
-				skillList.put(node, s);
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}*/
 		SkillManager sm = new SkillManager();
 		if(!skillzFile.exists()){
 			sm.createSkillsSettings();
 		}
 		sm.loadSkillsSettings();
+		YamlConfiguration c = new YamlConfiguration();
+		try{
+			c.load(skillzFile);
+			version = c.getDouble("version");
+			update = c.getBoolean("update", true);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	private void checkUpdate() {
 		try {
@@ -231,9 +183,9 @@ public class Skillz extends JavaPlugin{
 					log.info(logPrefix + "An update is available! Will be downloaded on Disable! New version: " + str);
 					YamlConfiguration c = new YamlConfiguration();
 					try{
-						c.load(settings);
+						c.load(skillzFile);
 						c.set("version", str);
-						c.save(settings);
+						c.save(skillzFile);
 					}catch(Exception e){
 						e.printStackTrace();
 					}
@@ -262,12 +214,12 @@ public class Skillz extends JavaPlugin{
 			log.info("[Skillz] Hooked into Vault, just in case :)");
 			return;
 		}else{
-			if(reward == 0){
+			if(SkillsSettings.getMoneyOnLevelup() == 0){
 				return;
 			}
 			log.info("[Skillz] Vault not found. Money reward -> 0");
 		}
-		reward = 0;
+		SkillsSettings.setMoneyOnLevelup(0);
 	}
 
 	/**
@@ -276,6 +228,8 @@ public class Skillz extends JavaPlugin{
 	 */
 	public void loadSQL() {
 		log.info(logPrefix + "SQLite warming up...");
+		log.info(logPrefix + "SQLite temporarily broken, using flatfile");
+		useSQL = false;
 		dbManager = new SQLite(log, logPrefix, "Skillz", "plugins/Skillz");
 		dbManager.open();
 		if (!dbManager.checkTable("Skillz")) {
@@ -289,6 +243,8 @@ public class Skillz extends JavaPlugin{
 		mysql = new MySQL(log, logPrefix, dbHost, Integer.toString(3306), dbDB, dbUser, dbPass);
 		if (mysql.checkConnection()) {
 			log.info(logPrefix + "MySQL connection successful");
+			log.info(logPrefix + "MySQL temporarily broken, using flatfile");
+			useMySQL = false;
 			try {
 				if(!mysql.checkTable("skillz")){
 					log.info("Trying to create Skillz table in MySQL..");
@@ -306,56 +262,6 @@ public class Skillz extends JavaPlugin{
 		}
 	}
 
-	private void loadSettings() {
-		YamlConfiguration c = new YamlConfiguration();
-		try{
-			c.load(settings);
-			usePerms = c.getBoolean("plugins.usePermissions", false);
-			useIco = c.getBoolean("plugins.useiConomy", false);
-			use3Co = c.getBoolean("plugins.use3Co", false);
-			useBOSE = c.getBoolean("plugins.useBOSEconomy", false);
-			useSQL = c.getBoolean("useSQLite", false);
-			useMySQL = c.getBoolean("useMySQL", false);
-			lvlupmsg = c.getString("LevelupMessage");
-			fallmsg = c.getString("FallDamageMessage");
-			version = c.getDouble("version", 5);
-			reward = c.getInt("reward.money", 0);
-			itemreward = c.getString("reward.item", "0,0");
-			dbUser = c.getString("MySQL.username");
-			dbPass = c.getString("MySQL.password");
-			dbDB = c.getString("MySQL.database");
-			dbHost = c.getString("MySQL.host");
-			lightning = c.getBoolean("LightningonLevelup", false);
-			broadcast = c.getBoolean("BroadcastOnLevelup", true);
-			debug = c.getBoolean("debug", false);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-
-	private void extract(){
-		log.info(logPrefix + "Trying to create default config...");
-		try {
-			JarFile jar = new JarFile("plugins/Skillz.jar");
-			ZipEntry entry = jar.getEntry("settings.yml");
-			File efile = new File(maindir, entry.getName());
-			InputStream in = new BufferedInputStream(jar.getInputStream(entry));
-			OutputStream out = new BufferedOutputStream(new FileOutputStream(efile));
-			int c;
-			while((c = in.read()) != -1){
-				out.write(c);
-			}
-			out.flush();
-			out.close();
-			in.close();
-			jar.close();
-			log.info(logPrefix + "Default " + "settings" + " created succesfully!");
-		}catch (Exception e) {
-			e.printStackTrace();
-			log.warning(logPrefix + "Error creating settings file! Using default settings!");
-		}
-	}
-
 	private void makeSettings() {
 		new File(maindir).mkdir();
 		if(new File(maindir + "skills/").exists()){
@@ -366,8 +272,7 @@ public class Skillz extends JavaPlugin{
 		}else{
 			new File(maindir + "players/").mkdir();
 		}
-		if(!settings.exists()){
-			extract();
+		if(!skillzFile.exists()){
 			configed = false;
 		}		
 	}
@@ -591,12 +496,12 @@ public class Skillz extends JavaPlugin{
 						}
 					}
 					if(args[0].equalsIgnoreCase("test")){
-						sender.sendMessage(itemreward);
-						sender.sendMessage(Integer.toString(reward));
+						sender.sendMessage(SkillsSettings.getItemOnLevelup());
+						sender.sendMessage(Integer.toString(SkillsSettings.getMoneyOnLevelup()));
 						SkillsSettings.setItemOnLevelup("10,10");
-						SkillsSettings.setMoneyOnLevelup(reward++);
-						sender.sendMessage(itemreward);
-						sender.sendMessage(Integer.toString(reward));
+						SkillsSettings.setMoneyOnLevelup(SkillsSettings.getMoneyOnLevelup() + 1);
+						sender.sendMessage(SkillsSettings.getItemOnLevelup());
+						sender.sendMessage(Integer.toString(SkillsSettings.getMoneyOnLevelup()));
 						return true;						
 					}
 					//Get another players Skills

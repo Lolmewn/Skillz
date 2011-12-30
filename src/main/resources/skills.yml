@@ -2,6 +2,15 @@
 ##Made by Lolmewn##
 ###Global Settings###
 
+useSQLite: false
+useMySQL: false
+#no need to set this if useMySQL is false
+MySQL-User: root
+MySQL-Pass: p4ssw0rd
+MySQL-Host: localhost
+MySQL-Port: 3306
+MySQL-Database: minecraft
+
 moneyOnLevelup: 20
 itemOnLevelup: 89,1
 lightningOnLevelup: false
@@ -12,9 +21,13 @@ resetAllSkillsOnDeath: false
 loseLevelsOnDeath: 0
 
 ##Messages##
-fallDamageMessage: You jump smoothly, avoiding {dmg} damage!
-levelupMessage: You leveled up! Your {skill} level is now {level}!
+fallDamageMessage: You jump smoothly, avoiding DMG damage!
+levelupMessage: You leveled up! Your SKILLNAME level is now NEWLEVEL!
 lostLevels: You died, causing your levels to get reset!
+
+update: true
+version: 5.4
+
 
 ###Skills###
 skills:
