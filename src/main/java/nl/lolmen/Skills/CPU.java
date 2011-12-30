@@ -32,7 +32,7 @@ public class CPU {
 			levelUp(p, skill, lvl + 1);
 		} else {
 			double result = newXP / ((lvl * lvl) * 10);
-			if (result >= 1) {
+			if (result >= 1) { 
 				levelUp(p, skill, lvl + 1);
 			}
 		}
