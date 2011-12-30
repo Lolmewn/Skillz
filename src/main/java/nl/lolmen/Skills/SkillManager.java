@@ -38,7 +38,7 @@ public class SkillManager {
 	public void loadSkillsSettings() {
 		if (!settings.exists()) {
 			createSkillsSettings();
-		}
+		} 
 		YamlConfiguration c = YamlConfiguration.loadConfiguration(settings);
 		try {
 			if(!c.contains("moneyOnLevelup")){
