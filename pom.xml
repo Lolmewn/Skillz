@@ -5,12 +5,8 @@
   <version>0.0.1-SNAPSHOT</version>
     <repositories>
         <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/artifactory/repo</url>
-        </repository>
-        <repository>
-            <id>tehkode-repo</id>
-            <url>http://repo.tehkode.ru/repository/repo/</url>
+            <id>spout-repo</id>
+            <url>http://nexus.getspout.org/content/groups/public/</url>
         </repository>
     </repositories>
     <build>
@@ -29,17 +25,13 @@
     <dependencies>
         <dependency>
             <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.0.1-R1</version>
-            <scope>system</scope>
-            <systemPath>C:/Libs/Craftbukkit.jar</systemPath> 
+            <artifactId>craftbukkit</artifactId>
+            <version>1.0.1-R2-SNAPSHOT</version>
         </dependency>
         <dependency>
-        	<groupId>net.milkbowl.vault</groupId>
-        	<artifactId>Vault</artifactId>
-        	<version>0.0.1-SNAPSHOT</version>
-        	<scope>system</scope>
-        	<systemPath>C:/Libs/Vault.jar</systemPath>
+          <groupId>net.milkbowl</groupId>
+          <artifactId>vault</artifactId>
+          <version>1.2.0-b000</version>
         </dependency>
     </dependencies>
 </project>
