@@ -159,7 +159,7 @@ public class Skillz extends JavaPlugin{
 		YamlConfiguration c = new YamlConfiguration();
 		try{
 			c.load(skillzFile);
-			version = c.getDouble("version");
+			version = Double.parseDouble(c.getString("version"));
 			update = c.getBoolean("update", true);
 			dbUser = c.getString("MySQL-User");
 			dbPass = c.getString("MySQL-Pass");
