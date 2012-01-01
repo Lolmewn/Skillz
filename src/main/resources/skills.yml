@@ -22,8 +22,8 @@ resetAllSkillsOnDeath: false
 loseLevelsOnDeath: 0
 
 ##Messages##
-fallDamageMessage: You jump smoothly, avoiding DMG damage!
-levelupMessage: You leveled up! Your SKILLNAME level is now NEWLEVEL!
+fallDamageMessage: You jump smoothly, avoiding $DMG damage!
+levelupMessage: You leveled up! Your $SKILLNAME level is now $NEWLEVEL!
 lostLevels: You died, causing your levels to get reset!
 
 update: true
