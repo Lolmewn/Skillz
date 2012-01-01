@@ -78,6 +78,9 @@ public class CPU {
 	}
 
 	private static void giveItem(Player p, SkillBase skill) {
+		if(skill.getItemOnLevelup() == null){
+			return;
+		}
 		ItemHandler.addItems(p, skill.getItemOnLevelup());
 		p.sendMessage("You have been given " + ChatColor.RED + skill.getItemOnLevelup().getAmount() + " " + skill.getItemOnLevelup().getType().name().toLowerCase() + ChatColor.RED + " for leveling up!");
 	}

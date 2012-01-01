@@ -72,7 +72,7 @@ public class SkillBase {
 	public ItemStack getItemOnLevelup() {
 		String[] arg = itemOnLevelup.split(",");
 		if(arg[0].equals("0") || arg[1].equals("0")){
-			return new ItemStack(Material.AIR, 1);
+			return null;
 		}
 		ItemStack stack = new ItemStack(Integer.parseInt(arg[0]), Integer.parseInt(arg[1]));
 		return stack;
