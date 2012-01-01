@@ -184,7 +184,7 @@ public class Skillz extends JavaPlugin{
 			String str;
 			while((str = in.readLine()) != null)
 			{
-				if(!str.equalsIgnoreCase(Double.toString(version))){
+				if(version < Double.parseDouble(str)){
 					updateAvailable = true;
 					log.info(logPrefix + "An update is available! Will be downloaded on Disable! New version: " + str);
 					YamlConfiguration c = new YamlConfiguration();
