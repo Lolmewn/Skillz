@@ -8,8 +8,6 @@ import java.util.Properties;
 
 import nl.lolmen.Skillz.Skillz;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

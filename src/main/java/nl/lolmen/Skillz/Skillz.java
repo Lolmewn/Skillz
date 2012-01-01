@@ -1,7 +1,6 @@
 package nl.lolmen.Skillz;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,9 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -19,12 +16,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
-import java.util.jar.JarFile;
 import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
-
 import nl.lolmen.API.SkillzAPI;
-import nl.lolmen.API.SkillzSettings;
 import nl.lolmen.Skills.SkillBase;
 import nl.lolmen.Skills.SkillBlockListener;
 import nl.lolmen.Skills.SkillCommandHandler;
@@ -184,6 +177,8 @@ public class Skillz extends JavaPlugin{
 			String str;
 			while((str = in.readLine()) != null)
 			{
+				log.info("Current version: " + version);
+				log.info("Latest version: " + Double.parseDouble(str));
 				if(version < Double.parseDouble(str)){
 					updateAvailable = true;
 					log.info(logPrefix + "An update is available! Will be downloaded on Disable! New version: " + str);
