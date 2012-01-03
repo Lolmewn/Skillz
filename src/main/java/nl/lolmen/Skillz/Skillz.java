@@ -99,16 +99,17 @@ public class Skillz extends JavaPlugin{
 		}
 		high.saveMaps();
 		if(updateAvailable){
-			downloadFile("http://dl.dropbox.com/u/7365249/Skillz-0.0.1-SNAPSHOT.jar", null);
+			downloadFile("http://dl.dropbox.com/u/7365249/Skillz-0.0.1-SNAPSHOT.jar");
 		}
 		getServer().getScheduler().cancelTasks(this);
 		log.info("[Skillz] Disabled!");
 	}
-	private void downloadFile(String site, String destination){
+	private void downloadFile(String site){
 		try {
 			log.info("Updating Skillz.. Please wait.");
 			BufferedInputStream in = new BufferedInputStream(new URL(site).openStream());
-			FileOutputStream fout = new FileOutputStream(destination);
+			log.info("Exporting to " + nl.lolmen.Skillz.Skillz.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+			FileOutputStream fout = new FileOutputStream(nl.lolmen.Skillz.Skillz.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
 			byte data[] = new byte[1024]; //Download 1 KB at a time
 			int count;
 			while((count = in.read(data, 0, 1024)) != -1)
@@ -161,11 +162,11 @@ public class Skillz extends JavaPlugin{
 			c.load(skillzFile);
 			version = Double.parseDouble(c.getString("version"));
 			update = c.getBoolean("update", true);
-			dbUser = c.getString("MySQL-User");
-			dbPass = c.getString("MySQL-Pass");
-			dbHost = c.getString("MySQL-Host");
+			dbUser = c.getString("MySQL-User", "root");
+			dbPass = c.getString("MySQL-Pass", "root");
+			dbHost = c.getString("MySQL-Host", "localhost");
 			dbPort = c.getInt("MySQL-Port", 3306); 
-			dbDB = c.getString("MySQL-Database");
+			dbDB = c.getString("MySQL-Database", "minecraft");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -175,10 +176,7 @@ public class Skillz extends JavaPlugin{
 			URL url = new URL("http://dl.dropbox.com/u/7365249/skillz.txt");
 			BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
 			String str;
-			while((str = in.readLine()) != null)
-			{
-				log.info("Current version: " + version);
-				log.info("Latest version: " + Double.parseDouble(str));
+			while((str = in.readLine()) != null){
 				if(version < Double.parseDouble(str)){
 					updateAvailable = true;
 					log.info(logPrefix + "An update is available! Will be downloaded on Disable! New version: " + str);
