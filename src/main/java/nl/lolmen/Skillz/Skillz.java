@@ -155,7 +155,7 @@ public class Skillz extends JavaPlugin{
 			pm.registerEvent(Event.Type.PLAYER_CHAT, player, Priority.Normal, this);
 		}
 		new ServerSoc(this);
-		log.info("[Skillz] Enabled!");
+		log.info("[Skillz]  - V" + getDescription().getVersion() + " Enabled!");
 	}
 
 	private void loadSkillz() {
