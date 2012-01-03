@@ -108,7 +108,6 @@ public class Skillz extends JavaPlugin{
 		try {
 			log.info("Updating Skillz.. Please wait.");
 			BufferedInputStream in = new BufferedInputStream(new URL(site).openStream());
-			log.info("Exporting to " + nl.lolmen.Skillz.Skillz.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
 			FileOutputStream fout = new FileOutputStream(nl.lolmen.Skillz.Skillz.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
 			byte data[] = new byte[1024]; //Download 1 KB at a time
 			int count;
@@ -119,6 +118,14 @@ public class Skillz extends JavaPlugin{
 			log.info("Skillz has been updated!");
 			in.close();
 			fout.close();
+			YamlConfiguration c = new YamlConfiguration();
+			try{
+				c.load(skillzFile);
+				c.set("version", version);
+				c.save(skillzFile);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -180,14 +187,7 @@ public class Skillz extends JavaPlugin{
 				if(version < Double.parseDouble(str)){
 					updateAvailable = true;
 					log.info(logPrefix + "An update is available! Will be downloaded on Disable! New version: " + str);
-					YamlConfiguration c = new YamlConfiguration();
-					try{
-						c.load(skillzFile);
-						c.set("version", str);
-						c.save(skillzFile);
-					}catch(Exception e){
-						e.printStackTrace();
-					}
+					version = Double.parseDouble(str);
 				}
 			}
 			in.close();
