@@ -100,7 +100,7 @@ public class CPU {
 			p.sendMessage("You have been given " + e.format(skill.getMoneyOnLevelup()) + " for leveling up!");
 		} else {
 			System.out
-					.println("[LittleBigPlugin - Skills] Couldn't give money reward, Vault not found!");
+					.println("[Skillz] Couldn't give money reward, Vault not found!");
 		}
 	}
 
@@ -138,7 +138,7 @@ public class CPU {
 			if (!prop.containsKey(key)) {
 				return;
 			}
-			prop.setProperty(key, (level - 1) * (level - 1) * 10 + "," + level);
+			prop.setProperty(key, (level - 1) * (level - 1) * 10 + ";" + level);
 			FileOutputStream out = new FileOutputStream(new File(folder, p
 					.getName().toLowerCase() + ".txt"));
 			prop.store(out, "Skill=XP;lvl");

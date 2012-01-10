@@ -64,7 +64,6 @@ public class Skillz extends JavaPlugin{
 	public SQLite dbManager = null;
 	public MySQL mysql = null;
 	public String logPrefix = "[Skillz] ";
-	public HashMap<String, Skill> skillList = new HashMap<String, Skill>();
 	
 	//For faster block breaking
 	public HashMap<Player, Block> FBlock = new HashMap<Player, Block>();
