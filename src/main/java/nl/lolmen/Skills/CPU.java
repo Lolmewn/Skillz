@@ -89,8 +89,10 @@ public class CPU {
 
 	private static void giveReward(Player p, SkillBase skill) {
 		if(!SkillsSettings.HasVault()){
+			if(SkillsSettings.isDebug()){
+				System.out.println("Vault not found!");
+			}
 			return;
-			//Sorry, no vault is no money!
 		}
 		Economy e;
 		RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServer()
@@ -101,8 +103,7 @@ public class CPU {
 			e.depositPlayer(p.getName(), skill.getMoneyOnLevelup());
 			p.sendMessage("You have been given " + e.format(skill.getMoneyOnLevelup()) + " for leveling up!");
 		} else {
-			System.out
-					.println("[Skillz] Couldn't give money reward, Vault not found!");
+			System.out.println("[Skillz] Couldn't give money reward, Vault not found!");
 		}
 	}
 

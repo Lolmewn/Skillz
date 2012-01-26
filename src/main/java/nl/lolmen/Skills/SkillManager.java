@@ -19,11 +19,8 @@ public class SkillManager {
 			+ "Skillz" + File.separator + "skills.yml");
 	private String logPrefix = "[Skillz] ";
 	public static HashMap<String, SkillBase> skills = new HashMap<String, SkillBase>();
-	//public static Archery ar = new Archery();
-	//public static Acrobatics ac = new Acrobatics();
 
 	public SkillManager() {
-		Skillz.p.log.info("SkillManager - Enabled");
 	}
 
 	public void loadSkillsSettings() {

@@ -202,6 +202,7 @@ public class Skillz extends JavaPlugin{
 		Plugin test;
 		test = getServer().getPluginManager().getPlugin("Vault");
 		if(test != null){
+			SkillsSettings.setHasVault(true);
 			log.info("[Skillz] Hooked into Vault, just in case :)");
 			return;
 		}else{

@@ -106,6 +106,14 @@ public class SkillsSettings {
 	public static boolean HasSpout() {
 		return hasSpout;
 	}
+	
+	public static void setHasVault(boolean value){
+		SkillsSettings.hasVault = value;
+	}
+	
+	public static void setHasSpout(boolean value){
+		SkillsSettings.hasSpout = value;
+	}
 
 	public static boolean isUsePerSkillPerms() {
 		return usePerSkillPerms;
