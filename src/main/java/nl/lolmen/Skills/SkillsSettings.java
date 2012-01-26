@@ -14,6 +14,7 @@ public class SkillsSettings {
 	private static String levelsReset;
 	private static boolean hasVault;
 	private static boolean hasSpout;
+	private static boolean usePerSkillPerms;
 
 	public static boolean isLightningOnLevelup() {
 		return lightningOnLevelup;
@@ -104,6 +105,14 @@ public class SkillsSettings {
 
 	public static boolean HasSpout() {
 		return hasSpout;
+	}
+
+	public static boolean isUsePerSkillPerms() {
+		return usePerSkillPerms;
+	}
+
+	public static void setUsePerSkillPerms(boolean usePerSkillPerms) {
+		SkillsSettings.usePerSkillPerms = usePerSkillPerms;
 	}
 
 }

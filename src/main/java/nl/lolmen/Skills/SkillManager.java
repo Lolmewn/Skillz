@@ -10,25 +10,17 @@ import java.util.HashSet;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import nl.lolmen.Skills.skills.Acrobatics;
-import nl.lolmen.Skills.skills.Archery;
-import nl.lolmen.Skills.skills.Axes;
-import nl.lolmen.Skills.skills.Digging;
-import nl.lolmen.Skills.skills.Mining;
-import nl.lolmen.Skills.skills.Swimming;
-import nl.lolmen.Skills.skills.Swords;
-import nl.lolmen.Skills.skills.Unarmed;
-import nl.lolmen.Skills.skills.Woodcutting;
+import nl.lolmen.Skills.skills.*;
 import nl.lolmen.Skillz.Skillz;
 
 
 public class SkillManager {
 	private File settings = new File("plugins" + File.separator
 			+ "Skillz" + File.separator + "skills.yml");
-	private String logPrefix = "[LittleBigPlugin] ";
+	private String logPrefix = "[Skillz] ";
 	public static HashMap<String, SkillBase> skills = new HashMap<String, SkillBase>();
-	public static Archery ar = new Archery();
-	public static Acrobatics ac = new Acrobatics();
+	//public static Archery ar = new Archery();
+	//public static Acrobatics ac = new Acrobatics();
 
 	public SkillManager() {
 		Skillz.p.log.info("SkillManager - Enabled");
@@ -53,6 +45,7 @@ public class SkillManager {
 			SkillsSettings.setLevelsReset(c.getString("lostLevels", "You lost levels because you died."));
 			SkillsSettings.setFalldmg(c.getString("fallDamageMessage"));
 			SkillsSettings.setLvlup(c.getString("levelupMessage"));
+			SkillsSettings.setUsePerSkillPerms(c.getBoolean("usePermissionsForEverySkill", false));
 			// Now the actual skills
 			for (String key : c.getConfigurationSection("skills")
 					.getKeys(false)) {
@@ -84,7 +77,6 @@ public class SkillManager {
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
 					skills.put(keys, a);
-					ar = a;
 				}
 				if(keys.equalsIgnoreCase("acrobatics")){
 					Acrobatics a = new Acrobatics();
@@ -102,7 +94,6 @@ public class SkillManager {
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
 					a.setLevelsTillLessDMG(c.getInt("skills." + key + ".levels-per-reducted-damage", 5));
-					ac = a;
 					skills.put(keys, a);
 				}
 				if(key.equalsIgnoreCase("swimming")){
@@ -240,6 +231,29 @@ public class SkillManager {
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
 					a.setAllFromFirstLevel(c.getBoolean("skills." + key + ".MineAllBlocksFromFirstLevel"));
+					for(String s: c.getConfigurationSection("skills." + key + ".block_level").getKeys(false)){
+						a.addBlockLevels(Integer.parseInt(s), c.getInt("skills." + key + ".block_level." + s));
+					}
+					for(String s: c.getConfigurationSection("skills." + key + ".block_XP").getKeys(false)){
+						a.addBlock(Integer.parseInt(s), c.getInt("skills." + key + ".block_XP." + s));
+					}
+					skills.put(keys, a);
+				}
+				if(key.equalsIgnoreCase("farming")){
+					Farming a = new Farming();
+					if (item == null) {
+						a.setItemOnLevelup(SkillsSettings.getItemOnLevelup());
+					} else {
+						a.setItemOnLevelup(item);
+					}
+					if (money == -1) {
+						a.setMoneyOnLevelup(SkillsSettings.getMoneyOnLevelup());
+					} else {
+						a.setMoneyOnLevelup(money);
+					}
+					a.setSkillName(key);
+					a.setEnabled(enabled);
+					a.setMultiplier(multiplier);
 					for(String s: c.getConfigurationSection("skills." + key + ".block_level").getKeys(false)){
 						a.addBlockLevels(Integer.parseInt(s), c.getInt("skills." + key + ".block_level." + s));
 					}

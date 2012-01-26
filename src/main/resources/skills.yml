@@ -2,10 +2,10 @@
 ##Made by Lolmewn##
 ###Global Settings###
 
-#MYSQL AND SQLITE ARE BROKEN
+#MYSQL AND SQLITE ARE BROKEN#
 useSQLite: false
 useMySQL: false
-#no need to set this if useMySQL is false
+#no need to set this if useMySQL is false#
 MySQL-User: root
 MySQL-Pass: p4ssw0rd
 MySQL-Host: localhost
@@ -17,6 +17,7 @@ itemOnLevelup: 89,1
 lightningOnLevelup: false
 broadcastOnLevelup: true
 debug: false
+usePermissionsForEverySkill: false
 
 resetAllSkillsOnDeath: false
 loseLevelsOnDeath: 0
@@ -27,7 +28,7 @@ levelupMessage: You leveled up! Your $SKILLNAME level is now $NEWLEVEL!
 lostLevels: You died, causing your levels to get reset!
 
 update: true
-version: 5.4
+version: '5.4'
 
 
 ###Skills###

@@ -3,6 +3,7 @@ package nl.lolmen.API;
 import org.bukkit.event.CustomEventListener;
 import org.bukkit.event.Event;
 
+@SuppressWarnings("deprecation")
 public class SkillzEventListener extends CustomEventListener{
 
 	@Override

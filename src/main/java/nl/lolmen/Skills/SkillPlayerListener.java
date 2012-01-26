@@ -8,50 +8,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import nl.lolmen.Skills.CPU;
 import nl.lolmen.Skillz.Skillz;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerListener;
 
 
-public class SkillPlayerListener extends PlayerListener {
+public class SkillPlayerListener implements Listener {
 	private Skillz plugin;
 	public SkillPlayerListener(Skillz main){
 		plugin = main;
-	}
-
-	public void onPlayerDeath(EntityDeathEvent event) {
-		//Already got checked if a player
-		if(!(event.getEntity() instanceof Player)){
-			return;
-		}
-		Player p = (Player)event.getEntity();
-		if(SkillsSettings.isResetSkillsOnLevelup()){
-			for(String s: SkillManager.skills.keySet()){
-				SkillBase skill = SkillManager.skills.get(s);
-				CPU.setLevelWithXP(p, skill, 1);
-			}
-			p.sendMessage(SkillsSettings.getLevelsReset());
-			return;
-		}
-		if(SkillsSettings.getLevelsDownOnDeath() != 0){
-			for(String s: SkillManager.skills.keySet()){
-				SkillBase skill = SkillManager.skills.get(s);
-				if(CPU.getLevel(p, skill) <= SkillsSettings.getLevelsDownOnDeath()){
-					CPU.setLevelWithXP(p, skill, 1);
-				}else{
-					CPU.setLevelWithXP(p, skill, CPU.getLevel(p, skill)-SkillsSettings.getLevelsDownOnDeath());
-				}
-			}
-			p.sendMessage(SkillsSettings.getLevelsReset());
-			return;
-		}
-	}
+	}	
 	
-	
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		double time = System.nanoTime();
 		Player p = event.getPlayer();

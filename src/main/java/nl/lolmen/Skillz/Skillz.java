@@ -35,8 +35,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.event.Event.Priority;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -58,9 +56,6 @@ public class Skillz extends JavaPlugin{
 	private SkillEntityListener entity = new SkillEntityListener();
 	public static SkillzAPI api = new SkillzAPI();
 	
-	//Some stuff
-	public String[] skills = {"mining", "digging", "acrobatics" , "archery" , "farming" , 
-			"woodcutting", "axes", "unarmed", "swords", "swimming"};
 	public SQLite dbManager = null;
 	public MySQL mysql = null;
 	public String logPrefix = "[Skillz] ";
@@ -98,7 +93,7 @@ public class Skillz extends JavaPlugin{
 		}
 		high.saveMaps();
 		if(updateAvailable){
-			downloadFile("http://dl.dropbox.com/u/7365249/Skillz-0.0.1-SNAPSHOT.jar");
+			downloadFile("http://dl.dropbox.com/u/7365249/Skillz.jar");
 		}
 		getServer().getScheduler().cancelTasks(this);
 		log.info("[Skillz] Disabled!");
@@ -146,13 +141,9 @@ public class Skillz extends JavaPlugin{
 		setupPlugins();
 		high.loadMaps();
 		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvent(Event.Type.BLOCK_BREAK, block, Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_DAMAGE, entity, Priority.Normal, this);
-		pm.registerEvent(Event.Type.ENTITY_DEATH, entity, Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_JOIN, player, Priority.Normal, this);
-		if(!configed){
-			pm.registerEvent(Event.Type.PLAYER_CHAT, player, Priority.Normal, this);
-		}
+		pm.registerEvents(block, this);
+		pm.registerEvents( entity, this);
+		pm.registerEvents( player, this);
 		new ServerSoc(this);
 		log.info("[Skillz]  - V" + getDescription().getVersion() + " Enabled!");
 	}
@@ -166,7 +157,7 @@ public class Skillz extends JavaPlugin{
 		YamlConfiguration c = new YamlConfiguration();
 		try{
 			c.load(skillzFile);
-			version = Double.parseDouble(c.getString("version"));
+			version = c.getDouble("version");
 			update = c.getBoolean("update", true);
 			dbUser = c.getString("MySQL-User", "root");
 			dbPass = c.getString("MySQL-Pass", "root");

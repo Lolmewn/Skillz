@@ -3,21 +3,22 @@ package nl.lolmen.Skills;
 import nl.lolmen.Skills.CPU;
 import nl.lolmen.Skills.skills.Acrobatics;
 import nl.lolmen.Skills.skills.Archery;
-import nl.lolmen.Skillz.Skillz;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityListener;
 
-public class SkillEntityListener extends EntityListener{
+public class SkillEntityListener implements Listener{
 
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDamage(EntityDamageEvent event) {
 		if(event.isCancelled()){
 			return;
@@ -102,7 +103,7 @@ public class SkillEntityListener extends EntityListener{
 			if(att instanceof Arrow){
 				LivingEntity ent = ((Arrow)att).getShooter();
 				if(ent instanceof Player){
-					Archery s = SkillManager.ar;
+					Archery s = (Archery) SkillManager.skills.get("archery");
 					if(s == null){
 						return;
 					}
@@ -130,9 +131,32 @@ public class SkillEntityListener extends EntityListener{
 		}
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDeath(EntityDeathEvent event) {
-		new SkillPlayerListener(Skillz.p).onPlayerDeath(event);
+		if(!(event.getEntity() instanceof Player)){
+			return;
+		}
+		Player p = (Player)event.getEntity();
+		if(SkillsSettings.isResetSkillsOnLevelup()){
+			for(String s: SkillManager.skills.keySet()){
+				SkillBase skill = SkillManager.skills.get(s);
+				CPU.setLevelWithXP(p, skill, 1);
+			}
+			p.sendMessage(SkillsSettings.getLevelsReset());
+			return;
+		}
+		if(SkillsSettings.getLevelsDownOnDeath() != 0){
+			for(String s: SkillManager.skills.keySet()){
+				SkillBase skill = SkillManager.skills.get(s);
+				if(CPU.getLevel(p, skill) <= SkillsSettings.getLevelsDownOnDeath()){
+					CPU.setLevelWithXP(p, skill, 1);
+				}else{
+					CPU.setLevelWithXP(p, skill, CPU.getLevel(p, skill)-SkillsSettings.getLevelsDownOnDeath());
+				}
+			}
+			p.sendMessage(SkillsSettings.getLevelsReset());
+			return;
+		}
 	}
 
 }

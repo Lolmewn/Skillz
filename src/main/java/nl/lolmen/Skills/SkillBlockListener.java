@@ -3,17 +3,19 @@ package nl.lolmen.Skills;
 import nl.lolmen.Skills.skills.Mining;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockListener;
 import org.bukkit.inventory.ItemStack;
 
-public class SkillBlockListener extends BlockListener{
+public class SkillBlockListener implements Listener{
 
 	public SkillBlockListener() {
 
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onBlockBreak(BlockBreakEvent event) {
 		if(event.isCancelled()){
 			return;

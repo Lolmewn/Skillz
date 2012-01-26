@@ -1,5 +1,7 @@
 package nl.lolmen.Skills.skills;
 
-public class Farming {
+import nl.lolmen.Skills.SkillBlockBase;
+
+public class Farming extends SkillBlockBase{
 
 }

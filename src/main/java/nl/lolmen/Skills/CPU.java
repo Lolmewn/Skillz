@@ -22,8 +22,10 @@ public class CPU {
 	static HashSet<String> list = new HashSet<String>();
 
 	public static void addXP(final Player p, SkillBase skilled, final int XP) {
+		if(!p.hasPermission("skillz.skill." + skilled.getSkillName()) && SkillsSettings.isUsePerSkillPerms()){
+			return;
+		}
 		skilled.addXP(p, XP);
-		//skilled.addXP(p, XP);
 	}
 
 	public static void checkLeveling(Player p, SkillBase skill, int lvl,
