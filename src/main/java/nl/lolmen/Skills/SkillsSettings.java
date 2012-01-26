@@ -14,6 +14,7 @@ public class SkillsSettings {
 	private static String levelsReset;
 	private static boolean hasVault;
 	private static boolean hasSpout;
+	private static boolean hasCitizens;
 	private static boolean usePerSkillPerms;
 
 	public static boolean isLightningOnLevelup() {
@@ -121,6 +122,14 @@ public class SkillsSettings {
 
 	public static void setUsePerSkillPerms(boolean usePerSkillPerms) {
 		SkillsSettings.usePerSkillPerms = usePerSkillPerms;
+	}
+
+	public static boolean isHasCitizens() {
+		return hasCitizens;
+	}
+
+	public static void setHasCitizens(boolean hasCitizens) {
+		SkillsSettings.hasCitizens = hasCitizens;
 	}
 
 }

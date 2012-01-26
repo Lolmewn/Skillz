@@ -201,6 +201,12 @@ public class Skillz extends JavaPlugin{
 
 	private void setupPlugins() {
 		Plugin test;
+		test = getServer().getPluginManager().getPlugin("Citizens");
+		if(test != null){
+			SkillsSettings.setHasCitizens(true);
+		}else{
+			SkillsSettings.setHasCitizens(false);
+		}
 		test = getServer().getPluginManager().getPlugin("Vault");
 		if(test != null){
 			SkillsSettings.setHasVault(true);
@@ -211,8 +217,8 @@ public class Skillz extends JavaPlugin{
 				return;
 			}
 			log.info("[Skillz] Vault not found. Money reward -> 0");
+			SkillsSettings.setMoneyOnLevelup(0);
 		}
-		SkillsSettings.setMoneyOnLevelup(0);
 	}
 
 	/**
