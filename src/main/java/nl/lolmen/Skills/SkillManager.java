@@ -51,13 +51,13 @@ public class SkillManager {
 				int multiplier = c.getInt("skills." + key + ".XP-gain-multiplier", 1);
 				String item = null;
 				int money = -1;
-				if (c.contains("skills." + key + ".itemOnLevelUp")) {
-					item = c.getString("skills." + key + ".itemOnLevelUp");
+				if (c.contains("skills." + key + ".reward.item")) {
+					item = c.getString("skills." + key + ".reward.item");
 				}else{
 					item = SkillsSettings.getItemOnLevelup();
 				}
-				if (c.contains("skills." + key + ".moneyOnLevelUp")) {
-					money = c.getInt("skills." + key + ".moneyOnLevelUp");
+				if (c.contains("skills." + key + ".reward.money")) {
+					money = c.getInt("skills." + key + ".reward.money");
 				}else{
 					money = SkillsSettings.getMoneyOnLevelup();
 				}
