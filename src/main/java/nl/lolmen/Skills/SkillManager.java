@@ -51,25 +51,21 @@ public class SkillManager {
 				int multiplier = c.getInt("skills." + key + ".XP-gain-multiplier", 1);
 				String item = null;
 				int money = -1;
-				if (c.contains("skills" + key + ".itemOnLevelUp")) {
-					item = c.getString("skills" + key + ".itemOnLevelUp");
+				if (c.contains("skills." + key + ".itemOnLevelUp")) {
+					item = c.getString("skills." + key + ".itemOnLevelUp");
+				}else{
+					item = SkillsSettings.getItemOnLevelup();
 				}
-				if (c.contains("skills" + key + ".moneyOnLevelUp")) {
-					money = c.getInt("skills" + key + ".moneyOnLevelUp");
+				if (c.contains("skills." + key + ".moneyOnLevelUp")) {
+					money = c.getInt("skills." + key + ".moneyOnLevelUp");
+				}else{
+					money = SkillsSettings.getMoneyOnLevelup();
 				}
 				if (key.equalsIgnoreCase("archery")) {
 					Archery a = new Archery();
 					a.setBlocks_till_XP(c.getInt("skills." + key + ".blocks-till-1XP-add", 10));
-					if (item == null) {
-						a.setItemOnLevelup(SkillsSettings.getItemOnLevelup());
-					} else {
-						a.setItemOnLevelup(item);
-					}
-					if (money == -1) {
-						a.setMoneyOnLevelup(SkillsSettings.getMoneyOnLevelup());
-					} else {
-						a.setMoneyOnLevelup(money);
-					}
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
 					a.setSkillName(key);
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
@@ -77,16 +73,8 @@ public class SkillManager {
 				}
 				if(keys.equalsIgnoreCase("acrobatics")){
 					Acrobatics a = new Acrobatics();
-					if (item == null) {
-						a.setItemOnLevelup(SkillsSettings.getItemOnLevelup());
-					} else {
-						a.setItemOnLevelup(item);
-					}
-					if (money == -1) {
-						a.setMoneyOnLevelup(SkillsSettings.getMoneyOnLevelup());
-					} else {
-						a.setMoneyOnLevelup(money);
-					}
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
 					a.setSkillName(keys);
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
@@ -95,16 +83,8 @@ public class SkillManager {
 				}
 				if(key.equalsIgnoreCase("swimming")){
 					Swimming a = new Swimming();
-					if (item == null) {
-						a.setItemOnLevelup(SkillsSettings.getItemOnLevelup());
-					} else {
-						a.setItemOnLevelup(item);
-					}
-					if (money == -1) {
-						a.setMoneyOnLevelup(SkillsSettings.getMoneyOnLevelup());
-					} else {
-						a.setMoneyOnLevelup(money);
-					}
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
 					a.setSkillName(key);
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
@@ -112,16 +92,8 @@ public class SkillManager {
 				}
 				if (key.equalsIgnoreCase("mining")) {
 					Mining a = new Mining();
-					if (item == null) {
-						a.setItemOnLevelup(SkillsSettings.getItemOnLevelup());
-					} else {
-						a.setItemOnLevelup(item);
-					}
-					if (money == -1) {
-						a.setMoneyOnLevelup(SkillsSettings.getMoneyOnLevelup());
-					} else {
-						a.setMoneyOnLevelup(money);
-					}
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
 					a.setSkillName(key);
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
@@ -139,16 +111,8 @@ public class SkillManager {
 				
 				if(keys.startsWith("axes")){
 					Axes a = new Axes();
-					if (item == null) {
-						a.setItemOnLevelup(SkillsSettings.getItemOnLevelup());
-					} else {
-						a.setItemOnLevelup(item);
-					}
-					if (money == -1) {
-						a.setMoneyOnLevelup(SkillsSettings.getMoneyOnLevelup());
-					} else {
-						a.setMoneyOnLevelup(money);
-					}
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
 					a.setSkillName("axes");
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
@@ -156,16 +120,8 @@ public class SkillManager {
 				}
 				if(keys.toLowerCase().startsWith("swords")){
 					Swords a = new Swords();
-					if (item == null) {
-						a.setItemOnLevelup(SkillsSettings.getItemOnLevelup());
-					} else {
-						a.setItemOnLevelup(item);
-					}
-					if (money == -1) {
-						a.setMoneyOnLevelup(SkillsSettings.getMoneyOnLevelup());
-					} else {
-						a.setMoneyOnLevelup(money);
-					}
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
 					a.setSkillName("swords");
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
@@ -173,16 +129,8 @@ public class SkillManager {
 				}
 				if(keys.toLowerCase().startsWith("unarmed")){
 					Unarmed a = new Unarmed();
-					if (item == null) {
-						a.setItemOnLevelup(SkillsSettings.getItemOnLevelup());
-					} else {
-						a.setItemOnLevelup(item);
-					}
-					if (money == -1) {
-						a.setMoneyOnLevelup(SkillsSettings.getMoneyOnLevelup());
-					} else {
-						a.setMoneyOnLevelup(money);
-					}
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
 					a.setSkillName("unarmed");
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
@@ -190,16 +138,8 @@ public class SkillManager {
 				}
 				if(key.equalsIgnoreCase("woodcutting")){
 					Woodcutting a = new Woodcutting();
-					if (item == null) {
-						a.setItemOnLevelup(SkillsSettings.getItemOnLevelup());
-					} else {
-						a.setItemOnLevelup(item);
-					}
-					if (money == -1) {
-						a.setMoneyOnLevelup(SkillsSettings.getMoneyOnLevelup());
-					} else {
-						a.setMoneyOnLevelup(money);
-					}
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
 					a.setSkillName(key);
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
@@ -214,16 +154,8 @@ public class SkillManager {
 				}
 				if(key.equalsIgnoreCase("digging")){
 					Digging a = new Digging();
-					if (item == null) {
-						a.setItemOnLevelup(SkillsSettings.getItemOnLevelup());
-					} else {
-						a.setItemOnLevelup(item);
-					}
-					if (money == -1) {
-						a.setMoneyOnLevelup(SkillsSettings.getMoneyOnLevelup());
-					} else {
-						a.setMoneyOnLevelup(money);
-					}
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
 					a.setSkillName(key);
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
@@ -238,16 +170,8 @@ public class SkillManager {
 				}
 				if(key.equalsIgnoreCase("farming")){
 					Farming a = new Farming();
-					if (item == null) {
-						a.setItemOnLevelup(SkillsSettings.getItemOnLevelup());
-					} else {
-						a.setItemOnLevelup(item);
-					}
-					if (money == -1) {
-						a.setMoneyOnLevelup(SkillsSettings.getMoneyOnLevelup());
-					} else {
-						a.setMoneyOnLevelup(money);
-					}
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
 					a.setSkillName(key);
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
