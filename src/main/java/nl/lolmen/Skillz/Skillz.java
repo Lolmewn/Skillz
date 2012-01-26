@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import nl.lolmen.API.SkillzAPI;
 import nl.lolmen.Skills.SkillBase;
 import nl.lolmen.Skills.SkillBlockListener;
-import nl.lolmen.Skills.SkillCommandHandler;
+import nl.lolmen.Skills.SkillsCommand;
 import nl.lolmen.Skills.SkillEntityListener;
 import nl.lolmen.Skills.SkillManager;
 import nl.lolmen.Skills.SkillPlayerListener;
@@ -35,6 +35,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -222,13 +223,14 @@ public class Skillz extends JavaPlugin{
 		log.info(logPrefix + "SQLite warming up...");
 		log.info(logPrefix + "SQLite temporarily broken, using flatfile");
 		useSQL = false;
+		/*
 		dbManager = new SQLite(log, logPrefix, "Skillz", "plugins/Skillz");
 		dbManager.open();
 		if (!dbManager.checkTable("Skillz")) {
 			String query = "CREATE TABLE Skillz ('id' INT PRIMARY KEY, 'player' TEXT NOT NULL, 'skill' TEXT NOT NULL, 'xp' int , 'level' int ) ;";
 			dbManager.createTable(query);
 			log.info("[Skillz] SQL Database created!");
-		}
+		}*/
 	}
 
 	public void loadMySQL() {
@@ -237,6 +239,7 @@ public class Skillz extends JavaPlugin{
 			log.info(logPrefix + "MySQL connection successful");
 			log.info(logPrefix + "MySQL temporarily broken, using flatfile");
 			useMySQL = false;
+			/*
 			try {
 				if(!mysql.checkTable("skillz")){
 					log.info("Trying to create Skillz table in MySQL..");
@@ -247,7 +250,7 @@ public class Skillz extends JavaPlugin{
 			} catch (Exception e) {
 				e.printStackTrace();
 				useMySQL = false;
-			} 
+			} */
 		} else {
 			log.severe(logPrefix + "MySQL connection failed! ");
 			useMySQL = false;
@@ -337,7 +340,7 @@ public class Skillz extends JavaPlugin{
 					}
 					if(new File(maindir + "players/" + p.getName().toLowerCase() + ".txt").exists()){
 						sender.sendMessage(ChatColor.RED + "===Skillz===");
-						new SkillCommandHandler().sendSkills(p);
+						new SkillsCommand().sendSkills(p);
 						return true;
 					}
 					return true;
@@ -487,13 +490,66 @@ public class Skillz extends JavaPlugin{
 							return true;
 						}
 					}
-					if(args[0].equalsIgnoreCase("test")){
-						sender.sendMessage(SkillsSettings.getItemOnLevelup());
-						sender.sendMessage(Integer.toString(SkillsSettings.getMoneyOnLevelup()));
-						SkillsSettings.setItemOnLevelup("10,10");
-						SkillsSettings.setMoneyOnLevelup(SkillsSettings.getMoneyOnLevelup() + 1);
-						sender.sendMessage(SkillsSettings.getItemOnLevelup());
-						sender.sendMessage(Integer.toString(SkillsSettings.getMoneyOnLevelup()));
+					if(args[0].equalsIgnoreCase("reset")){
+						if(args.length == 1){
+							if(!(sender instanceof Player)){
+								sender.sendMessage(ChatColor.RED + "You are not a player!");
+								return true;
+							}
+							Player p = (Player)sender;
+							if(!p.hasPermission("skillz.reset.self")){
+								p.sendMessage(noPerm);
+								return true;
+							}
+							if(!new File(maindir + "players" + File.separator + p.getName().toLowerCase() + ".txt").exists()){
+								p.sendMessage("You don't have a skillz file, nothing to reset!");
+								return true;
+							}else{
+								File f = new File(maindir + "players/" + p.getName().toLowerCase() + ".txt");
+								if(f.delete()){
+									player.onPlayerJoin(new PlayerJoinEvent(p, p.getName()));
+									p.sendMessage("A new file should have been created!");
+								}else{
+									p.sendMessage("For some reason, your file could not be deleted. It will be when the server gets restarted.");
+									f.deleteOnExit();
+								}
+							}
+						}else{
+							if(!sender.hasPermission("skillz.reset.other")){
+								sender.sendMessage(noPerm);
+							}
+							for(int i = 1; i < args.length; i++){
+								Player target = getServer().getPlayer(args[i]);
+								if(target == null){
+									if(!new File(maindir + "players" + File.separator + args[i] + ".txt").exists()){
+										sender.sendMessage("You don't have a skillz file, nothing to reset!");
+										return true;
+									}else{
+										File f = new File(maindir + "players/" + args[i] + ".txt");
+										if(f.delete()){
+											sender.sendMessage("A new file will be created the next time he logs in!");
+										}else{
+											sender.sendMessage("For some reason, " + args[i] + "'s file could not be deleted. It will be when the server gets restarted.");
+											f.deleteOnExit();
+										}
+									}
+									continue;
+								}
+								if(!new File(maindir + "players" + File.separator + target.getName() + ".txt").exists()){
+									sender.sendMessage(target.getName() + " doesn't have a skillz file, nothing to reset!");
+									return true;
+								}else{
+									File f = new File(maindir + "players/" + target.getName() + ".txt");
+									if(f.delete()){
+										player.onPlayerJoin(new PlayerJoinEvent(target, target.getName()));
+										sender.sendMessage(target.getName() + "'s player file deleted and regenerated!");
+									}else{
+										sender.sendMessage("For some reason,  " + target.getName() + "'s file could not be deleted. It will be when the server gets restarted.");
+										f.deleteOnExit();
+									}
+								}
+							}
+						}
 						return true;						
 					}
 					//Get another players Skills

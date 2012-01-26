@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class SkillCommandHandler {
+public class SkillsCommand {
 	
 	public void sendSkills(Player p){
 		new getSkills(p);
