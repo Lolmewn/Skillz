@@ -60,32 +60,42 @@ public class SkillManager {
 				}else{
 					money = SkillsSettings.getMoneyOnLevelup();
 				}
-				SkillBase base = new SkillBase();
-				base.setItemOnLevelup(item);
-				base.setMoneyOnLevelup(money);
-				base.setSkillName(key);
-				base.setEnabled(enabled);
-				base.setMultiplier(multiplier);
 				if (key.equalsIgnoreCase("archery")) {
-					
-					Archery ar = new Archery();
-					System.out.println("Casting: " + (ar instanceof SkillBase));
-					ar = (Archery) base;
-					//Archery a = (Archery) base;
-					ar.setBlocks_till_XP(c.getInt("skills." + key + ".blocks-till-1XP-add", 10));
-					skills.put(keys, ar);
+					Archery a = new Archery();
+					a.setBlocks_till_XP(c.getInt("skills." + key + ".blocks-till-1XP-add", 10));
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
+					a.setSkillName(key);
+					a.setEnabled(enabled);
+					a.setMultiplier(multiplier);
+					skills.put(keys, a);
 				}
 				if(keys.equalsIgnoreCase("acrobatics")){
-					Acrobatics a = (Acrobatics)base;
+					Acrobatics a = new Acrobatics();
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
+					a.setSkillName(keys);
+					a.setEnabled(enabled);
+					a.setMultiplier(multiplier);
 					a.setLevelsTillLessDMG(c.getInt("skills." + key + ".levels-per-reducted-damage", 5));
 					skills.put(keys, a);
 				}
 				if(key.equalsIgnoreCase("swimming")){
-					Swimming a = (Swimming)base;
+					Swimming a = new Swimming();
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
+					a.setSkillName(key);
+					a.setEnabled(enabled);
+					a.setMultiplier(multiplier);
 					skills.put(keys, a);
 				}
 				if (key.equalsIgnoreCase("mining")) {
-					Mining a = (Mining)base;
+					Mining a = new Mining();
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
+					a.setSkillName(key);
+					a.setEnabled(enabled);
+					a.setMultiplier(multiplier);
 					a.setAllFromFirstLevel(c.getBoolean("skills." + key + ".MineAllBlocksFromFirstLevel"));
 					for(String s: c.getConfigurationSection("skills." + key + ".block_level").getKeys(false)){
 						a.addBlockLevels(Integer.parseInt(s), c.getInt("skills." + key + ".block_level." + s));
@@ -99,22 +109,39 @@ public class SkillManager {
 				}
 				
 				if(keys.startsWith("axes")){
-					Axes a = (Axes)base;
+					Axes a = new Axes();
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
 					a.setSkillName("axes");
+					a.setEnabled(enabled);
+					a.setMultiplier(multiplier);
 					skills.put("axes", a);
 				}
 				if(keys.toLowerCase().startsWith("swords")){
-					Swords a = (Swords)base;
+					Swords a = new Swords();
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
 					a.setSkillName("swords");
+					a.setEnabled(enabled);
+					a.setMultiplier(multiplier);
 					skills.put("swords", a);
 				}
 				if(keys.toLowerCase().startsWith("unarmed")){
-					Unarmed a = (Unarmed)base;
+					Unarmed a = new Unarmed();
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
 					a.setSkillName("unarmed");
+					a.setEnabled(enabled);
+					a.setMultiplier(multiplier);
 					skills.put("unarmed", a);
 				}
 				if(key.equalsIgnoreCase("woodcutting")){
-					Woodcutting a = (Woodcutting)base;
+					Woodcutting a = new Woodcutting();
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
+					a.setSkillName(key);
+					a.setEnabled(enabled);
+					a.setMultiplier(multiplier);
 					a.setAllFromFirstLevel(c.getBoolean("skills." + key + ".MineAllBlocksFromFirstLevel"));
 					for(String s: c.getConfigurationSection("skills." + key + ".block_level").getKeys(false)){
 						a.addBlockLevels(Integer.parseInt(s), c.getInt("skills." + key + ".block_level." + s));
@@ -125,7 +152,12 @@ public class SkillManager {
 					skills.put(keys, a);
 				}
 				if(key.equalsIgnoreCase("digging")){
-					Digging a = (Digging)base;
+					Digging a = new Digging();
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
+					a.setSkillName(key);
+					a.setEnabled(enabled);
+					a.setMultiplier(multiplier);
 					a.setAllFromFirstLevel(c.getBoolean("skills." + key + ".MineAllBlocksFromFirstLevel"));
 					for(String s: c.getConfigurationSection("skills." + key + ".block_level").getKeys(false)){
 						a.addBlockLevels(Integer.parseInt(s), c.getInt("skills." + key + ".block_level." + s));
@@ -136,7 +168,12 @@ public class SkillManager {
 					skills.put(keys, a);
 				}
 				if(key.equalsIgnoreCase("farming")){
-					Farming a = (Farming)base;
+					Farming a = new Farming();
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
+					a.setSkillName(key);
+					a.setEnabled(enabled);
+					a.setMultiplier(multiplier);
 					for(String s: c.getConfigurationSection("skills." + key + ".block_level").getKeys(false)){
 						a.addBlockLevels(Integer.parseInt(s), c.getInt("skills." + key + ".block_level." + s));
 					}
