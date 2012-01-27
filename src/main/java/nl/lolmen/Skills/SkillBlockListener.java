@@ -21,6 +21,7 @@ public class SkillBlockListener implements Listener{
 			return;
 		}
 		for (SkillBase base : SkillManager.getSkills()) {
+			if(SkillsSettings.isDebug()){System.out.println("Checking " + base.getSkillName() + " -> " + (base instanceof SkillBlockBase));}
 			if (base instanceof SkillBlockBase) {
 				SkillBlockBase s = (SkillBlockBase) base;
 				if (!s.isEnabled()) {
