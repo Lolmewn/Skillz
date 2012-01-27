@@ -67,9 +67,13 @@ public class SkillManager {
 				base.setEnabled(enabled);
 				base.setMultiplier(multiplier);
 				if (key.equalsIgnoreCase("archery")) {
-					Archery a = (Archery)base;
-					a.setBlocks_till_XP(c.getInt("skills." + key + ".blocks-till-1XP-add", 10));
-					skills.put(keys, a);
+					
+					Archery ar = new Archery();
+					System.out.println("Casting: " + (ar instanceof SkillBase));
+					ar = (Archery) base;
+					//Archery a = (Archery) base;
+					ar.setBlocks_till_XP(c.getInt("skills." + key + ".blocks-till-1XP-add", 10));
+					skills.put(keys, ar);
 				}
 				if(keys.equalsIgnoreCase("acrobatics")){
 					Acrobatics a = (Acrobatics)base;
