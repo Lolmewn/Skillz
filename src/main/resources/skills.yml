@@ -11,6 +11,7 @@ MySQL-Pass: p4ssw0rd
 MySQL-Host: localhost
 MySQL-Port: 3306
 MySQL-Database: minecraft
+MySQL-Table: Skillz
 
 moneyOnLevelup: 20
 itemOnLevelup: 89,1
@@ -128,6 +129,25 @@ skills:
         74: 3
         
     reward:
+        #Default rewards when leveling up for this skill, overrides the global default reward
         money: 10
         item: 89,2
+        
+        #Every <amount> of levels you get ITEM;<ID>,<AMOUNT>:MONEY;<AMOUNT> or one of the two#
+        #every_many_levels overrides all above rewards (global default and skill default)#
+        every_many_levels:
+            
+            #This means that every 6 levels (e.g. 6, 12, 18 etc) you'll get 1 diamond and 40 moneys instead of the normal reward.
+            6: ITEM;264,1:MONEY;40
+            
+        #fixed_levels overrides all above rewards (global default, skill default and every_many_levels aswell)
+        fixed_levels:
+            #This means that at level 5 you'll get 5 glowstones instead of the normal reward.
+            5: ITEM;89,5
+            
+            #This means that at level 8 you'll get 50 moneys instead of the normal reward.
+            8: MONEY;50
+            
+            #This means that at level 10 you'll get 8 glowstones and 50 moneys instead of the normal reward.
+            10: ITEM;89,8:MONEY;50
   

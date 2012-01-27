@@ -72,6 +72,7 @@ public class Skillz extends JavaPlugin{
 	public String dbPass;
 	public String dbUser;
 	public String dbDB;
+	public String dbTable;
 	public int dbPort;
 	public String noPerm = ChatColor.RED + "You do not have Permissions to do this!";
 	public double version;
@@ -165,6 +166,7 @@ public class Skillz extends JavaPlugin{
 			dbHost = c.getString("MySQL-Host", "localhost");
 			dbPort = c.getInt("MySQL-Port", 3306); 
 			dbDB = c.getString("MySQL-Database", "minecraft");
+			dbTable = c.getString("MySQL-Table", "Skillz");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -247,9 +249,9 @@ public class Skillz extends JavaPlugin{
 			useMySQL = false;
 			/*
 			try {
-				if(!mysql.checkTable("skillz")){
-					log.info("Trying to create Skillz table in MySQL..");
-					String query = "CREATE TABLE skillz(id INT PRIMARY KEY, player TEXT NOT NULL, skill TEXT NOT NULL, xp int , level int) ;";
+				if(!mysql.checkTable(dbTable)){
+					log.info("Trying to create " + dbTable + " table in MySQL..");
+					String query = "CREATE TABLE " + dbTable + "(id INT PRIMARY KEY, player TEXT NOT NULL, skill TEXT NOT NULL, xp int , level int) ;";
 					mysql.createTable(query);
 					log.info("Skillz table created (hopefully) succesfully!");
 				}
