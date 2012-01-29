@@ -101,8 +101,9 @@ public class SkillBase {
 	}
 	
 	public int getDecimal(double d){
-		String[] array = Double.toString(d).split("\\.");
-		return Integer.parseInt(array[1].subSequence(0, 2).toString());
+		int multiplier = (int) Math.pow(10, 3);
+	    long result = ((long) (d * multiplier)) - (((long) d) * multiplier);
+	    return (int)result;
 	}
 
 	public void setItemOnLevelup(String itemOnLevelup) {
