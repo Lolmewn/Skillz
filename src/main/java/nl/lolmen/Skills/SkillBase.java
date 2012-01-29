@@ -116,7 +116,7 @@ public class SkillBase {
 		int money = 0;
 		boolean found = false;
 		for(int i: every_many_levels.keySet()){
-			double calc = level / i;
+			double calc = (double)level / (double)i;
 			if(getDecimal(calc) == 0){
 				if(SkillsSettings.isDebug()){
 					System.out.println("Found match -> " + level + " " + i + "  with decimal " + getDecimal(calc) + " and calc " + calc);
