@@ -37,7 +37,7 @@ public class CPU {
 			double result = newXP / ((lvl * lvl) * 10);
 			if (result >= 1) { 
 				levelUp(p, skill, lvl + 1);
-				checkLeveling(p, skill, lvl, newXP);
+				checkLeveling(p, skill, lvl + 1, newXP);
 			}
 		}
 	}
