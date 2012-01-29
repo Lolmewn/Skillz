@@ -102,7 +102,7 @@ public class SkillBase {
 	
 	public int getDecimal(double d){
 		String[] array = Double.toString(d).split("\\.");
-		return Integer.parseInt(array[1]);
+		return Integer.parseInt(array[1].subSequence(0, 2).toString());
 	}
 
 	public void setItemOnLevelup(String itemOnLevelup) {
