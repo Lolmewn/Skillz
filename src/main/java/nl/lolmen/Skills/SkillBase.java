@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Properties;
 
 import nl.lolmen.Skillz.Skillz;
@@ -18,6 +19,11 @@ public class SkillBase {
 	private int moneyOnLevelup;
 	private int multiplier;
 	private boolean enabled;
+	
+	private HashMap<Integer, String> every_many_levels = new HashMap<Integer, String>();
+	private HashMap<Integer, Integer> every_many_levels_money = new HashMap<Integer, Integer>();
+	private HashMap<Integer, String> fixed_levels = new HashMap<Integer, String>();
+	private HashMap<Integer, Integer> fixed_levels_money = new HashMap<Integer, Integer>();
 	File folder = new File("plugins" + File.separator + "Skillz" + File.separator + "players" + File.separator);
 
 	public void addXP(final Player p, final int XP) {
@@ -67,20 +73,58 @@ public class SkillBase {
 		this.skillName = skillName;
 	}
 
-	public ItemStack getItemOnLevelup() {
-		String[] arg = itemOnLevelup.split(",");
+	public ItemStack getItemOnLevelup(int level) {
+		String obv = null;
+		if(fixed_levels.containsKey(level)){
+			obv = fixed_levels.get(level).toLowerCase();
+		}
+		if(obv == null){
+			for(int i: every_many_levels.keySet()){
+				double calc = level / i;
+				if(getDecimal(calc) == 0){
+					obv = every_many_levels.get(i);
+				}
+			}
+		}
+		if(obv == null){
+			obv = itemOnLevelup;
+		}
+		if(obv == null){
+			return null;
+		}
+		String[] arg = obv.split(",");
 		if(arg[0].equals("0") || arg[1].equals("0")){
 			return null;
 		}
 		ItemStack stack = new ItemStack(Integer.parseInt(arg[0]), Integer.parseInt(arg[1]));
 		return stack;
 	}
+	
+	public int getDecimal(double d){
+		String[] array = Double.toString(d).split("\\.");
+		return Integer.parseInt(array[1]);
+	}
 
 	public void setItemOnLevelup(String itemOnLevelup) {
 		this.itemOnLevelup = itemOnLevelup;
 	}
 
-	public int getMoneyOnLevelup() {
+	public int getMoneyOnLevelup(int level) {
+		if(fixed_levels.containsKey(level)){
+			return fixed_levels_money.get(level);
+		}
+		int money = 0;
+		boolean found = false;
+		for(int i: every_many_levels.keySet()){
+			double calc = level / i;
+			if(getDecimal(calc) == 0){
+				money = every_many_levels_money.get(i);
+				found = true;
+			}
+		}
+		if(found){
+			return money;
+		}
 		return moneyOnLevelup;
 	}
 
@@ -102,6 +146,102 @@ public class SkillBase {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+	
+	public void add_to_every_many_levels(int level, String det){
+		if(det.contains(":")){
+			String[] both = det.split(":");
+			for(String s: both){
+				if(s.contains("ITEM;")){
+					String[] item = s.split(";");
+					if(item[1].contains(",")){
+						every_many_levels.put(level, item[1]);
+						if(SkillsSettings.isDebug()){
+							System.out.println("Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
+						}
+					}
+				}
+				if(s.contains("MONEY;")){
+					String[] item = s.split(";");
+					every_many_levels.put(level, item[1]);
+					if(SkillsSettings.isDebug()){
+						System.out.println("Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
+					}
+					
+					
+				}
+			}
+			return;
+		}else if(det.contains("ITEM;")){
+			String[] item = det.split(";");
+			if(item[1].contains(",")){
+				every_many_levels.put(level, item[1]);
+				if(SkillsSettings.isDebug()){
+					System.out.println("Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
+				}
+			}
+			return;
+		}else if(det.contains("MONEY;")){
+			String[] m = det.split(";");
+			try{
+				every_many_levels_money.put(level, Integer.parseInt(m[1]));
+				if(SkillsSettings.isDebug()){
+					System.out.println("Added " + m[1] + " for lvl " + level + " " + this.getSkillName());
+				}
+			}catch(Exception e){
+				System.out.println("[Skillz] ERROR you have an error in the config, " + m[1] + " could not be converted to int at every_many_levels in " + this.getSkillName() + "!");
+			}
+			return;
+		}
+		System.out.println("[Skillz] ERROR when trying to add every_many_levels: lvl " + level + " in " + this.getSkillName() + ", " + det + " is not valid");
+	}
+	
+	public void add_to_fixed_levels(int level, String det){
+		if(det.contains(":")){
+			String[] both = det.split(":");
+			for(String s: both){
+				if(s.contains("ITEM;")){
+					String[] item = s.split(";");
+					if(item[1].contains(",")){
+						fixed_levels.put(level, item[1]);
+						if(SkillsSettings.isDebug()){
+							System.out.println("Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
+						}
+					}
+				}
+				if(s.contains("MONEY;")){
+					String[] item = s.split(";");
+					fixed_levels.put(level, item[1]);
+					if(SkillsSettings.isDebug()){
+						System.out.println("Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
+					}
+					
+					
+				}
+			}
+			return;
+		}else if(det.contains("ITEM;")){
+			String[] item = det.split(";");
+			if(item[1].contains(",")){
+				fixed_levels.put(level, item[1]);
+				if(SkillsSettings.isDebug()){
+					System.out.println("Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
+				}
+			}
+			return;
+		}else if(det.contains("MONEY;")){
+			String[] m = det.split(";");
+			try{
+				fixed_levels_money.put(level, Integer.parseInt(m[1]));
+				if(SkillsSettings.isDebug()){
+					System.out.println("Added " + m[1] + " for lvl " + level + " " + this.getSkillName());
+				}
+			}catch(Exception e){
+				System.out.println("[Skillz] ERROR you have an error in the config, " + m[1] + " could not be converted to int at fixed_levels in " + this.getSkillName() + "!");
+			}
+			return;
+		}
+		System.out.println("[Skillz] ERROR when trying to add fixed_levels: lvl " + level + " in " + this.getSkillName() + ", " + det + " is not valid");
 	}
 
 }

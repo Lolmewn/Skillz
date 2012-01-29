@@ -14,6 +14,7 @@ import nl.lolmen.Skillz.Skillz;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 public class CPU {
@@ -36,6 +37,7 @@ public class CPU {
 			double result = newXP / ((lvl * lvl) * 10);
 			if (result >= 1) { 
 				levelUp(p, skill, lvl + 1);
+				checkLeveling(p, skill, lvl, newXP);
 			}
 		}
 	}
@@ -74,20 +76,21 @@ public class CPU {
 		if (SkillsSettings.isLightningOnLevelup()) {
 			p.getWorld().strikeLightningEffect(p.getLocation());
 		}
-		giveReward(p, skill);
-		giveItem(p, skill);
+		giveReward(p, skill, lvl);
+		giveItem(p, skill, lvl);
 		Skillz.p.high.checkScore(p, skill, lvl); 
 	}
 
-	private static void giveItem(Player p, SkillBase skill) {
-		if(skill.getItemOnLevelup() == null){
+	private static void giveItem(Player p, SkillBase skill, int lvl) {
+		ItemStack get = skill.getItemOnLevelup(lvl);
+		if(get == null){
 			return;
 		}
-		ItemHandler.addItems(p, skill.getItemOnLevelup());
-		p.sendMessage("You have been given " + ChatColor.RED + skill.getItemOnLevelup().getAmount() + " " + skill.getItemOnLevelup().getType().name().toLowerCase() + ChatColor.RED + " for leveling up!");
+		ItemHandler.addItems(p, get);
+		p.sendMessage("You have been given " + ChatColor.RED + get.getAmount() + " " + get.getType().name().toLowerCase() + ChatColor.RED + " for leveling up!");
 	}
 
-	private static void giveReward(Player p, SkillBase skill) {
+	private static void giveReward(Player p, SkillBase skill,int lvl) {
 		if(!SkillsSettings.HasVault()){
 			if(SkillsSettings.isDebug()){
 				System.out.println("Vault not found!");
@@ -95,13 +98,12 @@ public class CPU {
 			return;
 		}
 		Economy e;
-		RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServer()
-				.getServicesManager()
-				.getRegistration(net.milkbowl.vault.economy.Economy.class);
+		RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
 		if (economyProvider != null) {
 			e = economyProvider.getProvider();
-			e.depositPlayer(p.getName(), skill.getMoneyOnLevelup());
-			p.sendMessage("You have been given " + e.format(skill.getMoneyOnLevelup()) + " for leveling up!");
+			int money = skill.getMoneyOnLevelup(lvl);
+			e.depositPlayer(p.getName(), money);
+			p.sendMessage("You have been given " + e.format(money) + " for leveling up!");
 		} else {
 			System.out.println("[Skillz] Couldn't give money reward, Vault not found!");
 		}

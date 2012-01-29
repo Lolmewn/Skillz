@@ -97,6 +97,12 @@ public class SkillManager {
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
 					a.setAllFromFirstLevel(c.getBoolean("skills." + key + ".MineAllBlocksFromFirstLevel"));
+					for(String s: c.getConfigurationSection("skills." + key + ".reward.every_many_levels").getKeys(false)){
+						a.add_to_every_many_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.every_many_levels." + s));
+					}
+					for(String s: c.getConfigurationSection("skills." + key + ".reward.fixed_levels").getKeys(false)){
+						a.add_to_fixed_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.fixed_levels." + s));
+					}
 					for(String s: c.getConfigurationSection("skills." + key + ".block_level").getKeys(false)){
 						a.addBlockLevels(Integer.parseInt(s), c.getInt("skills." + key + ".block_level." + s));
 					}

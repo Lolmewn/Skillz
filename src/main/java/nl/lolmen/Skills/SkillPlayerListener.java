@@ -35,16 +35,9 @@ public class SkillPlayerListener implements Listener {
 				Properties prop = new Properties();
 				FileInputStream in = new FileInputStream(new File(plugin.maindir + "players/" + p.getName().toLowerCase() + ".txt"));
 				prop.load(in);
-				prop.put("acrobatics", "0;0");
-				prop.put("archery", "0;0");
-				prop.put("axes", "0;0");
-				prop.put("digging", "0;0");
-				prop.put("farming", "0;0");
-				prop.put("swimming", "0;0");
-				prop.put("mining", "0;0");
-				prop.put("swords", "0;0");
-				prop.put("unarmed", "0;0");
-				prop.put("woodcutting", "0;0");
+				for(SkillBase skill: SkillManager.getSkills()){
+					prop.put(skill.getSkillName(), "0;0");
+				}
 				FileOutputStream out = new FileOutputStream(new File(plugin.maindir + "players/" + p.getName().toLowerCase() + ".txt"));
 				prop.store(out, "Skill=XP;lvl");
 				in.close();
