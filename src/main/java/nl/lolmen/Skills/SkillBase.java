@@ -149,6 +149,9 @@ public class SkillBase {
 	}
 	
 	public void add_to_every_many_levels(int level, String det){
+		if(SkillsSettings.isDebug()){
+			System.out.println("[Skillz] many: Starting to add " + det + " to " + this.getSkillName() + " " + level);
+		}
 		if(det.contains(":")){
 			String[] both = det.split(":");
 			for(String s: both){
@@ -197,7 +200,11 @@ public class SkillBase {
 	}
 	
 	public void add_to_fixed_levels(int level, String det){
+		if(SkillsSettings.isDebug()){
+			System.out.println("[Skillz] fixed: Starting to add " + det + " to " + this.getSkillName() + " " + level);
+		}
 		if(det.contains(":")){
+			//Both money and Item
 			String[] both = det.split(":");
 			for(String s: both){
 				if(s.contains("ITEM;")){
