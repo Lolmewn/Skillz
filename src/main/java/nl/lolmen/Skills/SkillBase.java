@@ -40,14 +40,14 @@ public class SkillBase {
 		try {
 			if(!new File(folder, p.getName().toLowerCase() + ".txt").exists()){
 				new File(folder, p.getName().toLowerCase() + ".txt").createNewFile();
-				Skillz.p.log.info("New file created for " + p.getName());
+				Skillz.p.log.info("[Skillz] New file created for " + p.getName());
 			}
 			String skillname = skill.getSkillName().toLowerCase();
 			Properties prop = new Properties();
 			FileInputStream in = new FileInputStream(new File(folder, p.getName().toLowerCase() + ".txt"));
 			prop.load(in);
 			if (!prop.containsKey(skillname)) {
-				System.out.println("Skill " + skillname + " not found, adding!");
+				System.out.println("[Skillz] Skill " + skillname + " not found, adding!");
 				prop.put(skillname, "0;0");
 				prop.store(new FileOutputStream(new File(folder, p
 						.getName().toLowerCase() + ".txt")),
@@ -61,11 +61,10 @@ public class SkillBase {
 			FileOutputStream out = new FileOutputStream(new File(
 					folder, p.getName().toLowerCase() + ".txt"));
 			prop.store(out, "Skill=XP;lvl");
-			CPU.checkLeveling(p, skill, lvl, (xp + XP));
 			in.close();
 			out.flush();
 			out.close();
-			return;
+			CPU.checkLeveling(p, skill, lvl, (xp + XP));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -86,7 +85,7 @@ public class SkillBase {
 			double calc = (double)level / (double)i;
 			if(getDecimal(calc) == 0){
 				if(SkillsSettings.isDebug()){
-					System.out.println("Found match (item) -> " + level + " " + i + "  with decimal " + getDecimal(calc) + " and calc " + calc);
+					System.out.println("[Skillz - Debug] Found match (item) -> " + level + " " + i + "  with decimal " + getDecimal(calc) + " and calc " + calc);
 				}
 				obv = every_many_levels.get(i);
 			}
@@ -98,14 +97,13 @@ public class SkillBase {
 			return null;
 		}
 		if(SkillsSettings.isDebug()){
-			System.out.println("Splitting " + obv);
+			System.out.println("[Skillz - Debug] Splitting " + obv);
 		}
 		String[] arg = obv.split(",");
 		if(arg[0].equals("0") || arg[1].equals("0")){
 			return null;
 		}
-		ItemStack stack = new ItemStack(Integer.parseInt(arg[0]), Integer.parseInt(arg[1]));
-		return stack;
+		return new ItemStack(Integer.parseInt(arg[0]), Integer.parseInt(arg[1]));
 	}
 	
 	public int getDecimal(double d){
@@ -127,7 +125,7 @@ public class SkillBase {
 			double calc = (double)level / (double)i;
 			if(getDecimal(calc) == 0){
 				if(SkillsSettings.isDebug()){
-					System.out.println("Found match (money) -> " + level + " " + i + "  with decimal " + getDecimal(calc) + " and calc " + calc);
+					System.out.println("[Skillz - Debug] Found match (money) -> " + level + " " + i + "  with decimal " + getDecimal(calc) + " and calc " + calc);
 				}
 				money = every_many_levels_money.get(i);
 			}
@@ -158,7 +156,7 @@ public class SkillBase {
 	
 	public void add_to_every_many_levels(int level, String det){
 		if(SkillsSettings.isDebug()){
-			System.out.println("[Skillz] many: Starting to add " + det + " to " + this.getSkillName() + " " + level);
+			System.out.println("[Skillz - Debug] many: Starting to add " + det + " to " + this.getSkillName() + " " + level);
 		}
 		if(det.contains(":")){
 			String[] both = det.split(":");
@@ -168,15 +166,15 @@ public class SkillBase {
 					if(item[1].contains(",")){
 						every_many_levels.put(level, item[1]);
 						if(SkillsSettings.isDebug()){
-							System.out.println("Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
+							System.out.println("[Skillz - Debug] Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
 						}
 					}
 				}
 				if(s.contains("MONEY;")){
 					String[] item = s.split(";");
-					every_many_levels.put(level, item[1]);
+					every_many_levels_money.put(level, Integer.parseInt(item[1]));
 					if(SkillsSettings.isDebug()){
-						System.out.println("Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
+						System.out.println("[Skillz - Debug] Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
 					}
 					
 					
@@ -188,7 +186,7 @@ public class SkillBase {
 			if(item[1].contains(",")){
 				every_many_levels.put(level, item[1]);
 				if(SkillsSettings.isDebug()){
-					System.out.println("Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
+					System.out.println("[Skillz - Debug] Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
 				}
 			}
 			return;
@@ -197,7 +195,7 @@ public class SkillBase {
 			try{
 				every_many_levels_money.put(level, Integer.parseInt(m[1]));
 				if(SkillsSettings.isDebug()){
-					System.out.println("Added " + m[1] + " for lvl " + level + " " + this.getSkillName());
+					System.out.println("[Skillz - Debug] Added " + m[1] + " for lvl " + level + " " + this.getSkillName());
 				}
 			}catch(Exception e){
 				System.out.println("[Skillz] ERROR you have an error in the config, " + m[1] + " could not be converted to int at every_many_levels in " + this.getSkillName() + "!");
@@ -209,7 +207,7 @@ public class SkillBase {
 	
 	public void add_to_fixed_levels(int level, String det){
 		if(SkillsSettings.isDebug()){
-			System.out.println("[Skillz] fixed: Starting to add " + det + " to " + this.getSkillName() + " " + level);
+			System.out.println("[Skillz - Debug] fixed: Starting to add " + det + " to " + this.getSkillName() + " " + level);
 		}
 		if(det.contains(":")){
 			//Both money and Item
@@ -220,15 +218,15 @@ public class SkillBase {
 					if(item[1].contains(",")){
 						fixed_levels.put(level, item[1]);
 						if(SkillsSettings.isDebug()){
-							System.out.println("Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
+							System.out.println("[Skillz - Debug] Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
 						}
 					}
 				}
 				if(s.contains("MONEY;")){
 					String[] item = s.split(";");
-					fixed_levels.put(level, item[1]);
+					fixed_levels_money.put(level, Integer.parseInt(item[1]));
 					if(SkillsSettings.isDebug()){
-						System.out.println("Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
+						System.out.println("[Skillz - Debug] Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
 					}
 					
 					
@@ -240,7 +238,7 @@ public class SkillBase {
 			if(item[1].contains(",")){
 				fixed_levels.put(level, item[1]);
 				if(SkillsSettings.isDebug()){
-					System.out.println("Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
+					System.out.println("[Skillz - Debug] Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
 				}
 			}
 			return;
@@ -249,7 +247,7 @@ public class SkillBase {
 			try{
 				fixed_levels_money.put(level, Integer.parseInt(m[1]));
 				if(SkillsSettings.isDebug()){
-					System.out.println("Added " + m[1] + " for lvl " + level + " " + this.getSkillName());
+					System.out.println("[Skillz - Debug] Added " + m[1] + " for lvl " + level + " " + this.getSkillName());
 				}
 			}catch(Exception e){
 				System.out.println("[Skillz] ERROR you have an error in the config, " + m[1] + " could not be converted to int at fixed_levels in " + this.getSkillName() + "!");

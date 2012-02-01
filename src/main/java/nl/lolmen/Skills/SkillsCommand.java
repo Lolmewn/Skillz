@@ -74,7 +74,7 @@ class getSkills extends Thread {
 					p.sendMessage(ChatColor.RED + d.getSkill()+ ChatColor.WHITE + " Level: " + ChatColor.GREEN + d.getLVL() + ChatColor.WHITE + " XP: " + ChatColor.GREEN + d.getXP() + ChatColor.WHITE  + " Remaining: " + ChatColor.GREEN + d.getRem());
 				}else{
 					if(SkillsSettings.isDebug()){
-						p.sendMessage("No value: " + get);
+						p.sendMessage("[Skillz - Debug] No value: " + get);
 					}
 				}
 			}
