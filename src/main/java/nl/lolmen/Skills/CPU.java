@@ -102,6 +102,12 @@ public class CPU {
 		if (economyProvider != null) {
 			e = economyProvider.getProvider();
 			int money = skill.getMoneyOnLevelup(lvl);
+			if(money == 0){
+				if(SkillsSettings.isDebug()){
+					System.out.println("[Skillz - Debug] No money given: 0 -> " + p.getName() + " " + skill.getSkillName() + " " + lvl);
+				}
+				return;
+			}
 			e.depositPlayer(p.getName(), money);
 			p.sendMessage("You have been given " + e.format(money) + " for leveling up!");
 		} else {

@@ -109,11 +109,11 @@ public class SkillBase {
 	}
 
 	public int getMoneyOnLevelup(int level) {
-		if(fixed_levels.containsKey(level)){
+		if(fixed_levels_money.containsKey(level)){
 			return fixed_levels_money.get(level);
 		}
 		int money = moneyOnLevelup;
-		for(int i: every_many_levels.keySet()){
+		for(int i: every_many_levels_money.keySet()){
 			double calc = (double)level / (double)i;
 			if(getDecimal(calc) == 0){
 				if(SkillsSettings.isDebug()){
