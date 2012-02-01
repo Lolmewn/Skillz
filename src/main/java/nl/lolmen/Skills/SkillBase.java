@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Properties;
 
+import nl.lolmen.API.SkillzXPGainEvent;
 import nl.lolmen.Skillz.Skillz;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,6 +32,11 @@ public class SkillBase {
 		final SkillBase skill = this;
 		int xp;
 		int lvl;
+		SkillzXPGainEvent event = new SkillzXPGainEvent(p, skill, XP);
+		Bukkit.getServer().getPluginManager().callEvent(event);
+		if(event.isCancelled()){
+			return;
+		}
 		try {
 			if(!new File(folder, p.getName().toLowerCase() + ".txt").exists()){
 				new File(folder, p.getName().toLowerCase() + ".txt").createNewFile();

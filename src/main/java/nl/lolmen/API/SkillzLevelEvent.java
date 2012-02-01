@@ -1,23 +1,26 @@
 package nl.lolmen.API;
 
+import nl.lolmen.Skills.SkillBase;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 
 public class SkillzLevelEvent extends Event implements Cancellable{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 454661222663618827L;
+	private static final HandlerList handlers = new HandlerList();
 	private boolean cancelled = false;
 	private Player player;
-	private String skill;
+	private SkillBase skill;
 	private int level;
 
 	//Gets called when I call it. Called from CPU.java
-	public SkillzLevelEvent(String name, Player player, String skill, int level) {
-		super(name);
+	public SkillzLevelEvent(Player player, SkillBase skill, int level) {
 		this.player = player;
 		this.skill = skill;
 		this.level = level;
@@ -40,7 +43,7 @@ public class SkillzLevelEvent extends Event implements Cancellable{
 	/**
 	 * @return the Skillname the player leveled in
 	 */
-	public String getSkill(){
+	public SkillBase getSkill(){
 		return skill;
 	}
 
@@ -51,5 +54,13 @@ public class SkillzLevelEvent extends Event implements Cancellable{
 	public void setCancelled(boolean arg0) {
 		cancelled = arg0;
 	}
+	
+	public HandlerList getHandlers() {
+        return handlers;
+    }
+ 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
 }

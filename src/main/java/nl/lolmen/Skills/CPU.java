@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Properties;
 
 import net.milkbowl.vault.economy.Economy;
+import nl.lolmen.API.SkillzLevelEvent;
 import nl.lolmen.Skillz.Skillz;
 
 import org.bukkit.Bukkit;
@@ -43,6 +44,10 @@ public class CPU {
 	}
 
 	public static void levelUp(Player p, SkillBase skill, int lvl) {
+		SkillzLevelEvent event = new SkillzLevelEvent(p, skill, lvl);
+		if(event.isCancelled()){
+			return;
+		}
 		Properties prop = new Properties();
 		try {
 			FileInputStream in = new FileInputStream(new File(folder, p

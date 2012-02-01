@@ -1,26 +1,27 @@
 package nl.lolmen.API;
 
+import nl.lolmen.Skills.SkillBase;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 
 public class SkillzXPGainEvent extends Event implements Cancellable{
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6419076831699739592L;
+	private static final HandlerList handlers = new HandlerList();
 	private boolean cancelled;
 	private Player p;
-	private String skill;
+	private SkillBase skill;
 	private int xp;
-	private boolean levelup;
-	public SkillzXPGainEvent(String name, Player p, String skill, int xp, boolean levelup){
-		super(name);
+	public SkillzXPGainEvent(Player p, SkillBase skill, int xp){
 		this.setP(p);
 		this.setSkill(skill);
 		this.setXp(xp);
-		this.setLevelup(levelup);
 	}
 
 	public boolean isCancelled() {
@@ -39,12 +40,12 @@ public class SkillzXPGainEvent extends Event implements Cancellable{
 		this.p = p;
 	}
 
-	public String getSkillName() {
+	public SkillBase getSkillName() {
 		return skill;
 	}
 
-	private void setSkill(String skill) {
-		this.skill = skill;
+	private void setSkill(SkillBase skill2) {
+		this.skill = skill2;
 	}
 
 	public int getXp() {
@@ -54,13 +55,13 @@ public class SkillzXPGainEvent extends Event implements Cancellable{
 	private void setXp(int xp) {
 		this.xp = xp;
 	}
-
-	public boolean isLevelup() {
-		return levelup;
-	}
-
-	private void setLevelup(boolean levelup) {
-		this.levelup = levelup;
-	}
+	
+	public HandlerList getHandlers() {
+        return handlers;
+    }
+ 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
 }
