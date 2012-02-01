@@ -74,20 +74,18 @@ public class SkillBase {
 	}
 
 	public ItemStack getItemOnLevelup(int level) {
-		String obv = null;
-		if(fixed_levels.containsKey(level)){
-			obv = fixed_levels.get(level).toLowerCase();
-		}
-		if(obv == null){
-			for(int i: every_many_levels.keySet()){
-				double calc = level / i;
-				if(getDecimal(calc) == 0){
-					obv = every_many_levels.get(i);
+		String obv = itemOnLevelup;
+		for(int i: every_many_levels.keySet()){
+			double calc = (double)level / (double)i;
+			if(getDecimal(calc) == 0){
+				if(SkillsSettings.isDebug()){
+					System.out.println("Found match (item) -> " + level + " " + i + "  with decimal " + getDecimal(calc) + " and calc " + calc);
 				}
+				obv = every_many_levels.get(i);
 			}
 		}
-		if(obv == null){
-			obv = itemOnLevelup;
+		if(fixed_levels.containsKey(level)){
+			obv = fixed_levels.get(level).toLowerCase();
 		}
 		if(obv == null){
 			return null;
@@ -114,23 +112,19 @@ public class SkillBase {
 		if(fixed_levels.containsKey(level)){
 			return fixed_levels_money.get(level);
 		}
-		int money = 0;
-		boolean found = false;
+		int money = moneyOnLevelup;
 		for(int i: every_many_levels.keySet()){
 			double calc = (double)level / (double)i;
 			if(getDecimal(calc) == 0){
 				if(SkillsSettings.isDebug()){
-					System.out.println("Found match -> " + level + " " + i + "  with decimal " + getDecimal(calc) + " and calc " + calc);
+					System.out.println("Found match (money) -> " + level + " " + i + "  with decimal " + getDecimal(calc) + " and calc " + calc);
 				}
 				money = every_many_levels_money.get(i);
-				found = true;
 			}
 		}
-		if(found){
-			return money;
-		}
-		return moneyOnLevelup;
+		return money;
 	}
+	
 
 	public void setMoneyOnLevelup(int moneyOnLevelup) {
 		this.moneyOnLevelup = moneyOnLevelup;
