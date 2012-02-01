@@ -97,6 +97,9 @@ public class SkillBase {
 		if(obv == null){
 			return null;
 		}
+		if(SkillsSettings.isDebug()){
+			System.out.println("Splitting " + obv);
+		}
 		String[] arg = obv.split(",");
 		if(arg[0].equals("0") || arg[1].equals("0")){
 			return null;
