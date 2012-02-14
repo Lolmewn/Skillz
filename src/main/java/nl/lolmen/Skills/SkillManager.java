@@ -59,6 +59,18 @@ public class SkillManager {
 				}else{
 					money = SkillsSettings.getMoneyOnLevelup();
 				}
+				HashMap<Integer, String> optReward = new HashMap<Integer, String>();
+				HashMap<Integer, String> optRewardFixed = new HashMap<Integer, String>();
+				if(c.contains("skills." + key + ".reward.every_many_levels")){
+					for(String s: c.getConfigurationSection("skills." + key + ".reward.every_many_levels").getKeys(false)){
+						optReward.put(Integer.parseInt(s), c.getString("skills." + key + ".reward.every_many_levels." + s));
+					}
+				}
+				if(c.contains("skills." + key + ".reward.fixed_levels")){
+					for(String s: c.getConfigurationSection("skills." + key + ".reward.fixed_levels").getKeys(false)){
+						optRewardFixed.put(Integer.parseInt(s), c.getString("skills." + key + ".reward.fixed_levels." + s));
+					}
+				}
 				if (key.equalsIgnoreCase("archery")) {
 					Archery a = new Archery();
 					a.setBlocks_till_XP(c.getInt("skills." + key + ".blocks-till-1XP-add", 10));
@@ -67,11 +79,15 @@ public class SkillManager {
 					a.setSkillName(key);
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.every_many_levels").getKeys(false)){
-						a.add_to_every_many_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.every_many_levels." + s));
+					if(!optReward.isEmpty()){
+						for(int i : optReward.keySet()){
+							a.add_to_every_many_levels(i, optReward.get(i));
+						}
 					}
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.fixed_levels").getKeys(false)){
-						a.add_to_fixed_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.fixed_levels." + s));
+					if(!optRewardFixed.isEmpty()){
+						for(int i : optRewardFixed.keySet()){
+							a.add_to_fixed_levels(i, optRewardFixed.get(i));
+						}
 					}
 					skills.put(keys, a);
 				}
@@ -83,11 +99,15 @@ public class SkillManager {
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
 					a.setLevelsTillLessDMG(c.getInt("skills." + key + ".levels-per-reducted-damage", 5));
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.every_many_levels").getKeys(false)){
-						a.add_to_every_many_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.every_many_levels." + s));
+					if(!optReward.isEmpty()){
+						for(int i : optReward.keySet()){
+							a.add_to_every_many_levels(i, optReward.get(i));
+						}
 					}
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.fixed_levels").getKeys(false)){
-						a.add_to_fixed_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.fixed_levels." + s));
+					if(!optRewardFixed.isEmpty()){
+						for(int i : optRewardFixed.keySet()){
+							a.add_to_fixed_levels(i, optRewardFixed.get(i));
+						}
 					}
 					skills.put(keys, a);
 				}
@@ -98,11 +118,15 @@ public class SkillManager {
 					a.setSkillName(key);
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.every_many_levels").getKeys(false)){
-						a.add_to_every_many_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.every_many_levels." + s));
+					if(!optReward.isEmpty()){
+						for(int i : optReward.keySet()){
+							a.add_to_every_many_levels(i, optReward.get(i));
+						}
 					}
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.fixed_levels").getKeys(false)){
-						a.add_to_fixed_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.fixed_levels." + s));
+					if(!optRewardFixed.isEmpty()){
+						for(int i : optRewardFixed.keySet()){
+							a.add_to_fixed_levels(i, optRewardFixed.get(i));
+						}
 					}
 					skills.put(keys, a);
 				}
@@ -114,11 +138,15 @@ public class SkillManager {
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
 					a.setAllFromFirstLevel(c.getBoolean("skills." + key + ".MineAllBlocksFromFirstLevel"));
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.every_many_levels").getKeys(false)){
-						a.add_to_every_many_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.every_many_levels." + s));
+					if(!optReward.isEmpty()){
+						for(int i : optReward.keySet()){
+							a.add_to_every_many_levels(i, optReward.get(i));
+						}
 					}
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.fixed_levels").getKeys(false)){
-						a.add_to_fixed_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.fixed_levels." + s));
+					if(!optRewardFixed.isEmpty()){
+						for(int i : optRewardFixed.keySet()){
+							a.add_to_fixed_levels(i, optRewardFixed.get(i));
+						}
 					}
 					for(String s: c.getConfigurationSection("skills." + key + ".block_level").getKeys(false)){
 						a.addBlockLevels(Integer.parseInt(s), c.getInt("skills." + key + ".block_level." + s));
@@ -138,11 +166,15 @@ public class SkillManager {
 					a.setSkillName("axes");
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.every_many_levels").getKeys(false)){
-						a.add_to_every_many_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.every_many_levels." + s));
+					if(!optReward.isEmpty()){
+						for(int i : optReward.keySet()){
+							a.add_to_every_many_levels(i, optReward.get(i));
+						}
 					}
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.fixed_levels").getKeys(false)){
-						a.add_to_fixed_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.fixed_levels." + s));
+					if(!optRewardFixed.isEmpty()){
+						for(int i : optRewardFixed.keySet()){
+							a.add_to_fixed_levels(i, optRewardFixed.get(i));
+						}
 					}
 					skills.put("axes", a);
 				}
@@ -153,11 +185,15 @@ public class SkillManager {
 					a.setSkillName("swords");
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.every_many_levels").getKeys(false)){
-						a.add_to_every_many_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.every_many_levels." + s));
+					if(!optReward.isEmpty()){
+						for(int i : optReward.keySet()){
+							a.add_to_every_many_levels(i, optReward.get(i));
+						}
 					}
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.fixed_levels").getKeys(false)){
-						a.add_to_fixed_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.fixed_levels." + s));
+					if(!optRewardFixed.isEmpty()){
+						for(int i : optRewardFixed.keySet()){
+							a.add_to_fixed_levels(i, optRewardFixed.get(i));
+						}
 					}
 					skills.put("swords", a);
 				}
@@ -168,11 +204,15 @@ public class SkillManager {
 					a.setSkillName("unarmed");
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.every_many_levels").getKeys(false)){
-						a.add_to_every_many_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.every_many_levels." + s));
+					if(!optReward.isEmpty()){
+						for(int i : optReward.keySet()){
+							a.add_to_every_many_levels(i, optReward.get(i));
+						}
 					}
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.fixed_levels").getKeys(false)){
-						a.add_to_fixed_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.fixed_levels." + s));
+					if(!optRewardFixed.isEmpty()){
+						for(int i : optRewardFixed.keySet()){
+							a.add_to_fixed_levels(i, optRewardFixed.get(i));
+						}
 					}
 					skills.put("unarmed", a);
 				}
@@ -190,11 +230,15 @@ public class SkillManager {
 					for(String s: c.getConfigurationSection("skills." + key + ".block_XP").getKeys(false)){
 						a.addBlock(Integer.parseInt(s), c.getInt("skills." + key + ".block_XP." + s));
 					}
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.every_many_levels").getKeys(false)){
-						a.add_to_every_many_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.every_many_levels." + s));
+					if(!optReward.isEmpty()){
+						for(int i : optReward.keySet()){
+							a.add_to_every_many_levels(i, optReward.get(i));
+						}
 					}
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.fixed_levels").getKeys(false)){
-						a.add_to_fixed_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.fixed_levels." + s));
+					if(!optRewardFixed.isEmpty()){
+						for(int i : optRewardFixed.keySet()){
+							a.add_to_fixed_levels(i, optRewardFixed.get(i));
+						}
 					}
 					skills.put(keys, a);
 				}
@@ -212,11 +256,15 @@ public class SkillManager {
 					for(String s: c.getConfigurationSection("skills." + key + ".block_XP").getKeys(false)){
 						a.addBlock(Integer.parseInt(s), c.getInt("skills." + key + ".block_XP." + s));
 					}
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.every_many_levels").getKeys(false)){
-						a.add_to_every_many_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.every_many_levels." + s));
+					if(!optReward.isEmpty()){
+						for(int i : optReward.keySet()){
+							a.add_to_every_many_levels(i, optReward.get(i));
+						}
 					}
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.fixed_levels").getKeys(false)){
-						a.add_to_fixed_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.fixed_levels." + s));
+					if(!optRewardFixed.isEmpty()){
+						for(int i : optRewardFixed.keySet()){
+							a.add_to_fixed_levels(i, optRewardFixed.get(i));
+						}
 					}
 					skills.put(keys, a);
 				}
@@ -233,11 +281,15 @@ public class SkillManager {
 					for(String s: c.getConfigurationSection("skills." + key + ".block_XP").getKeys(false)){
 						a.addBlock(Integer.parseInt(s), c.getInt("skills." + key + ".block_XP." + s));
 					}
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.every_many_levels").getKeys(false)){
-						a.add_to_every_many_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.every_many_levels." + s));
+					if(!optReward.isEmpty()){
+						for(int i : optReward.keySet()){
+							a.add_to_every_many_levels(i, optReward.get(i));
+						}
 					}
-					for(String s: c.getConfigurationSection("skills." + key + ".reward.fixed_levels").getKeys(false)){
-						a.add_to_fixed_levels(Integer.parseInt(s), c.getString("skills." + key + ".reward.fixed_levels." + s));
+					if(!optRewardFixed.isEmpty()){
+						for(int i : optRewardFixed.keySet()){
+							a.add_to_fixed_levels(i, optRewardFixed.get(i));
+						}
 					}
 					skills.put(keys, a);
 				}
