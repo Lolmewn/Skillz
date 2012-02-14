@@ -71,8 +71,18 @@ class getSkills extends Thread {
 				int get = i + (page-1)*8;
 				if(data.containsKey(get)){
 					SkillData d = data.get(get);
-					//double percent = 
-					p.sendMessage(ChatColor.RED + d.getSkill()+ ChatColor.WHITE + " Level: " + ChatColor.GREEN + d.getLVL() + ChatColor.WHITE + " XP: " + ChatColor.GREEN + d.getXP() + ChatColor.WHITE  + " Remaining: " + ChatColor.GREEN + d.getRem());
+					double percent = 100 - (d.getRem() / (Math.pow(d.getLVL(), 2) * 10 - Math.pow(d.getLVL() - 1, 2) * 10) * 100);
+					int stripes = (int)percent / 10;
+					StringBuilder str = new StringBuilder();
+					str.append(ChatColor.WHITE + "[");
+					for(int a = 0; a < 10 - stripes; a++){
+						str.append(ChatColor.GREEN + "|");
+					}
+					for(int b = 0; b < stripes; b++){
+						str.append(ChatColor.RED + "|");
+					}
+					str.append(ChatColor.WHITE + "]");
+					p.sendMessage(ChatColor.RED + d.getSkill()+ ChatColor.WHITE + " Level: " + ChatColor.GREEN + d.getLVL() + ChatColor.WHITE + " XP: " + ChatColor.GREEN + d.getXP()  + " " + str.toString());
 				}else{
 					if(SkillsSettings.isDebug()){
 						p.sendMessage("[Skillz - Debug] No value: " + get);
