@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.Properties;
 
 import nl.lolmen.API.SkillzXPGainEvent;
-import nl.lolmen.Skillz.Skillz;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

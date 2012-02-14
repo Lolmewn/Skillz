@@ -28,7 +28,7 @@ public class SkillManager {
 		} 
 		YamlConfiguration c = YamlConfiguration.loadConfiguration(settings);
 		try {
-			if(!c.contains("moneyOnLevelup")){
+			if(!c.contains("moneyOnLevelup")){ 
 				createSkillsSettings();
 			}
 			SkillsSettings.setBroadcastOnLevelup(c.getBoolean("broadcastOnLevelup", true));
