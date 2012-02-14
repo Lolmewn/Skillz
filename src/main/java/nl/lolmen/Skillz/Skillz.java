@@ -632,8 +632,7 @@ public class Skillz extends JavaPlugin{
 					Player p = getServer().getPlayer(args[0]);
 					if(p == null){
 						if(new File(maindir + "players/" + args[0].toLowerCase() + ".txt").exists()){
-							sender.sendMessage(ChatColor.RED + "===Skillz===");
-							new SkillsCommand().sendSkills(sender, this.getServer().getPlayer(args[0]));
+							new SkillsCommand().sendSkills(sender, this.getServer().getOfflinePlayer(args[0]).getPlayer());
 							return true;
 						}
 						sender.sendMessage("No player available by that name: " + args[0]);
