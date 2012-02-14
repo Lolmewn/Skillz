@@ -647,7 +647,7 @@ public class Skillz extends JavaPlugin{
 						return true;
 					}
 					new SkillsCommand().sendSkills(sender, p, page);
-
+					return true;
 				}
 			}catch(Exception e){
 				e.printStackTrace();
