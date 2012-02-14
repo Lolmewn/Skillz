@@ -117,6 +117,7 @@ class getSkills extends Thread {
 		this.page = page;
 		this.p = p;
 		this.sender = sender;
+		this.start();
 	}
 }
 
