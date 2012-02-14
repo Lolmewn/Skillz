@@ -39,6 +39,12 @@ class getSkills extends Thread {
 	
 	public void run() {
 		Map<Integer, SkillData> data = new HashMap<Integer, SkillData>();
+		if(SkillsSettings.isDebug()){
+			if(sender instanceof Player){
+				System.out.println("Fetching file from " + p.getDisplayName() + " to " + ((Player)sender).getDisplayName());
+			}
+			sender.sendMessage("Fetching file from " + p.getDisplayName());
+		}
 		try{
 			File f = new File("plugins" +File.separator+ "Skillz"+File.separator+ "players"+File.separator + p.getName().toLowerCase() + ".txt");
 			if(!f.exists()){
