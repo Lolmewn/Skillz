@@ -55,7 +55,7 @@ public class Skillz extends JavaPlugin{
 	private SkillPlayerListener player = new SkillPlayerListener(this);
 	private SkillEntityListener entity = new SkillEntityListener();
 	public static SkillzAPI api = new SkillzAPI();
-	public SkillManager skillManager = new SkillManager();
+	public SkillManager skillManager;
 	
 	public SQLite dbManager = null;
 	public MySQL mysql = null;
@@ -150,6 +150,7 @@ public class Skillz extends JavaPlugin{
 	}
 
 	private void loadSkillz() {
+		this.skillManager = new SkillManager();
 		if(!this.skillzFile.exists()){
 			this.skillManager.createSkillsSettings();
 		}

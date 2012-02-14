@@ -71,7 +71,7 @@ class getSkills extends Thread {
 				int get = i + (page-1)*10;
 				if(data.containsKey(get)){
 					SkillData d = data.get(get);
-					
+					//double percent = 
 					p.sendMessage(ChatColor.RED + d.getSkill()+ ChatColor.WHITE + " Level: " + ChatColor.GREEN + d.getLVL() + ChatColor.WHITE + " XP: " + ChatColor.GREEN + d.getXP() + ChatColor.WHITE  + " Remaining: " + ChatColor.GREEN + d.getRem());
 				}else{
 					if(SkillsSettings.isDebug()){
