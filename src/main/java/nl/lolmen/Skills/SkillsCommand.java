@@ -90,7 +90,7 @@ class getSkills extends Thread {
 				if(data.containsKey(get)){
 					SkillData d = data.get(get);
 					double percent = 100 - (d.getRem() / (Math.pow(d.getLVL(), 2) * 10 - Math.pow(d.getLVL() - 1, 2) * 10) * 100);
-					int stripes = (int)percent / 10 - 1; //Draws the red stripes
+					int stripes = (int)percent / 20; //Draws the red stripes
 					if(d.getLVL() == 0){
 						stripes = 0;
 					}
@@ -102,7 +102,7 @@ class getSkills extends Thread {
 					for(int b = 0; b < stripes; b++){
 						str.append(ChatColor.GREEN + "|");
 					}
-					for(int a = 0; a < 10 - stripes; a++){
+					for(int a = 0; a < 20 - stripes; a++){
 						str.append(ChatColor.RED + "|");
 					}
 					str.append(ChatColor.WHITE + "]");
