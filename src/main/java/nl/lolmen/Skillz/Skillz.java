@@ -371,6 +371,9 @@ public class Skillz extends JavaPlugin{
 								sender.sendMessage("Digging: Grass, Sand, Gravel or Dirt - double drop");
 								sender.sendMessage("Mining: Stone, Coalore, Ironore(2), redstoneore(3), Diamondore(4) - double drop");
 								return true;
+							}else{
+								sender.sendMessage("There's no such help page!");
+								return true;
 							}
 						}
 					}
