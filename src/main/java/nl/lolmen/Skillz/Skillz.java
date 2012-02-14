@@ -519,41 +519,41 @@ public class Skillz extends JavaPlugin{
 							return true;
 
 						}
-							if(!sender.hasPermission("skillz.reset.other")){
-								sender.sendMessage(noPerm);
-							}
-							for(int i = 1; i < args.length; i++){
-								Player target = getServer().getPlayer(args[i]);
-								if(target == null){
-									if(!new File(maindir + "players" + File.separator + args[i] + ".txt").exists()){
-										sender.sendMessage("You don't have a skillz file, nothing to reset!");
-										return true;
-									}
-									File f = new File(maindir + "players/" + args[i] + ".txt");
-									if(f.delete()){
-										sender.sendMessage("A new file will be created the next time he logs in!");
-										return true;
-									}else{
-										sender.sendMessage("For some reason, " + args[i] + "'s file could not be deleted. It will be when the server gets restarted.");
-										f.deleteOnExit();
-									}
-
-									continue;
-								}
-								if(!new File(maindir + "players" + File.separator + target.getName() + ".txt").exists()){
-									sender.sendMessage(target.getName() + " doesn't have a skillz file, nothing to reset!");
+						if(!sender.hasPermission("skillz.reset.other")){
+							sender.sendMessage(noPerm);
+						}
+						for(int i = 1; i < args.length; i++){
+							Player target = getServer().getPlayer(args[i]);
+							if(target == null){
+								if(!new File(maindir + "players" + File.separator + args[i] + ".txt").exists()){
+									sender.sendMessage("You don't have a skillz file, nothing to reset!");
 									return true;
 								}
-								File f = new File(maindir + "players/" + target.getName() + ".txt");
+								File f = new File(maindir + "players/" + args[i] + ".txt");
 								if(f.delete()){
-									player.onPlayerJoin(new PlayerJoinEvent(target, target.getName()));
-									sender.sendMessage(target.getName() + "'s player file deleted and regenerated!");
+									sender.sendMessage("A new file will be created the next time he logs in!");
+									return true;
 								}else{
-									sender.sendMessage("For some reason,  " + target.getName() + "'s file could not be deleted. It will be when the server gets restarted.");
+									sender.sendMessage("For some reason, " + args[i] + "'s file could not be deleted. It will be when the server gets restarted.");
 									f.deleteOnExit();
 								}
 
-							
+								continue;
+							}
+							if(!new File(maindir + "players" + File.separator + target.getName() + ".txt").exists()){
+								sender.sendMessage(target.getName() + " doesn't have a skillz file, nothing to reset!");
+								return true;
+							}
+							File f = new File(maindir + "players/" + target.getName() + ".txt");
+							if(f.delete()){
+								player.onPlayerJoin(new PlayerJoinEvent(target, target.getName()));
+								sender.sendMessage(target.getName() + "'s player file deleted and regenerated!");
+							}else{
+								sender.sendMessage("For some reason,  " + target.getName() + "'s file could not be deleted. It will be when the server gets restarted.");
+								f.deleteOnExit();
+							}
+
+
 						}
 						return true;						
 					}
@@ -627,26 +627,27 @@ public class Skillz extends JavaPlugin{
 							return true;
 						}
 					}
-					if(new File(maindir + "players/" + args[0].toLowerCase() + ".txt").exists()){
-						sender.sendMessage(ChatColor.RED + "===Skillz===");
-						new SkillsCommand().sendSkills(this.getServer().getPlayer(args[0]));
+
+					sender.sendMessage(ChatColor.RED + "===Skillz===");
+					Player p = getServer().getPlayer(args[0]);
+					if(p == null){
+						if(new File(maindir + "players/" + args[0].toLowerCase() + ".txt").exists()){
+							sender.sendMessage(ChatColor.RED + "===Skillz===");
+							new SkillsCommand().sendSkills(sender, this.getServer().getPlayer(args[0]));
+							return true;
+						}
+						sender.sendMessage("No player available by that name: " + args[0]);
 						return true;
-					}else{
-						sender.sendMessage(ChatColor.RED + "===Skillz===");
-						Player p = getServer().getPlayer(args[0]);
-						if(p == null){
-							sender.sendMessage("No player available by that name: " + args[0]);
-							return true;
-						}
-						int page;
-						try{
-							page = args.length == 2 ? Integer.parseInt(args[1]) : 1;
-						}catch(Exception e){
-							sender.sendMessage("Wrong page number! Expected an int!");
-							return true;
-						}
-						new SkillsCommand().sendSkills(sender, p, page);
 					}
+					int page;
+					try{
+						page = args.length == 2 ? Integer.parseInt(args[1]) : 1;
+					}catch(Exception e){
+						sender.sendMessage("Wrong page number! Expected an int!");
+						return true;
+					}
+					new SkillsCommand().sendSkills(sender, p, page);
+
 				}
 			}catch(Exception e){
 				e.printStackTrace();
