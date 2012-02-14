@@ -72,7 +72,10 @@ class getSkills extends Thread {
 				if(data.containsKey(get)){
 					SkillData d = data.get(get);
 					double percent = 100 - (d.getRem() / (Math.pow(d.getLVL(), 2) * 10 - Math.pow(d.getLVL() - 1, 2) * 10) * 100);
-					int stripes = (int)percent / 10;
+					int stripes = (int)percent / 10 - 1;
+					if(SkillsSettings.isDebug()){
+						p.sendMessage("Percent: " + percent);
+					}
 					StringBuilder str = new StringBuilder();
 					str.append(ChatColor.WHITE + "[");
 					for(int a = 0; a < 10 - stripes; a++){
