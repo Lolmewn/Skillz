@@ -26,7 +26,7 @@ public class SkillsCommand {
 	}
 	
 	public void sendSkills(CommandSender sender, Player p , int page){
-		
+		new getSkills(sender, p, page);
 	}
 }
 
