@@ -73,6 +73,9 @@ class getSkills extends Thread {
 					SkillData d = data.get(get);
 					double percent = 100 - (d.getRem() / (Math.pow(d.getLVL(), 2) * 10 - Math.pow(d.getLVL() - 1, 2) * 10) * 100);
 					int stripes = (int)percent / 10 - 1; //Draws the red stripes
+					if(d.getLVL() == 0){
+						stripes = 0;
+					}
 					if(SkillsSettings.isDebug()){
 						System.out.println("[Skillz - Debug] Percent: " + percent + " stripes: " + stripes);
 					}
