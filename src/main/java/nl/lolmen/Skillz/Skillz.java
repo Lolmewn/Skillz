@@ -13,7 +13,6 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 import nl.lolmen.API.SkillzAPI;
@@ -630,22 +629,23 @@ public class Skillz extends JavaPlugin{
 					}
 					if(new File(maindir + "players/" + args[0].toLowerCase() + ".txt").exists()){
 						sender.sendMessage(ChatColor.RED + "===Skillz===");
-						//getSkills(sender, args[0]);
 						new SkillsCommand().sendSkills(this.getServer().getPlayer(args[0]));
 						return true;
 					}else{
 						sender.sendMessage(ChatColor.RED + "===Skillz===");
-						List<Player> players = getServer().matchPlayer(args[0]);
-						if(players.size() == 0){
-							sender.sendMessage(ChatColor.RED + "No players available with that name!");
+						Player p = getServer().getPlayer(args[0]);
+						if(p == null){
+							sender.sendMessage("No player available by that name: " + args[0]);
 							return true;
 						}
-						String player = "";
-						for(Player p: players){
-							player = player + p.getName() + ", ";
+						int page;
+						try{
+							page = args.length == 2 ? Integer.parseInt(args[1]) : 1;
+						}catch(Exception e){
+							sender.sendMessage("Wrong page number! Expected an int!");
+							return true;
 						}
-						sender.sendMessage(ChatColor.RED + "Did you mean: " + ChatColor.AQUA + player + ChatColor.RED + " or something?");
-						return true;
+						new SkillsCommand().sendSkills(sender, p, page);
 					}
 				}
 			}catch(Exception e){

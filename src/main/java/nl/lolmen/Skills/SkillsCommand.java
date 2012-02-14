@@ -8,30 +8,42 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class SkillsCommand {
 	
 	public void sendSkills(Player p){
-		sendSkills(p, 1);
+		this.sendSkills(p, 1);
 	}
 	
 	public void sendSkills(Player p, int page){
-		new getSkills(p, page);
+		this.sendSkills(p, p, page);
+	}
+	
+	public void sendSkills(CommandSender sender, Player p){
+		this.sendSkills(sender, p, 1);
+	}
+	
+	public void sendSkills(CommandSender sender, Player p , int page){
+		
 	}
 }
 
 
 class getSkills extends Thread {
-	Player p;
-	int page;
+	private Player p;
+	private int page;
+	private CommandSender sender;
+	
+	
 	public void run() {
 		Map<Integer, SkillData> data = new HashMap<Integer, SkillData>();
 		try{
 			File f = new File("plugins" +File.separator+ "Skillz"+File.separator+ "players"+File.separator + p.getName().toLowerCase() + ".txt");
 			if(!f.exists()){
-				p.sendMessage("Something went wrong while trying to fetch your personal file!");
-				p.sendMessage("Tell an admin to take a look at his server.log , he'll know what to do ;)");
+				sender.sendMessage("Something went wrong while trying to fetch your personal file!");
+				sender.sendMessage("Tell an admin to take a look at his server.log , he'll know what to do ;)");
 				System.out.println("[Skillz] File for player " + p.getName() + " not found at " + f.getAbsolutePath());
 				return;
 			}
@@ -64,7 +76,7 @@ class getSkills extends Thread {
 			dis.close();
 			br.close();
 			if(!(data.size() > page * 8 - 8)){
-				p.sendMessage(ChatColor.RED + "There is no page " + page + "!");
+				sender.sendMessage(ChatColor.RED + "There is no page " + page + "!");
 				return;
 			}
 			for(int i = 0; i < page * 8; i++){
@@ -88,26 +100,23 @@ class getSkills extends Thread {
 						str.append(ChatColor.RED + "|");
 					}
 					str.append(ChatColor.WHITE + "]");
-					p.sendMessage(ChatColor.RED + d.getSkill()+ ChatColor.WHITE + " Level: " + ChatColor.GREEN + d.getLVL() + ChatColor.WHITE + " XP: " + ChatColor.GREEN + d.getXP()  + " " + str.toString());
+					sender.sendMessage(ChatColor.RED + d.getSkill()+ ChatColor.WHITE + " Level: " + ChatColor.GREEN + d.getLVL() + ChatColor.WHITE + " XP: " + ChatColor.GREEN + d.getXP()  + " " + str.toString());
 				}else{
 					if(SkillsSettings.isDebug()){
-						p.sendMessage("[Skillz - Debug] No value: " + get);
+						sender.sendMessage("[Skillz - Debug] No value: " + get);
 					}
 				}
 			}
-			p.sendMessage(ChatColor.RED + "Total Level: " + ChatColor.GREEN + totalLVL + ChatColor.RED + " Total XP: " + ChatColor.GREEN + totalXP);
+			sender.sendMessage(ChatColor.RED + "Total Level: " + ChatColor.GREEN + totalLVL + ChatColor.RED + " Total XP: " + ChatColor.GREEN + totalXP);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
-	public getSkills(Player p) {
-		this.p = p;
-		this.start();
-	}
-	public getSkills(Player p2, int page) {
+	
+	public getSkills(CommandSender sender, Player p, int page){
 		this.page = page;
-		this.p = p2;
-		this.start();
+		this.p = p;
+		this.sender = sender;
 	}
 }
 
