@@ -19,9 +19,6 @@ public class SkillManager {
 	private String logPrefix = "[Skillz] ";
 	public static HashMap<String, SkillBase> skills = new HashMap<String, SkillBase>();
 
-	public SkillManager() {
-	}
-
 	public void loadSkillsSettings() {
 		if (!settings.exists()) {
 			createSkillsSettings();
