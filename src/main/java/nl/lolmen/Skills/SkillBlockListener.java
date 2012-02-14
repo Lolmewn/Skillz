@@ -15,7 +15,7 @@ public class SkillBlockListener implements Listener{
 
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event) {
 		if(event.isCancelled()){
 			return;

@@ -114,16 +114,16 @@ public class SkillEntityListener implements Listener{
 					Player p = (Player)ent;
 					int added = (int)distance/s.getBlocks_till_XP() * s.getMultiplier();
 					if(added == 2){
-						p.sendMessage("Double XP!");
+						p.sendMessage("[Skillz] Double XP!");
 					}
 					if(added == 3){
-						p.sendMessage(ChatColor.LIGHT_PURPLE + "TRIPLE XP!");
+						p.sendMessage("[Skillz] " + ChatColor.LIGHT_PURPLE + "TRIPLE XP!");
 					}
 					if(added == 4){
-						p.sendMessage(ChatColor.RED  +"QUADRA XP!");
+						p.sendMessage("[Skillz] " + ChatColor.RED  +"QUADRA XP!");
 					}
 					if(added > 4){
-						p.sendMessage(ChatColor.DARK_RED + "MULTI XP!");
+						p.sendMessage("[Skillz] " + ChatColor.DARK_RED + "MULTI XP!");
 					}
 					s.addXP(p, added);
 				}
