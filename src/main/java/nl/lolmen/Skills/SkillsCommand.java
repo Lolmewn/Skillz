@@ -78,10 +78,10 @@ class getSkills extends Thread {
 					}
 					StringBuilder str = new StringBuilder();
 					str.append(ChatColor.WHITE + "[");
-					for(int a = 0; a < 10 - stripes; a++){
+					for(int b = 0; b < stripes; b++){
 						str.append(ChatColor.GREEN + "|");
 					}
-					for(int b = 0; b < stripes; b++){
+					for(int a = 0; a < 10 - stripes; a++){
 						str.append(ChatColor.RED + "|");
 					}
 					str.append(ChatColor.WHITE + "]");
