@@ -41,13 +41,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Skillz extends JavaPlugin{
 	public final Logger log = Logger.getLogger("Minecraft");
-	
+
 	//File stuff
 	public String maindir = "plugins" + File.separator + "Skillz" + File.separator;
 	public File skillzFile = new File(maindir + "skills.yml");
-	
+
 	//public static Skillz p;
-	
+
 	//Classes
 	private Convert converter = new Convert(this);
 	public static HighScore high = new HighScore();
@@ -56,11 +56,11 @@ public class Skillz extends JavaPlugin{
 	private SkillEntityListener entity = new SkillEntityListener();
 	public static SkillzAPI api = new SkillzAPI();
 	public SkillManager skillManager;
-	
+
 	public SQLite dbManager = null;
 	public MySQL mysql = null;
 	public String logPrefix = "[Skillz] ";
-	
+
 	//For faster block breaking
 	public HashMap<Player, Block> FBlock = new HashMap<Player, Block>();
 	public HashMap<Player, Integer> FCount = new HashMap<Player, Integer>();
@@ -76,7 +76,7 @@ public class Skillz extends JavaPlugin{
 	public int dbPort;
 	public String noPerm = ChatColor.RED + "You do not have Permissions to do this!";
 	public double version;
-	
+
 	public boolean update;
 	public boolean configed = true;
 	public boolean beingConfigged = false;
@@ -508,17 +508,18 @@ public class Skillz extends JavaPlugin{
 							if(!new File(maindir + "players" + File.separator + p.getName().toLowerCase() + ".txt").exists()){
 								p.sendMessage("You don't have a skillz file, nothing to reset!");
 								return true;
-							}else{
-								File f = new File(maindir + "players/" + p.getName().toLowerCase() + ".txt");
-								if(f.delete()){
-									player.onPlayerJoin(new PlayerJoinEvent(p, p.getName()));
-									p.sendMessage("A new file should have been created!");
-								}else{
-									p.sendMessage("For some reason, your file could not be deleted. It will be when the server gets restarted.");
-									f.deleteOnExit();
-								}
 							}
-						}else{
+							File f = new File(maindir + "players/" + p.getName().toLowerCase() + ".txt");
+							if(f.delete()){
+								player.onPlayerJoin(new PlayerJoinEvent(p, p.getName()));
+								p.sendMessage("A new file should have been created!");
+								return true;
+							}
+							p.sendMessage("For some reason, your file could not be deleted. It will be when the server gets restarted.");
+							f.deleteOnExit();
+							return true;
+
+						}
 							if(!sender.hasPermission("skillz.reset.other")){
 								sender.sendMessage(noPerm);
 							}
@@ -528,34 +529,50 @@ public class Skillz extends JavaPlugin{
 									if(!new File(maindir + "players" + File.separator + args[i] + ".txt").exists()){
 										sender.sendMessage("You don't have a skillz file, nothing to reset!");
 										return true;
-									}else{
-										File f = new File(maindir + "players/" + args[i] + ".txt");
-										if(f.delete()){
-											sender.sendMessage("A new file will be created the next time he logs in!");
-										}else{
-											sender.sendMessage("For some reason, " + args[i] + "'s file could not be deleted. It will be when the server gets restarted.");
-											f.deleteOnExit();
-										}
 									}
+									File f = new File(maindir + "players/" + args[i] + ".txt");
+									if(f.delete()){
+										sender.sendMessage("A new file will be created the next time he logs in!");
+										return true;
+									}else{
+										sender.sendMessage("For some reason, " + args[i] + "'s file could not be deleted. It will be when the server gets restarted.");
+										f.deleteOnExit();
+									}
+
 									continue;
 								}
 								if(!new File(maindir + "players" + File.separator + target.getName() + ".txt").exists()){
 									sender.sendMessage(target.getName() + " doesn't have a skillz file, nothing to reset!");
 									return true;
-								}else{
-									File f = new File(maindir + "players/" + target.getName() + ".txt");
-									if(f.delete()){
-										player.onPlayerJoin(new PlayerJoinEvent(target, target.getName()));
-										sender.sendMessage(target.getName() + "'s player file deleted and regenerated!");
-									}else{
-										sender.sendMessage("For some reason,  " + target.getName() + "'s file could not be deleted. It will be when the server gets restarted.");
-										f.deleteOnExit();
-									}
 								}
-							}
+								File f = new File(maindir + "players/" + target.getName() + ".txt");
+								if(f.delete()){
+									player.onPlayerJoin(new PlayerJoinEvent(target, target.getName()));
+									sender.sendMessage(target.getName() + "'s player file deleted and regenerated!");
+								}else{
+									sender.sendMessage("For some reason,  " + target.getName() + "'s file could not be deleted. It will be when the server gets restarted.");
+									f.deleteOnExit();
+								}
+
+							
 						}
 						return true;						
 					}
+					if(args[0].equalsIgnoreCase("page")){
+						if(args.length == 1){
+							sender.sendMessage(logPrefix + "Please specify the page you want to see!");
+							return true;
+						}
+						try{
+							int page = Integer.parseInt(args[1]);
+							new SkillsCommand().sendSkills((Player)sender, page);
+							return true;
+						}catch(Exception e){
+							sender.sendMessage("Page must be an int!");
+							return true;
+						}
+					}
+
 					//Get another players Skills
 					if(!sender.hasPermission("skillz.skills.other")){
 						sender.sendMessage(noPerm);
@@ -694,13 +711,13 @@ public class Skillz extends JavaPlugin{
 		}
 		if(useMySQL){
 			try {
-			String query = "SELECT * FROM Skillz WHERE player = '" + p.getName() + "' AND skill = '"+ string + "';";
-			ResultSet set = mysql.query(query);
-			if(set == null){
-				p.sendMessage(ChatColor.RED + "There is no such skill: " + string);
-				return;
-			}
-			
+				String query = "SELECT * FROM Skillz WHERE player = '" + p.getName() + "' AND skill = '"+ string + "';";
+				ResultSet set = mysql.query(query);
+				if(set == null){
+					p.sendMessage(ChatColor.RED + "There is no such skill: " + string);
+					return;
+				}
+
 				while(set.next()){
 					int xp = set.getInt("xp");
 					int lvl = set.getInt("level");
