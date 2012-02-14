@@ -63,12 +63,12 @@ class getSkills extends Thread {
 			in.close();
 			dis.close();
 			br.close();
-			if(!(data.size() > page * 10 - 10)){
+			if(!(data.size() > page * 8 - 8)){
 				p.sendMessage(ChatColor.RED + "There is no page " + page + "!");
 				return;
 			}
-			for(int i = 0; i < page * 10; i++){
-				int get = i + (page-1)*10;
+			for(int i = 0; i < page * 8; i++){
+				int get = i + (page-1)*8;
 				if(data.containsKey(get)){
 					SkillData d = data.get(get);
 					//double percent = 
