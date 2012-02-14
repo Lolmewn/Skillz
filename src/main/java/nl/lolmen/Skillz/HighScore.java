@@ -20,9 +20,7 @@ public class HighScore {
 	HashMap<String, data> map = new HashMap<String, data>();
 
 	private File mapFile = new File("plugins/Skillz/highscore.dat");
-	public Skillz plugin;
-	public HighScore(Skillz skillz) {
-		plugin = skillz;
+	public HighScore() {
 	}
 
 	public void checkScore(Player p, SkillBase skill, int lvl){
@@ -82,7 +80,7 @@ public class HighScore {
 			return;
 		}
 		if(!map.isEmpty()){
-			plugin.log.info("[Skillz] Aparently the highscores have already been loaded!");
+			System.out.println("[Skillz] Aparently the highscores have already been loaded!");
 			return;
 		}
 		try {
@@ -108,7 +106,7 @@ public class HighScore {
 		String[] splot = strLine.split("=");
 		String[] datas = splot[1].split(",");
 		map.put(splot[0], new data(datas[0], Integer.parseInt(datas[1])));
-		plugin.log.info("[Skillz] Loaded HighScore " + splot[0] + ", " + datas[0] + ", " + datas[1] + "!");
+		System.out.println("[Skillz] Loaded HighScore " + splot[0] + ", " + datas[0] + ", " + datas[1] + "!");
 	}
 }
 

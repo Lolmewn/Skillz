@@ -11,7 +11,6 @@ import java.util.HashSet;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import nl.lolmen.Skills.skills.*;
-import nl.lolmen.Skillz.Skillz;
 
 
 public class SkillManager {
@@ -257,7 +256,7 @@ public class SkillManager {
 	}
 
 	public void createSkillsSettings() {
-		Skillz.p.log.info(logPrefix + "Trying to create default skills...");
+		System.out.println(logPrefix + "Trying to create default skills...");
 		try {
 			new File("plugins/Skillz/").mkdir();
 			File efile = new File("plugins" + File.separator + "Skillz" + File.separator + "skills.yml");
@@ -270,10 +269,10 @@ public class SkillManager {
 			out.flush();
 			out.close();
 			in.close();
-			Skillz.p.log.info(logPrefix + "Default skills created succesfully!");
+			System.out.println(logPrefix + "Default skills created succesfully!");
 		} catch (Exception e) {
 			e.printStackTrace();
-			Skillz.p.log.warning(logPrefix
+			System.out.println(logPrefix
 					+ "Error creating Skills file! Using default Skills!");
 		}
 	}

@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -47,15 +46,16 @@ public class Skillz extends JavaPlugin{
 	public String maindir = "plugins" + File.separator + "Skillz" + File.separator;
 	public File skillzFile = new File(maindir + "skills.yml");
 	
-	public static Skillz p;
+	//public static Skillz p;
 	
 	//Classes
 	private Convert converter = new Convert(this);
-	public HighScore high = new HighScore(this);
+	public static HighScore high = new HighScore();
 	private SkillBlockListener block = new SkillBlockListener();
 	private SkillPlayerListener player = new SkillPlayerListener(this);
 	private SkillEntityListener entity = new SkillEntityListener();
 	public static SkillzAPI api = new SkillzAPI();
+	public SkillManager skillManager = new SkillManager();
 	
 	public SQLite dbManager = null;
 	public MySQL mysql = null;
@@ -128,45 +128,43 @@ public class Skillz extends JavaPlugin{
 	}
 
 	public void onEnable() {
-		p = this;
-		makeSettings();
-		loadSkillz();
-		if(update){
+		this.makeSettings();
+		this.loadSkillz();
+		if(this.update){
 			checkUpdate();
 		}
-		if ((useSQL) && (!useMySQL)) {
+		if ((this.useSQL) && (!this.useMySQL)) {
 			loadSQL();
 		}
-		if ((!useSQL) && (useMySQL)) {
+		if ((!this.useSQL) && (this.useMySQL)) {
 			loadMySQL();
 		}
-		setupPlugins();
+		this.setupPlugins();
 		high.loadMaps();
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(block, this);
 		pm.registerEvents( entity, this);
 		pm.registerEvents( player, this);
 		new ServerSoc(this);
-		log.info("[Skillz]  - V" + getDescription().getVersion() + " Enabled!");
+		this.log.info("[Skillz]  - V" + getDescription().getVersion() + " Enabled!");
 	}
 
 	private void loadSkillz() {
-		SkillManager sm = new SkillManager();
-		if(!skillzFile.exists()){
-			sm.createSkillsSettings();
+		if(!this.skillzFile.exists()){
+			this.skillManager.createSkillsSettings();
 		}
-		sm.loadSkillsSettings();
+		this.skillManager.loadSkillsSettings();
 		YamlConfiguration c = new YamlConfiguration();
 		try{
 			c.load(skillzFile);
-			version = c.getDouble("version");
-			update = c.getBoolean("update", true);
-			dbUser = c.getString("MySQL-User", "root");
-			dbPass = c.getString("MySQL-Pass", "root");
-			dbHost = c.getString("MySQL-Host", "localhost");
-			dbPort = c.getInt("MySQL-Port", 3306); 
-			dbDB = c.getString("MySQL-Database", "minecraft");
-			dbTable = c.getString("MySQL-Table", "Skillz");
+			this.version = c.getDouble("version");
+			this.update = c.getBoolean("update", true);
+			this.dbUser = c.getString("MySQL-User", "root");
+			this.dbPass = c.getString("MySQL-Pass", "root");
+			this.dbHost = c.getString("MySQL-Host", "localhost");
+			this.dbPort = c.getInt("MySQL-Port", 3306); 
+			this.dbDB = c.getString("MySQL-Database", "minecraft");
+			this.dbTable = c.getString("MySQL-Table", "Skillz");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -177,10 +175,10 @@ public class Skillz extends JavaPlugin{
 			BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
 			String str;
 			while((str = in.readLine()) != null){
-				if(version < Double.parseDouble(str)){
-					updateAvailable = true;
-					log.info(logPrefix + "An update is available! Will be downloaded on Disable! New version: " + str);
-					version = Double.parseDouble(str);
+				if(this.version < Double.parseDouble(str)){
+					this.updateAvailable = true;
+					this.log.info(logPrefix + "An update is available! Will be downloaded on Disable! New version: " + str);
+					this.version = Double.parseDouble(str);
 				}
 			}
 			in.close();
@@ -192,13 +190,7 @@ public class Skillz extends JavaPlugin{
 	}
 
 	public SkillzAPI api(){
-		return api;
-	}
-	
-	public SkillBase addSkill(String name){
-		SkillBase s = new SkillBase();
-		s.setSkillName(name);
-		return s;
+		return Skillz.api;
 	}
 
 	private void setupPlugins() {
@@ -394,8 +386,8 @@ public class Skillz extends JavaPlugin{
 							sender.sendMessage(ChatColor.RED + "But what do you want to check?");
 							return true;
 						}
-						for(String s: args){
-							getNextLevel((Player)sender, s);
+						for(int i = 1; i < args.length; i++){
+							getNextLevel((Player)sender, args[i]);
 						}
 						return true;					
 					}
@@ -617,7 +609,8 @@ public class Skillz extends JavaPlugin{
 					}
 					if(new File(maindir + "players/" + args[0].toLowerCase() + ".txt").exists()){
 						sender.sendMessage(ChatColor.RED + "===Skillz===");
-						getSkills(sender, args[0]);
+						//getSkills(sender, args[0]);
+						new SkillsCommand().sendSkills(this.getServer().getPlayer(args[0]));
 						return true;
 					}else{
 						sender.sendMessage(ChatColor.RED + "===Skillz===");
@@ -642,7 +635,7 @@ public class Skillz extends JavaPlugin{
 		return false;
 	}
 
-	private void getSkills(CommandSender p, String name) {
+	/*private void getSkills(CommandSender p, String name) {
 		try {
 			BufferedReader in1 = new BufferedReader(new FileReader(maindir + "players/" + name.toLowerCase() + ".txt"));
 			String str;
@@ -672,13 +665,10 @@ public class Skillz extends JavaPlugin{
 		}else{
 			log.warning(logPrefix + "Lolwut? Neither a player nor a commandsender wants to know something but asks for it anyway!");
 		}
-	}
+	}*/
 
 	private void getNextLevel(Player p, String string) {
 		string = string.toLowerCase();
-		if(string.equalsIgnoreCase("check")){
-			return;
-		}
 		if(useSQL){
 			String query = "SELECT * FROM Skillz WHERE player = '" + p.getName() + "' AND skill = '"+ string + "';";
 			ResultSet set = dbManager.query(query);

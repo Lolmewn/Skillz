@@ -40,7 +40,7 @@ public class SkillBase {
 		try {
 			if(!new File(folder, p.getName().toLowerCase() + ".txt").exists()){
 				new File(folder, p.getName().toLowerCase() + ".txt").createNewFile();
-				Skillz.p.log.info("[Skillz] New file created for " + p.getName());
+				System.out.println("[Skillz] New file created for " + p.getName());
 			}
 			String skillname = skill.getSkillName().toLowerCase();
 			Properties prop = new Properties();

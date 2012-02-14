@@ -83,7 +83,7 @@ public class CPU {
 		}
 		giveReward(p, skill, lvl);
 		giveItem(p, skill, lvl);
-		Skillz.p.high.checkScore(p, skill, lvl); 
+		Skillz.high.checkScore(p, skill, lvl); 
 	}
 
 	private static void giveItem(Player p, SkillBase skill, int lvl) {
