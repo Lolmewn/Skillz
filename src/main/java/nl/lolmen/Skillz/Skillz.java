@@ -157,7 +157,7 @@ public class Skillz extends JavaPlugin{
 		YamlConfiguration c = new YamlConfiguration();
 		try{
 			c.load(skillzFile);
-			this.version = c.getDouble("version");
+			this.version = c.getDouble("version", 5.5);
 			this.update = c.getBoolean("update", true);
 			this.dbUser = c.getString("MySQL-User", "root");
 			this.dbPass = c.getString("MySQL-Pass", "root");
@@ -177,7 +177,7 @@ public class Skillz extends JavaPlugin{
 			while((str = in.readLine()) != null){
 				if(this.version < Double.parseDouble(str)){
 					this.updateAvailable = true;
-					this.log.info(logPrefix + "An update is available! Will be downloaded on Disable! New version: " + str);
+					this.log.info(logPrefix + "An update is available! Will be downloaded on Disable! Old version: " + this.version + " New version: " + str);
 					this.version = Double.parseDouble(str);
 				}
 			}
