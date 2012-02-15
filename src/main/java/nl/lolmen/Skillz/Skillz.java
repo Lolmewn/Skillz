@@ -23,7 +23,7 @@ import nl.lolmen.Skills.SkillEntityListener;
 import nl.lolmen.Skills.SkillManager;
 import nl.lolmen.Skills.SkillPlayerListener;
 import nl.lolmen.Skills.SkillsSettings;
-import nl.lolmen.Skillz.Socketing.ServerSoc;
+//import nl.lolmen.Skillz.Socketing.ServerSoc;
 import nl.lolmen.database.MySQL;
 import nl.lolmen.database.SQLite;
 
@@ -67,12 +67,12 @@ public class Skillz extends JavaPlugin{
 	//Settings
 	public boolean useSQL = false;
 	public boolean useMySQL = false;
-	public String dbHost;
-	public String dbPass;
-	public String dbUser;
-	public String dbDB;
-	public String dbTable;
-	public int dbPort;
+	private String dbHost;
+	private String dbPass;
+	private String dbUser;
+	private String dbDB;
+	//private String dbTable;
+	private int dbPort;
 	public String noPerm = ChatColor.RED + "You do not have Permissions to do this!";
 	public double version;
 
@@ -144,7 +144,7 @@ public class Skillz extends JavaPlugin{
 		pm.registerEvents(block, this);
 		pm.registerEvents( entity, this);
 		pm.registerEvents( player, this);
-		new ServerSoc(this);
+		//new ServerSoc(this);
 		this.log.info("[Skillz]  - V" + getDescription().getVersion() + " Enabled!");
 	}
 
@@ -164,7 +164,7 @@ public class Skillz extends JavaPlugin{
 			this.dbHost = c.getString("MySQL-Host", "localhost");
 			this.dbPort = c.getInt("MySQL-Port", 3306); 
 			this.dbDB = c.getString("MySQL-Database", "minecraft");
-			this.dbTable = c.getString("MySQL-Table", "Skillz");
+			//this.dbTable = c.getString("MySQL-Table", "Skillz");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -210,7 +210,7 @@ public class Skillz extends JavaPlugin{
 			if(SkillsSettings.getMoneyOnLevelup() == 0){
 				return;
 			}
-			log.info("[Skillz] Vault not found. Money reward -> 0");
+			log.warning("[Skillz] Vault not found. Money reward -> 0");
 			SkillsSettings.setMoneyOnLevelup(0);
 		}
 	}
@@ -234,11 +234,11 @@ public class Skillz extends JavaPlugin{
 	}
 
 	public void loadMySQL() {
-		mysql = new MySQL(log, logPrefix, dbHost, Integer.toString(dbPort), dbDB, dbUser, dbPass);
-		if (mysql.checkConnection()) {
-			log.info(logPrefix + "MySQL connection successful");
-			log.info(logPrefix + "MySQL temporarily broken, using flatfile");
-			useMySQL = false;
+		this.mysql = new MySQL(log, logPrefix, dbHost, Integer.toString(dbPort), dbDB, dbUser, dbPass);
+		if (this.mysql.checkConnection()) {
+			this.log.info(logPrefix + "MySQL connection successful");
+			this.log.info(logPrefix + "MySQL temporarily broken, using flatfile");
+			this.useMySQL = false;
 			/*
 			try {
 				if(!mysql.checkTable(dbTable)){
@@ -252,23 +252,23 @@ public class Skillz extends JavaPlugin{
 				useMySQL = false;
 			} */
 		} else {
-			log.severe(logPrefix + "MySQL connection failed! ");
-			useMySQL = false;
+			this.log.severe(this.logPrefix + "MySQL connection failed! ");
+			this.useMySQL = false;
 		}
 	}
 
 	private void makeSettings() {
-		new File(maindir).mkdir();
-		if(new File(maindir + "skills/").exists()){
-			new File(maindir + "skills/").delete();
+		new File(this.maindir).mkdir();
+		if(new File(this.maindir + "skills/").exists()){
+			new File(this.maindir + "skills/").delete();
 		}
-		if(new File(maindir + "users/").exists()){
-			new File(maindir + "users/").renameTo(new File(maindir + "players"));
+		if(new File(this.maindir + "users/").exists()){
+			new File(this.maindir + "users/").renameTo(new File(this.maindir + "players"));
 		}else{
-			new File(maindir + "players/").mkdir();
+			new File(this.maindir + "players/").mkdir();
 		}
-		if(!skillzFile.exists()){
-			configed = false;
+		if(!this.skillzFile.exists()){
+			this.configed = false;
 		}		
 	}
 
