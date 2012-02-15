@@ -90,7 +90,7 @@ class getSkills extends Thread {
 				if(data.containsKey(get)){
 					SkillData d = data.get(get);
 					double percent = 100 - (d.getRem() / (Math.pow(d.getLVL(), 2) * 10 - Math.pow(d.getLVL() - 1, 2) * 10) * 100);
-					int stripes = (int)percent / 5; //Draws the red stripes
+					int stripes = (int)percent / (100/20); //Draws the red stripes
 					if(d.getLVL() == 0){
 						stripes = 0;
 					}
