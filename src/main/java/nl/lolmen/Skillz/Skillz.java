@@ -24,6 +24,7 @@ import nl.lolmen.Skills.SkillManager;
 import nl.lolmen.Skills.SkillPlayerListener;
 import nl.lolmen.Skills.SkillsSettings;
 //import nl.lolmen.Skillz.Socketing.ServerSoc;
+import nl.lolmen.database.Metrics;
 import nl.lolmen.database.MySQL;
 import nl.lolmen.database.SQLite;
 
@@ -128,6 +129,13 @@ public class Skillz extends JavaPlugin{
 
 	public void onEnable() {
 		this.makeSettings();
+		try {
+			new Metrics();
+			this.log.info("[Skillz] Metrics loaded!");
+		} catch (IOException e) {
+			e.printStackTrace();
+			this.log.info("[Skillz] Failed to load Metrics!");
+		}
 		this.loadSkillz();
 		if(this.update){
 			checkUpdate();
