@@ -130,7 +130,8 @@ public class Skillz extends JavaPlugin{
 	public void onEnable() {
 		this.makeSettings();
 		try {
-			new Metrics();
+			Metrics m = new Metrics();
+			m.beginMeasuringPlugin(this);
 			this.log.info("[Skillz] Metrics loaded!");
 		} catch (IOException e) {
 			e.printStackTrace();
