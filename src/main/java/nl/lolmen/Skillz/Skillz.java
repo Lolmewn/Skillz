@@ -55,6 +55,7 @@ public class Skillz extends JavaPlugin{
 	private SkillPlayerListener player = new SkillPlayerListener(this);
 	private SkillEntityListener entity = new SkillEntityListener();
 	public static SkillzAPI api = new SkillzAPI();
+	public static Metrics metrics;
 	public SkillManager skillManager;
 
 	public SQLite dbManager = null;
@@ -130,8 +131,8 @@ public class Skillz extends JavaPlugin{
 	public void onEnable() {
 		this.makeSettings();
 		try {
-			Metrics m = new Metrics();
-			m.beginMeasuringPlugin(this);
+			Skillz.metrics = new Metrics();
+			Skillz.metrics.beginMeasuringPlugin(this);
 			this.log.info("[Skillz] Metrics loaded!");
 		} catch (IOException e) {
 			e.printStackTrace();

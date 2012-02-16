@@ -1,6 +1,6 @@
 name: Skillz
 author: Lolmewn
-version: 5.5
+version: 5.51
 main: nl.lolmen.Skillz.Skillz
 commands:
   skills:

@@ -147,7 +147,7 @@ public class Metrics {
 
         // Do we need to create the file?
         if (configuration.get("guid", null) == null) {
-            configuration.options().header("http://metrics.griefcraft.com").copyDefaults(true);
+            configuration.options().copyDefaults(true);
             configuration.save(file);
         }
 
