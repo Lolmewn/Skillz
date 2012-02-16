@@ -27,6 +27,7 @@ public class SkillManager {
 		try {
 			if(!c.contains("moneyOnLevelup")){ 
 				createSkillsSettings();
+				c = YamlConfiguration.loadConfiguration(settings); //load it again to not have an empty file
 			}
 			SkillsSettings.setBroadcastOnLevelup(c.getBoolean("broadcastOnLevelup", true));
 			SkillsSettings.setDebug(c.getBoolean("debug", false));
