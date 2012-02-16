@@ -1,5 +1,6 @@
 package nl.lolmen.Skills;
 
+import net.citizensnpcs.api.CitizensManager;
 import nl.lolmen.Skills.CPU;
 import nl.lolmen.Skills.skills.Acrobatics;
 import nl.lolmen.Skills.skills.Archery;
@@ -24,7 +25,14 @@ public class SkillEntityListener implements Listener{
 			return;
 		}
 		Entity e = event.getEntity();
+		if(SkillsSettings.hasCitizens()){
+			if(CitizensManager.isNPC(e)){
+				//No need to give NPC's XP
+				return;
+			}
+		}
 		if(e instanceof Player){
+			
 			Player p = (Player)e;
 			SkillBase s;
 			switch(event.getCause()){
@@ -135,6 +143,12 @@ public class SkillEntityListener implements Listener{
 	public void onEntityDeath(EntityDeathEvent event) {
 		if(!(event.getEntity() instanceof Player)){
 			return;
+		}
+		if(SkillsSettings.hasCitizens()){
+			//It's an NPC, no need to do anything with it
+			if(CitizensManager.isNPC(event.getEntity())){
+				return;
+			}
 		}
 		Player p = (Player)event.getEntity();
 		if(SkillsSettings.isResetSkillsOnLevelup()){

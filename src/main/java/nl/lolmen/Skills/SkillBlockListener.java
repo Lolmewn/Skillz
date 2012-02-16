@@ -11,24 +11,22 @@ import org.bukkit.inventory.ItemStack;
 
 public class SkillBlockListener implements Listener{
 
-	public SkillBlockListener() {
-
-	}
-
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event) {
 		if(event.isCancelled()){
 			return;
 		}
 		for (SkillBase base : SkillManager.getSkills()) {
-			if(SkillsSettings.isDebug()){System.out.println("Checking " + base.getSkillName() + " -> " + (base instanceof SkillBlockBase));}
+			//if(SkillsSettings.isDebug()){System.out.println("Checking " + base.getSkillName() + " -> " + (base instanceof SkillBlockBase));}
 			if (base instanceof SkillBlockBase) {
+				if(SkillsSettings.isDebug()){System.out.println("Skill " + base.getSkillName() + " = true");}
 				SkillBlockBase s = (SkillBlockBase) base;
 				if (!s.isEnabled()) {
 					continue;
 				}
 				handleSkill(s, event);
 			}
+			if(SkillsSettings.isDebug()){System.out.println("Dont checking skills for Block");}
 		}
 	}
 
@@ -47,6 +45,9 @@ public class SkillBlockListener implements Listener{
 					* s.getMultiplier();
 			CPU.addXP(p, s, xpget);
 			if (s instanceof Mining) {
+				if(SkillsSettings.isDebug()){
+					System.out.println("It's mining, checking doubledrop");
+				}
 				// Change calculating here
 				Mining m = (Mining) s;
 				if (m.getWillDoubleDrop(p)) {

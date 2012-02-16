@@ -29,12 +29,12 @@ public class SkillBlockBase extends SkillBase{
 		this.blocks = blocks;
 	}
 	
-	public boolean hasBlock(int block){
+	public boolean hasBlock(int block, byte data){
 		return blocks.containsKey(block);
 	}
 	
 	public boolean hasBlock(Block b){
-		return hasBlock(b.getTypeId());
+		return hasBlock(b.getTypeId(), b.getData());
 	}
 	
 	public int getXP(int block){

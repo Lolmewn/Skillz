@@ -31,7 +31,12 @@
         <dependency>
           <groupId>net.milkbowl</groupId>
           <artifactId>vault</artifactId>
-          <version>1.2.0-b000</version>
+          <version>1.2.8</version>
+        </dependency>
+        <dependency>
+        	<groupId>net</groupId>
+        	<artifactId>citizensnpcs</artifactId>
+        	<version>1.1.6</version>
         </dependency>
     </dependencies>
 </project>

@@ -124,7 +124,7 @@ public class SkillsSettings {
 		SkillsSettings.usePerSkillPerms = usePerSkillPerms;
 	}
 
-	public static boolean isHasCitizens() {
+	public static boolean hasCitizens() {
 		return hasCitizens;
 	}
 
