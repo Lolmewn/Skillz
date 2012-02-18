@@ -133,7 +133,7 @@ public class Skillz extends JavaPlugin{
 		try {
 			Skillz.metrics = new Metrics();
 			Skillz.metrics.beginMeasuringPlugin(this);
-			this.log.info("[Skillz] Metrics loaded!");
+			this.log.info("[Skillz] Metrics loaded! View them @ http://metrics.griefcraft.com/plugin/Skillz");
 		} catch (IOException e) {
 			e.printStackTrace();
 			this.log.info("[Skillz] Failed to load Metrics!");
