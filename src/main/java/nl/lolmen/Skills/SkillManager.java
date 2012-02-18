@@ -44,6 +44,9 @@ public class SkillManager {
 			for (String key : c.getConfigurationSection("skills").getKeys(false)) {
 				String keys = key.toLowerCase();
 				boolean enabled = c.getBoolean("skills." + key + ".enabled", true);
+				if(!enabled){
+					continue;
+				}
 				int multiplier = c.getInt("skills." + key + ".XP-gain-multiplier", 1);
 				String item = null;
 				int money = -1;
@@ -88,6 +91,7 @@ public class SkillManager {
 						}
 					}
 					skills.put(keys, a);
+					continue;
 				}
 				if(keys.equalsIgnoreCase("acrobatics")){
 					Acrobatics a = new Acrobatics();
@@ -108,6 +112,7 @@ public class SkillManager {
 						}
 					}
 					skills.put(keys, a);
+					continue;
 				}
 				if(key.equalsIgnoreCase("swimming")){
 					Swimming a = new Swimming();
@@ -127,6 +132,7 @@ public class SkillManager {
 						}
 					}
 					skills.put(keys, a);
+					continue;
 				}
 				if (key.equalsIgnoreCase("mining")) {
 					Mining a = new Mining();
@@ -155,6 +161,7 @@ public class SkillManager {
 					a.setSpeed(c.getInt("miningspeed", 1));
 					a.setDoubleDropChange(c.getInt("change", 5000));
 					skills.put(keys, a);
+					continue;
 				}
 				
 				if(keys.startsWith("axes")){
@@ -175,6 +182,7 @@ public class SkillManager {
 						}
 					}
 					skills.put("axes", a);
+					continue;
 				}
 				if(keys.toLowerCase().startsWith("swords")){
 					Swords a = new Swords();
@@ -194,6 +202,7 @@ public class SkillManager {
 						}
 					}
 					skills.put("swords", a);
+					continue;
 				}
 				if(keys.toLowerCase().startsWith("unarmed")){
 					Unarmed a = new Unarmed();
@@ -213,6 +222,7 @@ public class SkillManager {
 						}
 					}
 					skills.put("unarmed", a);
+					continue;
 				}
 				if(key.equalsIgnoreCase("woodcutting")){
 					Woodcutting a = new Woodcutting();
@@ -239,6 +249,7 @@ public class SkillManager {
 						}
 					}
 					skills.put(keys, a);
+					continue;
 				}
 				if(key.equalsIgnoreCase("digging")){
 					Digging a = new Digging();
@@ -265,6 +276,7 @@ public class SkillManager {
 						}
 					}
 					skills.put(keys, a);
+					continue;
 				}
 				if(key.equalsIgnoreCase("farming")){
 					Farming a = new Farming();
@@ -290,6 +302,7 @@ public class SkillManager {
 						}
 					}
 					skills.put(keys, a);
+					continue;
 				}
 			}
 		} catch (Exception e) {
