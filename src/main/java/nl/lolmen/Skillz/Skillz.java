@@ -56,7 +56,7 @@ public class Skillz extends JavaPlugin{
 	private SkillEntityListener entity = new SkillEntityListener();
 	public static SkillzAPI api = new SkillzAPI();
 	public static Metrics metrics;
-	public SkillManager skillManager;
+	private SkillManager skillManager;
 
 	public SQLite dbManager = null;
 	public MySQL mysql = null;
@@ -154,7 +154,6 @@ public class Skillz extends JavaPlugin{
 		pm.registerEvents(block, this);
 		pm.registerEvents( entity, this);
 		pm.registerEvents( player, this);
-		//new ServerSoc(this);
 		this.log.info("[Skillz]  - V" + getDescription().getVersion() + " Enabled!");
 	}
 
