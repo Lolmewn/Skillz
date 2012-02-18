@@ -1,23 +1,27 @@
 package nl.lolmen.Skills;
 
 import nl.lolmen.Skills.skills.Mining;
+import nl.lolmen.Skillz.Skillz;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class SkillBlockListener implements Listener{
+	
+	private Skillz plugin;
+	public SkillBlockListener(Skillz main){
+		this.plugin = main;
+	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockBreak(BlockBreakEvent event) {
 		if(event.isCancelled()){
 			return;
 		}
-		for (SkillBase base : SkillManager.getSkills()) {
-			//if(SkillsSettings.isDebug()){System.out.println("Checking " + base.getSkillName() + " -> " + (base instanceof SkillBlockBase));}
+		for (SkillBase base : plugin.skillManager.getSkills()) {
 			if (base instanceof SkillBlockBase) {
 				if(SkillsSettings.isDebug()){System.out.println("Skill " + base.getSkillName() + " = true");}
 				SkillBlockBase s = (SkillBlockBase) base;
@@ -51,9 +55,9 @@ public class SkillBlockListener implements Listener{
 				// Change calculating here
 				Mining m = (Mining) s;
 				if (m.getWillDoubleDrop(p)) {
-					ItemStack stack = BlockDrop.getDrop(event.getBlock());
-					p.getWorld().dropItemNaturally(
-							event.getBlock().getLocation(), stack);
+					event.getBlock().breakNaturally();
+					//p.getWorld().dropItemNaturally(
+							//event.getBlock().getLocation(), stack);
 				}
 			}
 		}

@@ -35,7 +35,7 @@ public class SkillPlayerListener implements Listener {
 				Properties prop = new Properties();
 				FileInputStream in = new FileInputStream(new File(plugin.maindir + "players/" + p.getName().toLowerCase() + ".txt"));
 				prop.load(in);
-				for(SkillBase skill: SkillManager.getSkills()){
+				for(SkillBase skill: plugin.skillManager.getSkills()){
 					prop.put(skill.getSkillName(), "0;0");
 				}
 				FileOutputStream out = new FileOutputStream(new File(plugin.maindir + "players/" + p.getName().toLowerCase() + ".txt"));

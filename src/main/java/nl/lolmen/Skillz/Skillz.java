@@ -51,12 +51,12 @@ public class Skillz extends JavaPlugin{
 	//Classes
 	private Convert converter = new Convert(this);
 	public static HighScore high = new HighScore();
-	private SkillBlockListener block = new SkillBlockListener();
+	private SkillBlockListener block = new SkillBlockListener(this);
 	private SkillPlayerListener player = new SkillPlayerListener(this);
 	private SkillEntityListener entity = new SkillEntityListener();
 	public static SkillzAPI api = new SkillzAPI();
 	public static Metrics metrics;
-	private SkillManager skillManager;
+	public SkillManager skillManager;
 
 	public SQLite dbManager = null;
 	public MySQL mysql = null;
@@ -406,7 +406,7 @@ public class Skillz extends JavaPlugin{
 					if(args[0].equalsIgnoreCase("top")){
 						if(args.length == 1){
 							sender.sendMessage(ChatColor.RED + "===HighScores===");
-							for(SkillBase s:SkillManager.getSkills()){
+							for(SkillBase s:this.skillManager.getSkills()){
 								sender.sendMessage(high.gethighest(s));
 							}
 							return true;
@@ -664,38 +664,6 @@ public class Skillz extends JavaPlugin{
 		}
 		return false;
 	}
-
-	/*private void getSkills(CommandSender p, String name) {
-		try {
-			BufferedReader in1 = new BufferedReader(new FileReader(maindir + "players/" + name.toLowerCase() + ".txt"));
-			String str;
-			while ((str = in1.readLine()) != null) {
-				process(str, p);
-			}
-			in1.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	private void process(String str, Object p) {
-		if(str.startsWith("#")){
-			return;
-		}
-		String[] split = str.split("=");
-		String skill = split[0];
-		String[] skillz = split[1].split(";");
-		if(p instanceof Player){
-			Player ps = (Player)p;
-			ps.sendMessage(skill.substring(0, 1).toUpperCase() + skill.substring(1).toLowerCase()+ " XP: " + ChatColor.RED + skillz[0] + ChatColor.WHITE + " Level: " + ChatColor.RED + skillz[1]);
-		}else if(p instanceof CommandSender){
-			CommandSender ps = (CommandSender)p;
-			ps.sendMessage(skill.substring(0, 1).toUpperCase() + skill.substring(1).toLowerCase()+ " XP: " + ChatColor.RED + skillz[0] + ChatColor.WHITE + " Level: " + ChatColor.RED + skillz[1]);
-		}else{
-			log.warning(logPrefix + "Lolwut? Neither a player nor a commandsender wants to know something but asks for it anyway!");
-		}
-	}*/
 
 	private void getNextLevel(Player p, String string) {
 		string = string.toLowerCase();

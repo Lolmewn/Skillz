@@ -11,7 +11,6 @@ import java.util.Properties;
 import net.milkbowl.vault.economy.Economy;
 import nl.lolmen.API.SkillzLevelEvent;
 import nl.lolmen.Skillz.Skillz;
-import nl.lolmen.database.Metrics;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

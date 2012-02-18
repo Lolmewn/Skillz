@@ -297,7 +297,7 @@ public class SkillManager {
 		}
 	}
 
-	public static HashSet<SkillBase> getSkills() {
+	public HashSet<SkillBase> getSkills() {
 		HashSet<SkillBase> set = new HashSet<SkillBase>();
 		for (String s : skills.keySet()) {
 			set.add(skills.get(s));
