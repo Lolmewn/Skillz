@@ -129,7 +129,7 @@ public class Skillz extends JavaPlugin{
 	}
 
 	public void onEnable() {
-		long time = System.nanoTime();
+		double time = System.nanoTime();
 		this.makeSettings();
 		try {
 			Skillz.metrics = new Metrics();
@@ -155,8 +155,8 @@ public class Skillz extends JavaPlugin{
 		pm.registerEvents(block, this);
 		pm.registerEvents( entity, this);
 		pm.registerEvents( player, this);
-		long end = System.nanoTime();
-		long taken = (end - time) / 1000000;
+		double end = System.nanoTime();
+		double taken = (end - time) / 1000000;
 		this.log.info("[Skillz]  - version " + this.version + " build " + getDescription().getVersion() + " enabled - took " + taken + "ms!");
 	}
 
