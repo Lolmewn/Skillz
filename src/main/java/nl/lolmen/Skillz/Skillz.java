@@ -157,7 +157,7 @@ public class Skillz extends JavaPlugin{
 		pm.registerEvents( player, this);
 		long end = System.nanoTime();
 		long taken = (end - time) / 1000000;
-		this.log.info("[Skillz]  - V" + getDescription().getVersion() + " Enabled - took " + taken + "ms!");
+		this.log.info("[Skillz]  - version " + this.version + " build " + getDescription().getVersion() + " enabled - took " + taken + "ms!");
 	}
 
 	private void loadSkillz() {
