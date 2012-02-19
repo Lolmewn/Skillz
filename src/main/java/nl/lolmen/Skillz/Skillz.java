@@ -53,7 +53,7 @@ public class Skillz extends JavaPlugin{
 	public static HighScore high = new HighScore();
 	private SkillBlockListener block = new SkillBlockListener(this);
 	private SkillPlayerListener player = new SkillPlayerListener(this);
-	private SkillEntityListener entity = new SkillEntityListener();
+	private SkillEntityListener entity = new SkillEntityListener(this);
 	public static SkillzAPI api = new SkillzAPI();
 	public static Metrics metrics;
 	public SkillManager skillManager;
@@ -415,8 +415,8 @@ public class Skillz extends JavaPlugin{
 							return true;
 						}else if(args.length == 2){
 							sender.sendMessage(ChatColor.RED + "===HighScores===");
-							if(SkillManager.skills.containsKey(args[1])){
-								sender.sendMessage(high.gethighest(SkillManager.skills.get(args[1])));
+							if(this.skillManager.skills.containsKey(args[1])){
+								sender.sendMessage(high.gethighest(this.skillManager.skills.get(args[1])));
 							}else{
 								sender.sendMessage("No such skill: " + args[1]);
 							}

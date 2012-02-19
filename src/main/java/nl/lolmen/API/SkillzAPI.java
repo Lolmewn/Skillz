@@ -4,24 +4,31 @@ import org.bukkit.entity.Player;
 
 import nl.lolmen.Skills.CPU;
 import nl.lolmen.Skills.SkillBase;
-import nl.lolmen.Skills.SkillManager;
+import nl.lolmen.Skillz.Skillz;
 
 public class SkillzAPI {
+	
+	private static Skillz plugin;
+	public SkillzAPI(Skillz main){
+		plugin = main;
+	}
+	
+	public SkillzAPI(){}
 	
 	public SkillzSettings getSettings(){
 		return new SkillzSettings();
 	}
 	
 	public boolean hasSkill(String name){
-		return SkillManager.skills.containsKey(name);
+		return plugin.skillManager.skills.containsKey(name);
 	}
 	
 	public SkillBase getSkill(String name){
-		return SkillManager.skills.get(name);
+		return plugin.skillManager.skills.get(name);
 	}
 	
 	public void removeSkill(String name){
-		SkillManager.skills.remove(name);
+		plugin.skillManager.skills.remove(name);
 	}
 	
 	public void addXP(Player player, SkillBase skill, int amount){

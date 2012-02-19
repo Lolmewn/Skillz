@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import nl.lolmen.Skills.skills.*;
@@ -16,8 +17,7 @@ import nl.lolmen.Skills.skills.*;
 public class SkillManager {
 	private File settings = new File("plugins" + File.separator
 			+ "Skillz" + File.separator + "skills.yml");
-	private String logPrefix = "[Skillz] ";
-	public static HashMap<String, SkillBase> skills = new HashMap<String, SkillBase>();
+	public HashMap<String, SkillBase> skills = new HashMap<String, SkillBase>();
 
 	public void loadSkillsSettings() {
 		if (!settings.exists()) {
@@ -114,26 +114,6 @@ public class SkillManager {
 					skills.put(keys, a);
 					continue;
 				}
-				if(key.equalsIgnoreCase("swimming")){
-					Swimming a = new Swimming();
-					a.setItemOnLevelup(item);
-					a.setMoneyOnLevelup(money);
-					a.setSkillName(key);
-					a.setEnabled(enabled);
-					a.setMultiplier(multiplier);
-					if(!optReward.isEmpty()){
-						for(int i : optReward.keySet()){
-							a.add_to_every_many_levels(i, optReward.get(i));
-						}
-					}
-					if(!optRewardFixed.isEmpty()){
-						for(int i : optRewardFixed.keySet()){
-							a.add_to_fixed_levels(i, optRewardFixed.get(i));
-						}
-					}
-					skills.put(keys, a);
-					continue;
-				}
 				if (key.equalsIgnoreCase("mining")) {
 					Mining a = new Mining();
 					a.setItemOnLevelup(item);
@@ -161,67 +141,6 @@ public class SkillManager {
 					a.setSpeed(c.getInt("miningspeed", 1));
 					a.setDoubleDropChange(c.getInt("change", 5000));
 					skills.put(keys, a);
-					continue;
-				}
-				
-				if(keys.startsWith("axes")){
-					Axes a = new Axes();
-					a.setItemOnLevelup(item);
-					a.setMoneyOnLevelup(money);
-					a.setSkillName("axes");
-					a.setEnabled(enabled);
-					a.setMultiplier(multiplier);
-					if(!optReward.isEmpty()){
-						for(int i : optReward.keySet()){
-							a.add_to_every_many_levels(i, optReward.get(i));
-						}
-					}
-					if(!optRewardFixed.isEmpty()){
-						for(int i : optRewardFixed.keySet()){
-							a.add_to_fixed_levels(i, optRewardFixed.get(i));
-						}
-					}
-					skills.put("axes", a);
-					continue;
-				}
-				if(keys.toLowerCase().startsWith("swords")){
-					Swords a = new Swords();
-					a.setItemOnLevelup(item);
-					a.setMoneyOnLevelup(money);
-					a.setSkillName("swords");
-					a.setEnabled(enabled);
-					a.setMultiplier(multiplier);
-					if(!optReward.isEmpty()){
-						for(int i : optReward.keySet()){
-							a.add_to_every_many_levels(i, optReward.get(i));
-						}
-					}
-					if(!optRewardFixed.isEmpty()){
-						for(int i : optRewardFixed.keySet()){
-							a.add_to_fixed_levels(i, optRewardFixed.get(i));
-						}
-					}
-					skills.put("swords", a);
-					continue;
-				}
-				if(keys.toLowerCase().startsWith("unarmed")){
-					Unarmed a = new Unarmed();
-					a.setItemOnLevelup(item);
-					a.setMoneyOnLevelup(money);
-					a.setSkillName("unarmed");
-					a.setEnabled(enabled);
-					a.setMultiplier(multiplier);
-					if(!optReward.isEmpty()){
-						for(int i : optReward.keySet()){
-							a.add_to_every_many_levels(i, optReward.get(i));
-						}
-					}
-					if(!optRewardFixed.isEmpty()){
-						for(int i : optRewardFixed.keySet()){
-							a.add_to_fixed_levels(i, optRewardFixed.get(i));
-						}
-					}
-					skills.put("unarmed", a);
 					continue;
 				}
 				if(key.equalsIgnoreCase("woodcutting")){
@@ -278,32 +197,25 @@ public class SkillManager {
 					skills.put(keys, a);
 					continue;
 				}
-				if(key.equalsIgnoreCase("farming")){
-					Farming a = new Farming();
-					a.setItemOnLevelup(item);
-					a.setMoneyOnLevelup(money);
-					a.setSkillName(key);
-					a.setEnabled(enabled);
-					a.setMultiplier(multiplier);
-					for(String s: c.getConfigurationSection("skills." + key + ".block_level").getKeys(false)){
-						a.addBlockLevels(Integer.parseInt(s), c.getInt("skills." + key + ".block_level." + s));
+				SkillBase a = new SkillBase();
+				a.setItemOnLevelup(item);
+				a.setMoneyOnLevelup(money);
+				a.setSkillName(key);
+				a.setEnabled(enabled);
+				a.setMultiplier(multiplier);
+				if(!optReward.isEmpty()){
+					for(int i : optReward.keySet()){
+						a.add_to_every_many_levels(i, optReward.get(i));
 					}
-					for(String s: c.getConfigurationSection("skills." + key + ".block_XP").getKeys(false)){
-						a.addBlock(Integer.parseInt(s), c.getInt("skills." + key + ".block_XP." + s));
-					}
-					if(!optReward.isEmpty()){
-						for(int i : optReward.keySet()){
-							a.add_to_every_many_levels(i, optReward.get(i));
-						}
-					}
-					if(!optRewardFixed.isEmpty()){
-						for(int i : optRewardFixed.keySet()){
-							a.add_to_fixed_levels(i, optRewardFixed.get(i));
-						}
-					}
-					skills.put(keys, a);
-					continue;
 				}
+				if(!optRewardFixed.isEmpty()){
+					for(int i : optRewardFixed.keySet()){
+						a.add_to_fixed_levels(i, optRewardFixed.get(i));
+					}
+				}
+				skills.put(keys, a);
+				continue;
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -319,7 +231,7 @@ public class SkillManager {
 	}
 
 	public void createSkillsSettings() {
-		System.out.println(logPrefix + "Trying to create default skills...");
+		Bukkit.getLogger().info("Trying to create default skills...");
 		try {
 			new File("plugins/Skillz/").mkdir();
 			File efile = new File("plugins" + File.separator + "Skillz" + File.separator + "skills.yml");
@@ -332,11 +244,10 @@ public class SkillManager {
 			out.flush();
 			out.close();
 			in.close();
-			System.out.println(logPrefix + "Default skills created succesfully!");
+			Bukkit.getLogger().info("Default skills created succesfully!");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(logPrefix
-					+ "Error creating Skills file! Using default Skills!");
+			Bukkit.getLogger().info("Error creating Skills file! Using default Skills!");
 		}
 	}
 

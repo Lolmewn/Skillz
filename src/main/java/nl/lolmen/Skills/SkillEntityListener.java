@@ -4,6 +4,8 @@ import net.citizensnpcs.api.CitizensManager;
 import nl.lolmen.Skills.CPU;
 import nl.lolmen.Skills.skills.Acrobatics;
 import nl.lolmen.Skills.skills.Archery;
+import nl.lolmen.Skillz.Skillz;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
@@ -18,6 +20,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 public class SkillEntityListener implements Listener{
+	
+	private Skillz plugin;
+	public SkillEntityListener(Skillz main){
+		this.plugin = main;
+	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDamage(EntityDamageEvent event) {
@@ -37,7 +44,7 @@ public class SkillEntityListener implements Listener{
 			SkillBase s;
 			switch(event.getCause()){
 			case FALL:
-				s = SkillManager.skills.get("acrobatics");
+				s = plugin.skillManager.skills.get("acrobatics");
 				if(s == null){
 					return;
 				}
@@ -59,7 +66,7 @@ public class SkillEntityListener implements Listener{
 				}
 				return;
 			case DROWNING:
-				s = SkillManager.skills.get("swimming");
+				s = plugin.skillManager.skills.get("swimming");
 				if(s == null){
 					return;
 				}
@@ -76,7 +83,7 @@ public class SkillEntityListener implements Listener{
 				Player p = (Player)att;
 				Material m = p.getItemInHand().getType();
 				if(m.equals(Material.WOOD_SWORD) || m.equals(Material.IRON_SWORD) || m.equals(Material.STONE_SWORD) || m.equals(Material.DIAMOND_SWORD)){
-					SkillBase s = SkillManager.skills.get("swords");
+					SkillBase s = plugin.skillManager.skills.get("swords");
 					if(s == null){
 						return;
 					}
@@ -87,7 +94,7 @@ public class SkillEntityListener implements Listener{
 					return;
 				}
 				if(m.equals(Material.WOOD_AXE) || m.equals(Material.IRON_AXE) || m.equals(Material.STONE_AXE) || m.equals(Material.DIAMOND_AXE)){
-					SkillBase s = SkillManager.skills.get("axes");
+					SkillBase s = plugin.skillManager.skills.get("axes");
 					if(s == null){
 						return;
 					}
@@ -97,7 +104,7 @@ public class SkillEntityListener implements Listener{
 					s.addXP(p, s.getMultiplier());
 				}
 				if(p.getItemInHand().getType() == Material.AIR){
-					SkillBase s = SkillManager.skills.get("unarmed");
+					SkillBase s = plugin.skillManager.skills.get("unarmed");
 					if(s == null){
 						return;
 					}
@@ -111,7 +118,7 @@ public class SkillEntityListener implements Listener{
 			if(att instanceof Arrow){
 				LivingEntity ent = ((Arrow)att).getShooter();
 				if(ent instanceof Player){
-					Archery s = (Archery) SkillManager.skills.get("archery");
+					Archery s = (Archery) plugin.skillManager.skills.get("archery");
 					if(s == null){
 						return;
 					}
@@ -152,16 +159,16 @@ public class SkillEntityListener implements Listener{
 		}
 		Player p = (Player)event.getEntity();
 		if(SkillsSettings.isResetSkillsOnLevelup()){
-			for(String s: SkillManager.skills.keySet()){
-				SkillBase skill = SkillManager.skills.get(s);
+			for(String s: plugin.skillManager.skills.keySet()){
+				SkillBase skill = plugin.skillManager.skills.get(s);
 				CPU.setLevelWithXP(p, skill, 1);
 			}
 			p.sendMessage(SkillsSettings.getLevelsReset());
 			return;
 		}
 		if(SkillsSettings.getLevelsDownOnDeath() != 0){
-			for(String s: SkillManager.skills.keySet()){
-				SkillBase skill = SkillManager.skills.get(s);
+			for(String s: plugin.skillManager.skills.keySet()){
+				SkillBase skill = plugin.skillManager.skills.get(s);
 				if(CPU.getLevel(p, skill) <= SkillsSettings.getLevelsDownOnDeath()){
 					CPU.setLevelWithXP(p, skill, 1);
 				}else{
