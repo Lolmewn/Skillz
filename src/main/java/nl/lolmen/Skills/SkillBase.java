@@ -27,6 +27,14 @@ public class SkillBase {
 	File folder = new File("plugins" + File.separator + "Skillz" + File.separator + "players" + File.separator);
 
 	public void addXP(final Player p, final int XP) {
+		if(SkillsSettings.isUsePerSkillPerms()){
+			if(!p.hasPermission("skills." + this.getSkillName())){
+				if(SkillsSettings.isDebug()){
+					System.out.println(p.getDisplayName() + " doesn't have perms to gain XP");
+				}
+				return;
+			}
+		}
 		final SkillBase skill = this;
 		int xp;
 		int lvl;
