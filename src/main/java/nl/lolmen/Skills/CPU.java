@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Properties;
 
 import net.milkbowl.vault.economy.Economy;
@@ -20,9 +19,9 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 public class CPU {
 
-	static File folder = new File("plugins" + File.separator + "Skillz" + File.separator + "players" + File.separator);
-	static HashSet<String> list = new HashSet<String>();
-
+	private static File folder = new File("plugins" + File.separator + "Skillz" + File.separator + "players" + File.separator);
+	public static int levelUps = 0;
+	
 	public static void addXP(final Player p, SkillBase skilled, final int XP) {
 		if(!p.hasPermission("skillz.skill." + skilled.getSkillName()) && SkillsSettings.isUsePerSkillPerms()){
 			return;

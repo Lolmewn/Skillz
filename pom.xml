@@ -3,7 +3,6 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Skillz</groupId>
 	<artifactId>Skillz</artifactId>
-	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Skillz</name>
 	<url>http://metrics.griefcraft.com/plugin/Skillz</url>
@@ -45,4 +44,12 @@
 			<version>1.1.6</version>
 		</dependency>
 	</dependencies>
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://77.251.20.228:8080/</url>
+	</ciManagement>
+	<issueManagement>
+		<system>BukkitDev</system>
+		<url>http://dev.bukkit.org/server-mods/skillz/tickets/</url>
+	</issueManagement>
 </project>

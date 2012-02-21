@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.logging.Logger;
 import nl.lolmen.API.SkillzAPI;
+import nl.lolmen.Skills.CPU;
 import nl.lolmen.Skills.SkillBase;
 import nl.lolmen.Skills.SkillBlockListener;
 import nl.lolmen.Skills.SkillsCommand;
@@ -25,6 +26,7 @@ import nl.lolmen.Skills.SkillPlayerListener;
 import nl.lolmen.Skills.SkillsSettings;
 //import nl.lolmen.Skillz.Socketing.ServerSoc;
 import nl.lolmen.database.Metrics;
+import nl.lolmen.database.Metrics.Plotter;
 import nl.lolmen.database.MySQL;
 import nl.lolmen.database.SQLite;
 
@@ -88,22 +90,22 @@ public class Skillz extends JavaPlugin{
 	public boolean broadcast;
 
 	public void onDisable() {
-		if ((useSQL) && (dbManager != null)) {
-			dbManager.close();
+		if ((this.useSQL) && (this.dbManager != null)) {
+			this.dbManager.close();
 		}
-		if ((useMySQL) && (mysql != null)) {
-			mysql.close();
+		if ((this.useMySQL) && (this.mysql != null)) {
+			this.mysql.close();
 		}
-		high.saveMaps();
-		if(updateAvailable){
-			downloadFile("http://dl.dropbox.com/u/7365249/Skillz.jar");
+		this.high.saveMaps();
+		if(this.updateAvailable){
+			this.downloadFile("http://dl.dropbox.com/u/7365249/Skillz.jar");
 		}
-		getServer().getScheduler().cancelTasks(this);
-		log.info("[Skillz] Disabled!");
+		this.getServer().getScheduler().cancelTasks(this);
+		this.log.info("[Skillz] Disabled!");
 	}
 	private void downloadFile(String site){
 		try {
-			log.info("Updating Skillz.. Please wait.");
+			this.log.info("Updating Skillz.. Please wait.");
 			BufferedInputStream in = new BufferedInputStream(new URL(site).openStream());
 			FileOutputStream fout = new FileOutputStream(nl.lolmen.Skillz.Skillz.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
 			byte data[] = new byte[1024]; //Download 1 KB at a time
@@ -112,14 +114,14 @@ public class Skillz extends JavaPlugin{
 			{
 				fout.write(data, 0, count);
 			}
-			log.info("Skillz has been updated!");
+			this.log.info("Skillz has been updated!");
 			in.close();
 			fout.close();
 			YamlConfiguration c = new YamlConfiguration();
 			try{
-				c.load(skillzFile);
-				c.set("version", version);
-				c.save(skillzFile);
+				c.load(this.skillzFile);
+				c.set("version", this.version);
+				c.save(this.skillzFile);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -133,6 +135,21 @@ public class Skillz extends JavaPlugin{
 		this.makeSettings();
 		try {
 			Skillz.metrics = new Metrics();
+			Skillz.metrics.addCustomData(this, new Plotter(){
+
+				@Override
+				public String getColumnName() {
+					return "Total Level-Ups";
+				}
+
+				@Override
+				public int getValue() {
+					int amount = CPU.levelUps;
+					CPU.levelUps = 0;
+					return amount;
+				}
+				
+			});
 			Skillz.metrics.beginMeasuringPlugin(this);
 			this.log.info("[Skillz] Metrics loaded! View them @ http://metrics.griefcraft.com/plugin/Skillz");
 		} catch (IOException e) {
