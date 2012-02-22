@@ -43,6 +43,7 @@ public class SkillBase {
 		if(event.isCancelled()){
 			return;
 		}
+		CPU.xpUps += XP;
 		try {
 			if(!new File(folder, p.getName().toLowerCase() + ".txt").exists()){
 				new File(folder, p.getName().toLowerCase() + ".txt").createNewFile();

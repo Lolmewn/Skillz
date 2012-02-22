@@ -150,6 +150,21 @@ public class Skillz extends JavaPlugin{
 				}
 				
 			});
+			Skillz.metrics.addCustomData(this, new Plotter(){
+
+				@Override
+				public String getColumnName() {
+					return "Total XP-Gained";
+				}
+
+				@Override
+				public int getValue() {
+					int amount = CPU.xpUps;
+					CPU.xpUps = 0;
+					return amount;
+				}
+				
+			});
 			Skillz.metrics.beginMeasuringPlugin(this);
 			this.log.info("[Skillz] Metrics loaded! View them @ http://metrics.griefcraft.com/plugin/Skillz");
 		} catch (IOException e) {

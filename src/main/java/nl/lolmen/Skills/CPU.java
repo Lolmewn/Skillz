@@ -21,6 +21,7 @@ public class CPU {
 
 	private static File folder = new File("plugins" + File.separator + "Skillz" + File.separator + "players" + File.separator);
 	public static int levelUps = 0;
+	public static int xpUps = 0;
 	
 	public static void addXP(final Player p, SkillBase skilled, final int XP) {
 		if(!p.hasPermission("skillz.skill." + skilled.getSkillName()) && SkillsSettings.isUsePerSkillPerms()){
@@ -47,6 +48,7 @@ public class CPU {
 		if(event.isCancelled()){
 			return;
 		}
+		levelUps++;
 		Properties prop = new Properties();
 		try {
 			FileInputStream in = new FileInputStream(new File(folder, p
