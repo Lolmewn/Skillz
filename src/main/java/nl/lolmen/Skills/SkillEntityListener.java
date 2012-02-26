@@ -56,13 +56,12 @@ public class SkillEntityListener implements Listener{
 				s.addXP(p, damage);
 				if(CPU.getLevel(p, s) >= a.getLevelsTillLessDMG()){
 					double deduct = CPU.getLevel(p, s) / a.getLevelsTillLessDMG();
-					int less = event.getDamage() - (int)deduct;
-					if(less > event.getDamage()){
+					if(deduct >= event.getDamage()){
 						event.setDamage(0);
 					}else{
-						event.setDamage(less);
+						event.setDamage((int) (event.getDamage() - deduct));
 					}
-					p.sendMessage(SkillsSettings.getFalldmg(less));
+					p.sendMessage(SkillsSettings.getFalldmg((int)deduct));
 				}
 				return;
 			case DROWNING:
