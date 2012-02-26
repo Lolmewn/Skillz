@@ -48,7 +48,7 @@ public class SkillBlockListener implements Listener{
 			int xpget = s.getXP(event.getBlock().getTypeId())
 					* s.getMultiplier();
 			CPU.addXP(p, s, xpget);
-			if (s instanceof Mining) {
+			if (s.getSkillName().equalsIgnoreCase("mining")) {
 				if(SkillsSettings.isDebug()){
 					System.out.println("It's mining, checking doubledrop");
 				}
