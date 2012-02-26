@@ -96,7 +96,7 @@ public class Skillz extends JavaPlugin{
 		if ((this.useMySQL) && (this.mysql != null)) {
 			this.mysql.close();
 		}
-		this.high.saveMaps();
+		Skillz.high.saveMaps();
 		if(this.updateAvailable){
 			this.downloadFile("http://dl.dropbox.com/u/7365249/Skillz.jar");
 		}
