@@ -30,8 +30,8 @@ public class SkillBlockListener implements Listener{
 				}
 				handleSkill(s, event);
 			}
-			if(SkillsSettings.isDebug()){System.out.println("Dont checking skills for Block");}
 		}
+		if(SkillsSettings.isDebug()){System.out.println("Done checking skills for Block");}
 	}
 
 	private void handleSkill(SkillBlockBase s, BlockBreakEvent event) {
