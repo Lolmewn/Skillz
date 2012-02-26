@@ -9,10 +9,6 @@ import org.bukkit.event.HandlerList;
 
 public class SkillzLevelEvent extends Event implements Cancellable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 454661222663618827L;
 	private static final HandlerList handlers = new HandlerList();
 	private boolean cancelled = false;
 	private Player player;
