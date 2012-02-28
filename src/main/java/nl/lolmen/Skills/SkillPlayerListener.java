@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 
@@ -130,4 +131,11 @@ public class SkillPlayerListener implements Listener {
 		}
 	}
 
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerAnimation(PlayerAnimationEvent event){
+		if(event.isCancelled()){
+			return;
+		}
+		plugin.fb.playerAnimate(event.getPlayer());
+	}
 }

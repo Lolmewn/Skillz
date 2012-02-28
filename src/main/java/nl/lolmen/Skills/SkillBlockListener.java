@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDamageEvent;
 
 public class SkillBlockListener implements Listener{
 	
@@ -31,6 +32,7 @@ public class SkillBlockListener implements Listener{
 				handleSkill(s, event);
 			}
 		}
+		this.plugin.fb.blockBreak(event.getPlayer());
 		if(SkillsSettings.isDebug()){System.out.println("Done checking skills for Block");}
 	}
 
@@ -44,6 +46,7 @@ public class SkillBlockListener implements Listener{
 						+ s.getSkillName().substring(1).toLowerCase()
 						+ " level needed:" + lvlneeded);
 				event.setCancelled(true);
+				return;
 			}
 			int xpget = s.getXP(event.getBlock().getTypeId())
 					* s.getMultiplier();
@@ -56,11 +59,15 @@ public class SkillBlockListener implements Listener{
 				Mining m = (Mining) s;
 				if (m.getWillDoubleDrop(p)) {
 					event.getBlock().breakNaturally();
-					//p.getWorld().dropItemNaturally(
-							//event.getBlock().getLocation(), stack);
 				}
 			}
 		}
+	}
+	
+	public void onBlockDamage(BlockDamageEvent event){
+		if(event.isCancelled()){return;}
+		int ticks = 10; //TODO calculate
+		this.plugin.fb.blockDamage(event.getPlayer(), event.getBlock(), ticks);
 	}
 
 }

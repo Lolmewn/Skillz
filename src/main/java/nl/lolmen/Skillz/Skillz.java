@@ -56,6 +56,7 @@ public class Skillz extends JavaPlugin{
 	private SkillBlockListener block = new SkillBlockListener(this);
 	private SkillPlayerListener player = new SkillPlayerListener(this);
 	private SkillEntityListener entity = new SkillEntityListener(this);
+	public FastBreak fb = new FastBreak();
 	public static SkillzAPI api = new SkillzAPI();
 	public static Metrics metrics;
 	public SkillManager skillManager;
