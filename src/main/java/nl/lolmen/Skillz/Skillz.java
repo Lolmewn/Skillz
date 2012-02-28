@@ -42,7 +42,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Skillz extends JavaPlugin{
-	public final Logger log = Logger.getLogger("Minecraft");
+	public Logger log = null;
 
 	//File stuff
 	public String maindir = "plugins" + File.separator + "Skillz" + File.separator;
@@ -63,7 +63,6 @@ public class Skillz extends JavaPlugin{
 
 	public SQLite dbManager = null;
 	public MySQL mysql = null;
-	public String logPrefix = "[Skillz] ";
 
 	//For faster block breaking
 	public HashMap<Player, Block> FBlock = new HashMap<Player, Block>();
@@ -102,7 +101,7 @@ public class Skillz extends JavaPlugin{
 			this.downloadFile("http://dl.dropbox.com/u/7365249/Skillz.jar");
 		}
 		this.getServer().getScheduler().cancelTasks(this);
-		this.log.info("[Skillz] Disabled!");
+		this.log.info("Disabled!");
 	}
 	private void downloadFile(String site){
 		try {
@@ -133,6 +132,7 @@ public class Skillz extends JavaPlugin{
 
 	public void onEnable() {
 		double time = System.nanoTime();
+		this.log = this.getLogger();
 		this.makeSettings();
 		try {
 			Skillz.metrics = new Metrics();
@@ -167,10 +167,10 @@ public class Skillz extends JavaPlugin{
 				
 			});
 			Skillz.metrics.beginMeasuringPlugin(this);
-			this.log.info("[Skillz] Metrics loaded! View them @ http://metrics.griefcraft.com/plugin/Skillz");
+			this.getLogger().info("Metrics loaded! View them @ http://metrics.griefcraft.com/plugin/Skillz");
 		} catch (IOException e) {
 			e.printStackTrace();
-			this.log.info("[Skillz] Failed to load Metrics!");
+			this.getLogger().info("Failed to load Metrics!");
 		}
 		this.loadSkillz();
 		if(this.update){
@@ -186,11 +186,11 @@ public class Skillz extends JavaPlugin{
 		high.loadMaps();
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(block, this);
-		pm.registerEvents( entity, this);
-		pm.registerEvents( player, this);
+		pm.registerEvents(entity, this);
+		pm.registerEvents(player, this);
 		double end = System.nanoTime();
 		double taken = (end - time) / 1000000;
-		this.log.info("[Skillz]  - version " + this.version + " build " + getDescription().getVersion() + " enabled - took " + taken + "ms!");
+		this.getLogger().info("version " + this.version + " build " + getDescription().getVersion() + " enabled - took " + taken + "ms!");
 	}
 
 	private void loadSkillz() {
@@ -222,7 +222,7 @@ public class Skillz extends JavaPlugin{
 			while((str = in.readLine()) != null){
 				if(this.version < Double.parseDouble(str)){
 					this.updateAvailable = true;
-					this.log.info(logPrefix + "An update is available! Will be downloaded on Disable! Old version: " + this.version + " New version: " + str);
+					this.log.info("An update is available! Will be downloaded on Disable! Old version: " + this.version + " New version: " + str);
 					this.version = Double.parseDouble(str);
 				}
 			}
@@ -249,13 +249,13 @@ public class Skillz extends JavaPlugin{
 		test = getServer().getPluginManager().getPlugin("Vault");
 		if(test != null){
 			SkillsSettings.setHasVault(true);
-			log.info("[Skillz] Hooked into Vault, just in case :)");
+			log.info("Hooked into Vault, just in case :)");
 			return;
 		}else{
 			if(SkillsSettings.getMoneyOnLevelup() == 0){
 				return;
 			}
-			log.warning("[Skillz] Vault not found. Money reward -> 0");
+			log.warning("Vault not found. Money reward -> 0");
 			SkillsSettings.setMoneyOnLevelup(0);
 		}
 	}
@@ -265,8 +265,8 @@ public class Skillz extends JavaPlugin{
 	 * 
 	 */
 	public void loadSQL() {
-		log.info(logPrefix + "SQLite warming up...");
-		log.info(logPrefix + "SQLite temporarily broken, using flatfile");
+		log.info("SQLite warming up...");
+		log.info("SQLite temporarily broken, using flatfile");
 		useSQL = false;
 		/*
 		dbManager = new SQLite(log, logPrefix, "Skillz", "plugins/Skillz");
@@ -279,10 +279,10 @@ public class Skillz extends JavaPlugin{
 	}
 
 	public void loadMySQL() {
-		this.mysql = new MySQL(log, logPrefix, dbHost, Integer.toString(dbPort), dbDB, dbUser, dbPass);
+		this.mysql = new MySQL(log, "", dbHost, Integer.toString(dbPort), dbDB, dbUser, dbPass);
 		if (this.mysql.checkConnection()) {
-			this.log.info(logPrefix + "MySQL connection successful");
-			this.log.info(logPrefix + "MySQL temporarily broken, using flatfile");
+			this.log.info("MySQL connection successful");
+			this.log.info("MySQL temporarily broken, using flatfile");
 			this.useMySQL = false;
 			/*
 			try {
@@ -297,7 +297,7 @@ public class Skillz extends JavaPlugin{
 				useMySQL = false;
 			} */
 		} else {
-			this.log.severe(this.logPrefix + "MySQL connection failed! ");
+			this.log.severe("MySQL connection failed! ");
 			this.useMySQL = false;
 		}
 	}
@@ -604,7 +604,7 @@ public class Skillz extends JavaPlugin{
 					}
 					if(args[0].equalsIgnoreCase("page")){
 						if(args.length == 1){
-							sender.sendMessage(logPrefix + "Please specify the page you want to see!");
+							sender.sendMessage("Please specify the page you want to see!");
 							return true;
 						}
 						try{
