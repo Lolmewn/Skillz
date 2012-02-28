@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import nl.lolmen.Skills.skills.*;
+import nl.lolmen.Skillz.Configurator;
 
 
 public class SkillManager {
@@ -19,9 +20,14 @@ public class SkillManager {
 			+ "Skillz" + File.separator + "skills.yml");
 	public HashMap<String, SkillBase> skills = new HashMap<String, SkillBase>();
 
+	public boolean configed = true;
+	public boolean beingConfigged = false;
+	public Configurator configger;
+
 	public void loadSkillsSettings() {
 		if (!settings.exists()) {
 			createSkillsSettings();
+			this.configed = false;
 		} 
 		YamlConfiguration c = YamlConfiguration.loadConfiguration(settings);
 		try {

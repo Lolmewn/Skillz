@@ -31,7 +31,7 @@ public class FastBreak {
 	}
 	
 	public void blockDamage(Player p, Block b, int ticks){
-		if (this.FBlock.containsKey(p.getName())){
+		if(this.FBlock.containsKey(p.getName())){
 			this.FBlock.remove(p.getName());
 		}
 		if (this.FCount.containsKey(p.getName())) {

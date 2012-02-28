@@ -58,7 +58,7 @@ public class Skillz extends JavaPlugin{
 	private SkillEntityListener entity = new SkillEntityListener(this);
 	public FastBreak fb = new FastBreak();
 	public static SkillzAPI api = new SkillzAPI();
-	public static Metrics metrics;
+	private Metrics metrics;
 	public SkillManager skillManager;
 
 	public SQLite dbManager = null;
@@ -81,8 +81,6 @@ public class Skillz extends JavaPlugin{
 	public double version;
 
 	public boolean update;
-	public boolean configed = true;
-	public boolean beingConfigged = false;
 	public boolean debug;
 
 	public boolean updateAvailable;
@@ -135,8 +133,8 @@ public class Skillz extends JavaPlugin{
 		this.log = this.getLogger();
 		this.makeSettings();
 		try {
-			Skillz.metrics = new Metrics();
-			Skillz.metrics.addCustomData(this, new Plotter(){
+			this.metrics = new Metrics();
+			this.metrics.addCustomData(this, new Plotter(){
 
 				@Override
 				public String getColumnName() {
@@ -149,10 +147,8 @@ public class Skillz extends JavaPlugin{
 					CPU.levelUps = 0;
 					return amount;
 				}
-				
 			});
-			Skillz.metrics.addCustomData(this, new Plotter(){
-
+			this.metrics.addCustomData(this, new Plotter(){
 				@Override
 				public String getColumnName() {
 					return "Total XP-Gained";
@@ -164,9 +160,8 @@ public class Skillz extends JavaPlugin{
 					CPU.xpUps = 0;
 					return amount;
 				}
-				
 			});
-			Skillz.metrics.beginMeasuringPlugin(this);
+			this.metrics.beginMeasuringPlugin(this);
 			this.getLogger().info("Metrics loaded! View them @ http://metrics.griefcraft.com/plugin/Skillz");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -311,10 +306,7 @@ public class Skillz extends JavaPlugin{
 			new File(this.maindir + "users/").renameTo(new File(this.maindir + "players"));
 		}else{
 			new File(this.maindir + "players/").mkdir();
-		}
-		if(!this.skillzFile.exists()){
-			this.configed = false;
-		}		
+		}	
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String str, String[] args){
@@ -615,6 +607,22 @@ public class Skillz extends JavaPlugin{
 							sender.sendMessage("Page must be an int!");
 							return true;
 						}
+					}
+					if(args[0].equalsIgnoreCase("config")){
+						if(sender.isOp()){
+							if(this.skillManager.beingConfigged){
+								sender.sendMessage("Someone is already configging the plugin!");
+								return true;
+							}
+							if(!(sender instanceof Player)){
+								sender.sendMessage("You have to be player to use this command!");
+								return true;
+							}
+							this.skillManager.configger = new Configurator(this, (Player)sender);
+						}else{
+							sender.sendMessage("You have to be OP to use this command!");
+						}
+						return true;
 					}
 
 					//Get another players Skills

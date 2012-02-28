@@ -15,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerAnimationEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 
@@ -28,6 +29,9 @@ public class SkillPlayerListener implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		double time = System.nanoTime();
 		Player p = event.getPlayer();
+		if(!plugin.skillManager.configed && p.isOp()){
+			p.sendMessage("To configure Skillz, type /skills config");
+		}
 		if ((!plugin.useSQL) && (!plugin.useMySQL) && 
 				(!new File(plugin.maindir + "players/" + p.getName().toLowerCase() + ".txt").exists())) {
 			try {
@@ -137,5 +141,15 @@ public class SkillPlayerListener implements Listener {
 			return;
 		}
 		plugin.fb.playerAnimate(event.getPlayer());
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerChat(PlayerChatEvent event){
+		if(event.isCancelled() || plugin.skillManager.configed == true){
+			return;
+		}
+		if(plugin.skillManager.beingConfigged && event.getPlayer().isOp() && plugin.skillManager.configger.getPlayer().getName().equals(event.getPlayer().getName())){
+			plugin.skillManager.configger.handleInput(event.getMessage());
+		}
 	}
 }
