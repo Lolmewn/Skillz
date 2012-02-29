@@ -23,7 +23,7 @@ public class Configurator {
 	
 	public void start(){
 		final String[] messages = {"Welcome to the configuration of Skillz", "This will guide you through the config of Skillz", 
-				"First, Read all these messages. Then the configuration will start.", "You can pause at any time by typing 'start'", "Anything you say won't be seen by others",
+				"First, Read all these messages. Then the configuration will start.", "You can pause at any time by typing 'pause'", "Anything you say won't be seen by others",
 				"Also, you won't be able to see other's messages ", "Type start in chat to start the process, stop to stop it and pause to pause it"};
 		for(int i = 0; i < messages.length; i++){
 			final int count = i;
