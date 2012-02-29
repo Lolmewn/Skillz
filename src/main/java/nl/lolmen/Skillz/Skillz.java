@@ -190,9 +190,6 @@ public class Skillz extends JavaPlugin{
 
 	private void loadSkillz() {
 		this.skillManager = new SkillManager();
-		if(!this.skillzFile.exists()){
-			this.skillManager.createSkillsSettings();
-		}
 		this.skillManager.loadSkillsSettings();
 		YamlConfiguration c = new YamlConfiguration();
 		try{
@@ -204,7 +201,7 @@ public class Skillz extends JavaPlugin{
 			this.dbHost = c.getString("MySQL-Host", "localhost");
 			this.dbPort = c.getInt("MySQL-Port", 3306); 
 			this.dbName = c.getString("MySQL-Database", "minecraft");
-			//this.dbTable = c.getString("MySQL-Table", "Skillz");
+			this.dbTable = c.getString("MySQL-Table", "Skillz");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
