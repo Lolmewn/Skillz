@@ -28,6 +28,7 @@ public class SkillManager {
 		if (!settings.exists()) {
 			createSkillsSettings();
 			this.configed = false;
+			Bukkit.getLogger().info("Going to ask OP to Config settings!");
 		} 
 		YamlConfiguration c = YamlConfiguration.loadConfiguration(settings);
 		try {
