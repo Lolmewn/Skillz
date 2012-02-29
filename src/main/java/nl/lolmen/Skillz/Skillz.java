@@ -614,6 +614,10 @@ public class Skillz extends JavaPlugin{
 								sender.sendMessage("Someone is already configging the plugin!");
 								return true;
 							}
+							if(this.skillManager.configed){
+								sender.sendMessage("Skillz already is configed! Edit skills.yml to edit");
+								return true;
+							}
 							if(!(sender instanceof Player)){
 								sender.sendMessage("You have to be player to use this command!");
 								return true;
