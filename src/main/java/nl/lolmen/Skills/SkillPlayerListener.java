@@ -32,6 +32,9 @@ public class SkillPlayerListener implements Listener {
 		Player p = event.getPlayer();
 		if(!plugin.skillManager.configed && p.isOp()){
 			p.sendMessage("To configure Skillz, type /skills config");
+			if(SkillsSettings.isDebug()){
+				plugin.log.info("[DEBUG] Asked " + p.getName() + " to config Skillz");
+			}
 		}
 		if ((!plugin.useSQL) && (!plugin.useMySQL) && 
 				(!new File(plugin.maindir + "players/" + p.getName().toLowerCase() + ".txt").exists())) {
