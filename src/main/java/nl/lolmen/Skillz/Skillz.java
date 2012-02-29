@@ -197,7 +197,7 @@ public class Skillz extends JavaPlugin{
 		YamlConfiguration c = new YamlConfiguration();
 		try{
 			c.load(skillzFile);
-			this.version = c.getDouble("version", 5.5);
+			this.version = c.getDouble("version", 5.51);
 			this.update = c.getBoolean("update", true);
 			this.dbUser = c.getString("MySQL-User", "root");
 			this.dbPass = c.getString("MySQL-Pass", "root");
