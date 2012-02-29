@@ -132,6 +132,7 @@ public class Skillz extends JavaPlugin{
 		double time = System.nanoTime();
 		this.log = this.getLogger();
 		this.makeSettings();
+		this.loadSkillz();
 		try {
 			this.metrics = new Metrics();
 			this.metrics.addCustomData(this, new Plotter(){
@@ -167,7 +168,6 @@ public class Skillz extends JavaPlugin{
 			e.printStackTrace();
 			this.getLogger().info("Failed to load Metrics!");
 		}
-		this.loadSkillz();
 		if(this.update){
 			checkUpdate();
 		}
