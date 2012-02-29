@@ -620,6 +620,7 @@ public class Skillz extends JavaPlugin{
 								return true;
 							}
 							this.skillManager.configger = new Configurator(this, (Player)sender);
+							this.skillManager.beingConfigged = true;
 						}else{
 							sender.sendMessage("You have to be OP to use this command!");
 						}

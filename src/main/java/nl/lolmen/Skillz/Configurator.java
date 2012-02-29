@@ -31,7 +31,7 @@ public class Configurator {
 				public void run() {
 					p.sendMessage(messages[count]);
 				}
-			}, count*60 + 60);
+			}, count*60);
 		}
 		setTodonext(todo.start);
 	}
