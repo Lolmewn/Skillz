@@ -71,12 +71,12 @@ public class Skillz extends JavaPlugin{
 	//Settings
 	public boolean useSQL = false;
 	public boolean useMySQL = false;
-	private String dbHost;
-	private String dbPass;
-	private String dbUser;
-	private String dbDB;
-	//private String dbTable;
-	private int dbPort;
+	protected String dbHost;
+	protected String dbPass;
+	protected String dbUser;
+	protected String dbName;
+	protected String dbTable;
+	protected int dbPort;
 	public String noPerm = ChatColor.RED + "You do not have Permissions to do this!";
 	public double version;
 
@@ -203,7 +203,7 @@ public class Skillz extends JavaPlugin{
 			this.dbPass = c.getString("MySQL-Pass", "root");
 			this.dbHost = c.getString("MySQL-Host", "localhost");
 			this.dbPort = c.getInt("MySQL-Port", 3306); 
-			this.dbDB = c.getString("MySQL-Database", "minecraft");
+			this.dbName = c.getString("MySQL-Database", "minecraft");
 			//this.dbTable = c.getString("MySQL-Table", "Skillz");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -274,7 +274,7 @@ public class Skillz extends JavaPlugin{
 	}
 
 	public void loadMySQL() {
-		this.mysql = new MySQL(log, "", dbHost, Integer.toString(dbPort), dbDB, dbUser, dbPass);
+		this.mysql = new MySQL(log, "", dbHost, Integer.toString(dbPort), dbName, dbUser, dbPass);
 		if (this.mysql.checkConnection()) {
 			this.log.info("MySQL connection successful");
 			this.log.info("MySQL temporarily broken, using flatfile");

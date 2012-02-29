@@ -10,6 +10,7 @@ import java.util.Properties;
 
 import nl.lolmen.Skillz.Skillz;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -129,7 +130,7 @@ public class SkillPlayerListener implements Listener {
 		}
 
 		if ((plugin.useSQL) && (plugin.useMySQL)) {
-			plugin.log.info("[Skillz] SQL and MySQL are both enabled! Nothing happened!");
+			plugin.log.info("SQL and MySQL are both enabled! Nothing happened!");
 			p.sendMessage("Tell an admin the settings of Skillz are wrong!");
 			return;
 		}
@@ -145,11 +146,19 @@ public class SkillPlayerListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onPlayerChat(PlayerChatEvent event){
-		if(event.isCancelled() || plugin.skillManager.configed == true){
+		if(event.isCancelled() || plugin.skillManager.configed){
 			return;
 		}
-		if(plugin.skillManager.beingConfigged && event.getPlayer().isOp() && plugin.skillManager.configger.getPlayer().getName().equals(event.getPlayer().getName())){
+		if(plugin.skillManager.beingConfigged && event.getPlayer().isOp() && plugin.skillManager.configger.getPlayer().getName().equals(event.getPlayer().getName()) && !plugin.skillManager.configger.isPaused()){
+			//Don't send messages from the configger to others
+			event.setCancelled(true);
+			event.getPlayer().sendMessage(plugin.skillManager.configger.getTodonext().name().toLowerCase() + ": " + event.getMessage());
 			plugin.skillManager.configger.handleInput(event.getMessage());
+			return;
+		}
+		if(plugin.skillManager.beingConfigged && !plugin.skillManager.configger.isPaused()){
+			//Don't send messages from others to the person configging
+			event.getRecipients().remove(Bukkit.getServer().getPlayer(plugin.skillManager.configger.getPlayer().getName()));
 		}
 	}
 }
