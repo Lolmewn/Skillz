@@ -6,7 +6,7 @@ import nl.lolmen.Skills.SkillBase;
 import nl.lolmen.Skills.SkillsSettings;
 import nl.lolmen.Skillz.MathProcessor;
 
-public class Unarmed extends SkillBase{
+public class Axes extends SkillBase{
 	
 	private int levelsPerExtraDamage;
 	private String critCalc;

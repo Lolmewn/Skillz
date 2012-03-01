@@ -45,12 +45,18 @@ skills:
   Axes Combat:
     enabled: true
     XP-gain-multiplier: 1
+    levelsPerExtraDamage: 12
+    critChance: $LEVEL*0.2
   Swords Combat:
     enabled: true
     XP-gain-multiplier: 1
+    levelsPerExtraDamage: 15
+    critChance: $LEVEL*0.2+1
   Unarmed Combat:
     enabled: true
     XP-gain-multiplier: 1
+    levelsPerExtraDamage: 12
+    critChance: $LEVEL*0.2+0.5
   Swimming:
     enabled: true
     XP-gain-multiplier: 1

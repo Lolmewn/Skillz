@@ -6,7 +6,7 @@ import nl.lolmen.Skills.SkillBase;
 import nl.lolmen.Skills.SkillsSettings;
 import nl.lolmen.Skillz.MathProcessor;
 
-public class Unarmed extends SkillBase{
+public class Swords extends SkillBase{
 	
 	private int levelsPerExtraDamage;
 	private String critCalc;
@@ -18,7 +18,7 @@ public class Unarmed extends SkillBase{
 	public void setLevelsPerExtraDamage(int levelsPerExtraDamage) {
 		this.levelsPerExtraDamage = levelsPerExtraDamage;
 	}
-	
+
 	public String getCritCalc() {
 		return critCalc;
 	}
