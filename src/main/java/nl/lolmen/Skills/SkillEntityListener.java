@@ -4,7 +4,9 @@ import net.citizensnpcs.api.CitizensManager;
 import nl.lolmen.Skills.CPU;
 import nl.lolmen.Skills.skills.Acrobatics;
 import nl.lolmen.Skills.skills.Archery;
+import nl.lolmen.Skills.skills.Axes;
 import nl.lolmen.Skills.skills.Swords;
+import nl.lolmen.Skills.skills.Unarmed;
 import nl.lolmen.Skillz.Skillz;
 
 import org.bukkit.ChatColor;
@@ -113,6 +115,18 @@ public class SkillEntityListener implements Listener{
 					if(!s.isEnabled()){
 						return;
 					}
+					Axes sw = (Axes)s;
+					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s)));
+					if(SkillsSettings.isDebug()){
+						plugin.log.info("Damage dealt after extra: " + event.getDamage());
+					}
+					if(sw.willCrit(CPU.getLevel(p, s))){
+						event.setDamage(event.getDamage() * 2);
+						p.sendMessage("[Skillz] Critical strike!");
+						if(SkillsSettings.isDebug()){
+							plugin.log.info("Crit! Damage dealt: " + event.getDamage());
+						}
+					}
 					s.addXP(p, s.getMultiplier());
 				}
 				if(p.getItemInHand().getType() == Material.AIR){
@@ -122,6 +136,18 @@ public class SkillEntityListener implements Listener{
 					}
 					if(!s.isEnabled()){
 						return;
+					}
+					Unarmed sw = (Unarmed)s;
+					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s)));
+					if(SkillsSettings.isDebug()){
+						plugin.log.info("Damage dealt after extra: " + event.getDamage());
+					}
+					if(sw.willCrit(CPU.getLevel(p, s))){
+						event.setDamage(event.getDamage() * 2);
+						p.sendMessage("[Skillz] Critical strike!");
+						if(SkillsSettings.isDebug()){
+							plugin.log.info("Crit! Damage dealt: " + event.getDamage());
+						}
 					}
 					s.addXP(p, s.getMultiplier());
 					return;
@@ -158,7 +184,7 @@ public class SkillEntityListener implements Listener{
 		}
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onEntityDeath(EntityDeathEvent event) {
 		if(!(event.getEntity() instanceof Player)){
 			return;

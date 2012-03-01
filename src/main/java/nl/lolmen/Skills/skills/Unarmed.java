@@ -1,5 +1,7 @@
 package nl.lolmen.Skills.skills;
 
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 
 import nl.lolmen.Skills.SkillBase;
@@ -18,7 +20,7 @@ public class Unarmed extends SkillBase{
 	public void setLevelsPerExtraDamage(int levelsPerExtraDamage) {
 		this.levelsPerExtraDamage = levelsPerExtraDamage;
 	}
-	
+
 	public String getCritCalc() {
 		return critCalc;
 	}
@@ -35,6 +37,20 @@ public class Unarmed extends SkillBase{
 			Bukkit.getLogger().info("Can't calculate crit chance, config is wrong: " + this.critCalc);
 		}
 		return 0;
+	}
+	
+	public boolean willCrit(int level){
+		int chance = this.getCritChance(level);
+		Random rant = new Random();
+		int result = rant.nextInt(100);
+		if(result < chance){
+			return true;
+		}
+		return false;
+	}
+	
+	public int getExtraDamage(int level){
+		return level / this.levelsPerExtraDamage;
 	}
 
 }
