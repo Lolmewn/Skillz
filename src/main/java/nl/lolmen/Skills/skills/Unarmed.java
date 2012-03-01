@@ -30,7 +30,7 @@ public class Unarmed extends SkillBase{
 	public int getCritChance(int level){
 		if(critCalc != null && critCalc != "" && critCalc.contains("$LEVEL")){
 			String send = critCalc.replace("$LEVEL", Integer.toString(level));
-			return MathProcessor.processEquation(send);
+			return (int)MathProcessor.processEquation(send);
 		}else if(SkillsSettings.isDebug()){
 			Bukkit.getLogger().info("Can't calculate crit chance, config is wrong: " + this.critCalc);
 		}

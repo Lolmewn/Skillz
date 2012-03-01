@@ -6,13 +6,13 @@ public class MathProcessor {
 
 	private static final char[] validOperators = {'/','*','+','-'};
 
-	private static int evaluate(String leftSide, char oper, String rightSide) throws IllegalArgumentException{
+	private static double evaluate(String leftSide, char oper, String rightSide) throws IllegalArgumentException{
 		if(SkillsSettings.isDebug()){
 			System.out.println("Evaluating: " + leftSide +  " (" + oper + ") " + rightSide);
 		}
-		int total = 0;
-		int leftResult = 0;
-		int rightResult = 0;
+		double total = 0;
+		double leftResult = 0;
+		double rightResult = 0;
 
 		int operatorLoc = findOperatorLocation(leftSide);
 		if( operatorLoc > 0 && operatorLoc < leftSide.length()-1 ){
@@ -73,7 +73,7 @@ public class MathProcessor {
 	}
 
 
-	public static int processEquation(String equation)	throws IllegalArgumentException	{
+	public static double processEquation(String equation) throws IllegalArgumentException	{
 		return evaluate(equation,'+',"0");
 	}
 

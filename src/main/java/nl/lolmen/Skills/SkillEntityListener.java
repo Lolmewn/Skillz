@@ -4,6 +4,7 @@ import net.citizensnpcs.api.CitizensManager;
 import nl.lolmen.Skills.CPU;
 import nl.lolmen.Skills.skills.Acrobatics;
 import nl.lolmen.Skills.skills.Archery;
+import nl.lolmen.Skills.skills.Swords;
 import nl.lolmen.Skillz.Skillz;
 
 import org.bukkit.ChatColor;
@@ -81,7 +82,7 @@ public class SkillEntityListener implements Listener{
 			if(att instanceof Player){
 				Player p = (Player)att;
 				Material m = p.getItemInHand().getType();
-				if(m.equals(Material.WOOD_SWORD) || m.equals(Material.IRON_SWORD) || m.equals(Material.STONE_SWORD) || m.equals(Material.DIAMOND_SWORD)){
+				if(m.equals(Material.WOOD_SWORD) || m.equals(Material.IRON_SWORD) || m.equals(Material.STONE_SWORD) || m.equals(Material.DIAMOND_SWORD) || m.equals(Material.GOLD_SWORD)){
 					SkillBase s = plugin.skillManager.skills.get("swords");
 					if(s == null){
 						return;
@@ -89,10 +90,22 @@ public class SkillEntityListener implements Listener{
 					if(!s.isEnabled()){
 						return;
 					}
+					Swords sw = (Swords)s;
+					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s)));
+					if(SkillsSettings.isDebug()){
+						plugin.log.info("Damage dealt after extra: " + event.getDamage());
+					}
+					if(sw.willCrit(CPU.getLevel(p, s))){
+						event.setDamage(event.getDamage() * 2);
+						p.sendMessage("[Skillz] Critical strike!");
+						if(SkillsSettings.isDebug()){
+							plugin.log.info("Crit! Damage dealt: " + event.getDamage());
+						}
+					}
 					s.addXP(p, s.getMultiplier());
 					return;
 				}
-				if(m.equals(Material.WOOD_AXE) || m.equals(Material.IRON_AXE) || m.equals(Material.STONE_AXE) || m.equals(Material.DIAMOND_AXE)){
+				if(m.equals(Material.WOOD_AXE) || m.equals(Material.IRON_AXE) || m.equals(Material.STONE_AXE) || m.equals(Material.DIAMOND_AXE) || m.equals(Material.GOLD_AXE)){
 					SkillBase s = plugin.skillManager.skills.get("axes");
 					if(s == null){
 						return;

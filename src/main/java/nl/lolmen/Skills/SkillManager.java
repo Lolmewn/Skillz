@@ -226,6 +226,50 @@ public class SkillManager {
 					skills.put(keys, a);
 					continue;
 				}
+				if(keys.startsWith("axes")){
+					Axes a = new Axes();
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
+					a.setSkillName(key);
+					a.setEnabled(enabled);
+					a.setMultiplier(multiplier);
+					a.setLevelsPerExtraDamage(c.getInt("skills." + key + ".levelsPerExtraDamage", 20));
+					a.setCritCalc(c.getString("skills." + key + ".critChance", "$LEVEL*0.1"));
+					if(!optReward.isEmpty()){
+						for(int i : optReward.keySet()){
+							a.add_to_every_many_levels(i, optReward.get(i));
+						}
+					}
+					if(!optRewardFixed.isEmpty()){
+						for(int i : optRewardFixed.keySet()){
+							a.add_to_fixed_levels(i, optRewardFixed.get(i));
+						}
+					}
+					skills.put(keys, a);
+					continue;
+				}
+				if(keys.startsWith("unarmed")){
+					Unarmed a = new Unarmed();
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
+					a.setSkillName(key);
+					a.setEnabled(enabled);
+					a.setMultiplier(multiplier);
+					a.setLevelsPerExtraDamage(c.getInt("skills." + key + ".levelsPerExtraDamage", 20));
+					a.setCritCalc(c.getString("skills." + key + ".critChance", "$LEVEL*0.1"));
+					if(!optReward.isEmpty()){
+						for(int i : optReward.keySet()){
+							a.add_to_every_many_levels(i, optReward.get(i));
+						}
+					}
+					if(!optRewardFixed.isEmpty()){
+						for(int i : optRewardFixed.keySet()){
+							a.add_to_fixed_levels(i, optRewardFixed.get(i));
+						}
+					}
+					skills.put(keys, a);
+					continue;
+				}
 				SkillBase a = new SkillBase();
 				a.setItemOnLevelup(item);
 				a.setMoneyOnLevelup(money);
