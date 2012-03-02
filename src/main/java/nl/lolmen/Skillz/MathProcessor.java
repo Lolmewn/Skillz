@@ -4,11 +4,11 @@ import nl.lolmen.Skills.SkillsSettings;
 
 public class MathProcessor {
 
-	private static final char[] validOperators = {'/','*','+','-'};
+	private static final char[] validOperators = {'/','*','+','-', '^'};
 
 	private static double evaluate(String leftSide, char oper, String rightSide) throws IllegalArgumentException{
 		if(SkillsSettings.isDebug()){
-			System.out.println("Evaluating: " + leftSide +  " (" + oper + ") " + rightSide);
+			System.out.println("[Skillz - Debug] Evaluating: " + leftSide +  " (" + oper + ") " + rightSide);
 		}
 		double total = 0;
 		double leftResult = 0;
@@ -42,7 +42,7 @@ public class MathProcessor {
 			}
 		}
 		if(SkillsSettings.isDebug()){
-			System.out.println("Getting result of: " + leftResult + " " + oper + " " + rightResult);
+			System.out.println("[Skillz - Debug] Getting result of: " + leftResult + " " + oper + " " + rightResult);
 		}
 		switch(oper){
 		case '/':
@@ -53,11 +53,13 @@ public class MathProcessor {
 			total = leftResult + rightResult; break;
 		case '-':
 			total = leftResult - rightResult; break;
+		case '^':
+			total = Math.pow(leftResult, rightResult); break;
 		default:
 			throw new IllegalArgumentException("Unknown operator.");
 		}
 		if(SkillsSettings.isDebug()){
-			System.out.println("Returning a result of: " + total);
+			System.out.println("[Skillz - Debug] Returning a result of: " + total);
 		}
 		return total;
 	}

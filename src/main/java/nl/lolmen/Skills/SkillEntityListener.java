@@ -102,15 +102,18 @@ public class SkillEntityListener implements Listener{
 						return;
 					}
 					Swords sw = (Swords)s;
+					if(SkillsSettings.isDebug()){
+						plugin.log.info("[Skillz - Debug] Original damage: " + event.getDamage());
+					}
 					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s)));
 					if(SkillsSettings.isDebug()){
-						plugin.log.info("Damage dealt after extra: " + event.getDamage());
+						plugin.log.info("[Skillz - Debug] Damage dealt after extra: " + event.getDamage());
 					}
 					if(sw.willCrit(CPU.getLevel(p, s))){
 						event.setDamage(event.getDamage() * 2);
-						p.sendMessage("[Skillz] Critical strike!");
+						p.sendMessage("[Skillz] " + ChatColor.RED + "Critical strike!");
 						if(SkillsSettings.isDebug()){
-							plugin.log.info("Crit! Damage dealt: " + event.getDamage());
+							plugin.log.info("[Skillz - Debug] Crit! Damage dealt: " + event.getDamage());
 						}
 					}
 					s.addXP(p, s.getMultiplier());
@@ -137,13 +140,16 @@ public class SkillEntityListener implements Listener{
 						return;
 					}
 					Axes sw = (Axes)s;
+					if(SkillsSettings.isDebug()){
+						plugin.log.info("Original damage: " + event.getDamage());
+					}
 					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s)));
 					if(SkillsSettings.isDebug()){
 						plugin.log.info("Damage dealt after extra: " + event.getDamage());
 					}
 					if(sw.willCrit(CPU.getLevel(p, s))){
 						event.setDamage(event.getDamage() * 2);
-						p.sendMessage("[Skillz] Critical strike!");
+						p.sendMessage("[Skillz] " + ChatColor.RED + "Critical strike!");
 						if(SkillsSettings.isDebug()){
 							plugin.log.info("Crit! Damage dealt: " + event.getDamage());
 						}
@@ -172,15 +178,18 @@ public class SkillEntityListener implements Listener{
 						return;
 					}
 					Unarmed sw = (Unarmed)s;
+					if(SkillsSettings.isDebug()){
+						plugin.log.info("[Skillz - Debug] Original damage: " + event.getDamage());
+					}
 					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s)));
 					if(SkillsSettings.isDebug()){
 						plugin.log.info("Damage dealt after extra: " + event.getDamage());
 					}
 					if(sw.willCrit(CPU.getLevel(p, s))){
 						event.setDamage(event.getDamage() * 2);
-						p.sendMessage("[Skillz] Critical strike!");
+						p.sendMessage("[Skillz] " + ChatColor.RED + "Critical strike!");
 						if(SkillsSettings.isDebug()){
-							plugin.log.info("Crit! Damage dealt: " + event.getDamage());
+							plugin.log.info("[Skillz - Debug] Crit! Damage dealt: " + event.getDamage());
 						}
 					}
 					s.addXP(p, s.getMultiplier());
