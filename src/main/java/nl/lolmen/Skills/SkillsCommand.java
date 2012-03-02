@@ -69,6 +69,9 @@ class getSkills extends Thread {
 				}
 				String[] first = strLine.split("=");
 				String skill = first[0];
+				if(skill.startsWith("axes") || skill.startsWith("swords") || skill.startsWith("unarmed")){
+					skill+=" Combat";
+				}
 				String[] second = first[1].split(";");
 				int xp = Integer.parseInt(second[0]);
 				int lvl = Integer.parseInt(second[1]);

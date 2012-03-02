@@ -208,7 +208,7 @@ public class SkillManager {
 					Swords a = new Swords();
 					a.setItemOnLevelup(item);
 					a.setMoneyOnLevelup(money);
-					a.setSkillName(key);
+					a.setSkillName("swords");
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
 					a.setLevelsPerExtraDamage(c.getInt("skills." + key + ".levelsPerExtraDamage", 20));
@@ -230,7 +230,7 @@ public class SkillManager {
 					Axes a = new Axes();
 					a.setItemOnLevelup(item);
 					a.setMoneyOnLevelup(money);
-					a.setSkillName(key);
+					a.setSkillName("axes");
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
 					a.setLevelsPerExtraDamage(c.getInt("skills." + key + ".levelsPerExtraDamage", 20));
@@ -252,7 +252,7 @@ public class SkillManager {
 					Unarmed a = new Unarmed();
 					a.setItemOnLevelup(item);
 					a.setMoneyOnLevelup(money);
-					a.setSkillName(key);
+					a.setSkillName("unarmed");
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
 					a.setLevelsPerExtraDamage(c.getInt("skills." + key + ".levelsPerExtraDamage", 20));
