@@ -85,11 +85,20 @@ public class SkillEntityListener implements Listener{
 				Player p = (Player)att;
 				Material m = p.getItemInHand().getType();
 				if(m.equals(Material.WOOD_SWORD) || m.equals(Material.IRON_SWORD) || m.equals(Material.STONE_SWORD) || m.equals(Material.DIAMOND_SWORD) || m.equals(Material.GOLD_SWORD)){
+					if(SkillsSettings.isDebug()){
+						System.out.println("[Skillz - Debug] Adding some to Swords..");
+					}
 					SkillBase s = plugin.skillManager.skills.get("swords");
 					if(s == null){
+						if(SkillsSettings.isDebug()){
+							System.out.println("[Skillz - Debug] Skill is null for some reason O.o Tried to get swords");
+						}
 						return;
 					}
 					if(!s.isEnabled()){
+						if(SkillsSettings.isDebug()){
+							System.out.println("[Skillz - Debug] Skill " + s.getSkillName() + " not enabled, returning");
+						}
 						return;
 					}
 					Swords sw = (Swords)s;
@@ -105,14 +114,26 @@ public class SkillEntityListener implements Listener{
 						}
 					}
 					s.addXP(p, s.getMultiplier());
+					if(SkillsSettings.isDebug()){
+						System.out.println("[Skillz - Debug] XP added.");
+					}
 					return;
 				}
 				if(m.equals(Material.WOOD_AXE) || m.equals(Material.IRON_AXE) || m.equals(Material.STONE_AXE) || m.equals(Material.DIAMOND_AXE) || m.equals(Material.GOLD_AXE)){
+					if(SkillsSettings.isDebug()){
+						System.out.println("[Skillz - Debug] Adding some to Axes..");
+					}
 					SkillBase s = plugin.skillManager.skills.get("axes");
 					if(s == null){
+						if(SkillsSettings.isDebug()){
+							System.out.println("[Skillz - Debug] Axes == null? That's weird..");
+						}
 						return;
 					}
 					if(!s.isEnabled()){
+						if(SkillsSettings.isDebug()){
+							System.out.println("[Skillz - Debug] Axes is not enabled, returning");
+						}
 						return;
 					}
 					Axes sw = (Axes)s;
@@ -128,13 +149,26 @@ public class SkillEntityListener implements Listener{
 						}
 					}
 					s.addXP(p, s.getMultiplier());
+					if(SkillsSettings.isDebug()){
+						System.out.println("[Skillz - Debug] Done adding XP");
+					}
+					return;
 				}
 				if(p.getItemInHand().getType() == Material.AIR){
+					if(SkillsSettings.isDebug()){
+						System.out.println("[Skillz - Debug] Adding some to unarmed");
+					}
 					SkillBase s = plugin.skillManager.skills.get("unarmed");
 					if(s == null){
+						if(SkillsSettings.isDebug()){
+							System.out.println("[Skillz - Debug] unarmed == null? That's weird..");
+						}
 						return;
 					}
 					if(!s.isEnabled()){
+						if(SkillsSettings.isDebug()){
+							System.out.println("[Skillz - Debug] Unarmed is not enabled, returning");
+						}
 						return;
 					}
 					Unarmed sw = (Unarmed)s;
@@ -150,6 +184,9 @@ public class SkillEntityListener implements Listener{
 						}
 					}
 					s.addXP(p, s.getMultiplier());
+					if(SkillsSettings.isDebug()){
+						System.out.println("[Skillz - Debug] Done adding XP.");
+					}
 					return;
 				}
 			}
