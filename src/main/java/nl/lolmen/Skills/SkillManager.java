@@ -245,7 +245,7 @@ public class SkillManager {
 							a.add_to_fixed_levels(i, optRewardFixed.get(i));
 						}
 					}
-					skills.put("swords", a);
+					skills.put("axes", a);
 					continue;
 				}
 				if(keys.startsWith("unarmed")){
@@ -267,7 +267,7 @@ public class SkillManager {
 							a.add_to_fixed_levels(i, optRewardFixed.get(i));
 						}
 					}
-					skills.put("swords", a);
+					skills.put("unarmed", a);
 					continue;
 				}
 				SkillBase a = new SkillBase();
