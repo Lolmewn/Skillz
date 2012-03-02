@@ -43,10 +43,7 @@ public class Axes extends SkillBase{
 		int chance = this.getCritChance(level);
 		Random rant = new Random();
 		int result = rant.nextInt(100);
-		if(result < chance){
-			return true;
-		}
-		return false;
+		return result < chance ? true : false;
 	}
 	
 	public int getExtraDamage(int level){

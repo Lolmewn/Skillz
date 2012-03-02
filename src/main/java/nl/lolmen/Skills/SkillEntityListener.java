@@ -5,6 +5,7 @@ import nl.lolmen.Skills.CPU;
 import nl.lolmen.Skills.skills.Acrobatics;
 import nl.lolmen.Skills.skills.Archery;
 import nl.lolmen.Skills.skills.Axes;
+import nl.lolmen.Skills.skills.Swimming;
 import nl.lolmen.Skills.skills.Swords;
 import nl.lolmen.Skills.skills.Unarmed;
 import nl.lolmen.Skillz.Skillz;
@@ -42,7 +43,6 @@ public class SkillEntityListener implements Listener{
 			}
 		}
 		if(e instanceof Player){
-			
 			Player p = (Player)e;
 			SkillBase s;
 			switch(event.getCause()){
@@ -74,6 +74,10 @@ public class SkillEntityListener implements Listener{
 				}
 				if(!s.isEnabled()){
 					return;
+				}
+				Swimming sw = (Swimming)s;
+				if(sw.wontDrown(CPU.getLevel(p, s))){
+					event.setCancelled(true);
 				}
 				s.addXP(p, s.getMultiplier());
 				return;

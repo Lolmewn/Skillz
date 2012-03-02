@@ -271,6 +271,27 @@ public class SkillManager {
 					skills.put("unarmed", a);
 					continue;
 				}
+				if(keys.startsWith("swimming")){
+					Swimming a = new Swimming();
+					a.setItemOnLevelup(item);
+					a.setMoneyOnLevelup(money);
+					a.setSkillName("swimming");
+					a.setEnabled(enabled);
+					a.setMultiplier(multiplier);
+					a.setNoDrownChance(c.getString("skills." + key + ".critChance", "$LEVEL*0.1"));
+					if(!optReward.isEmpty()){
+						for(int i : optReward.keySet()){
+							a.add_to_every_many_levels(i, optReward.get(i));
+						}
+					}
+					if(!optRewardFixed.isEmpty()){
+						for(int i : optRewardFixed.keySet()){
+							a.add_to_fixed_levels(i, optRewardFixed.get(i));
+						}
+					}
+					skills.put(key, a);
+					continue;
+				}
 				SkillBase a = new SkillBase();
 				a.setItemOnLevelup(item);
 				a.setMoneyOnLevelup(money);
