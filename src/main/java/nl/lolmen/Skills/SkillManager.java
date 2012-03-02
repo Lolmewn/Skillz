@@ -87,6 +87,7 @@ public class SkillManager {
 					a.setSkillName(key);
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
+					a.setCritCalc(c.getString("skills." + key + ".critChance", "$LEVEL*0.1"));
 					if(!optReward.isEmpty()){
 						for(int i : optReward.keySet()){
 							a.add_to_every_many_levels(i, optReward.get(i));

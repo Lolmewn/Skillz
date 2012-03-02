@@ -224,6 +224,10 @@ public class SkillEntityListener implements Listener{
 					if(added > 4){
 						p.sendMessage("[Skillz] " + ChatColor.DARK_RED + "MULTI XP!");
 					}
+					if(s.willCrit(CPU.getLevel((Player)ent, s))){
+						event.setDamage(event.getDamage() * 2);
+						p.sendMessage("[Skillz] " + ChatColor.RED + "Critical hit!");
+					}
 					s.addXP(p, added);
 				}
 			}
