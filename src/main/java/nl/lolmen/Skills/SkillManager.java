@@ -310,7 +310,6 @@ public class SkillManager {
 				}
 				skills.put(keys, a);
 				continue;
-				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
