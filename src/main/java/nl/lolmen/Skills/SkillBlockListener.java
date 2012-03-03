@@ -1,5 +1,6 @@
 package nl.lolmen.Skills;
 
+import nl.lolmen.Skills.skills.CustomSkill;
 import nl.lolmen.Skills.skills.Mining;
 import nl.lolmen.Skillz.Skillz;
 
@@ -22,6 +23,7 @@ public class SkillBlockListener implements Listener{
 		if(event.isCancelled()){
 			return;
 		}
+		double time = System.nanoTime();
 		for (SkillBase base : plugin.skillManager.getSkills()) {
 			if (base instanceof SkillBlockBase) {
 				if(SkillsSettings.isDebug()){System.out.println("Skill " + base.getSkillName() + " = true");}
@@ -32,8 +34,25 @@ public class SkillBlockListener implements Listener{
 				handleSkill(s, event);
 			}
 		}
+		for(CustomSkill skill : plugin.customManager.getSkillsUsing("BLOCK_BREAK")){
+			if(!skill.isEnabled()){
+				continue;
+			}
+			if(skill.hasBlock(event.getBlock())){
+				if(CPU.getLevel(event.getPlayer(), skill) < skill.getLevelNeeded(event.getBlock())){
+					event.getPlayer().sendMessage("You are not allowed to mine this block! "
+							+ skill.getSkillName().substring(0, 1).toUpperCase()
+							+ skill.getSkillName().substring(1).toLowerCase()
+							+ " level needed:" + skill.getLevelNeeded(event.getBlock()));
+					event.setCancelled(true);
+					return;
+				}
+				int xpget = skill.getXP(event.getBlock()) * skill.getMultiplier();
+				skill.addXP(event.getPlayer(), xpget);
+			}
+		}
 		this.plugin.fb.blockBreak(event.getPlayer());
-		if(SkillsSettings.isDebug()){System.out.println("Done checking skills for Block");}
+		if(SkillsSettings.isDebug()){double end = System.nanoTime();double taken = (end - time) / 1000000; System.out.println("BLOCK_BREAK done in " + taken + "ms");}
 	}
 
 	private void handleSkill(SkillBlockBase s, BlockBreakEvent event) {

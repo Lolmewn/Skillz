@@ -17,6 +17,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 import nl.lolmen.API.SkillzAPI;
 import nl.lolmen.Skills.CPU;
+import nl.lolmen.Skills.CustomSkillManager;
 import nl.lolmen.Skills.SkillBase;
 import nl.lolmen.Skills.SkillBlockListener;
 import nl.lolmen.Skills.SkillsCommand;
@@ -60,6 +61,7 @@ public class Skillz extends JavaPlugin{
 	public static SkillzAPI api = new SkillzAPI();
 	private Metrics metrics;
 	public SkillManager skillManager;
+	public CustomSkillManager customManager;
 
 	public SQLite dbManager = null;
 	public MySQL mysql = null;
@@ -191,6 +193,8 @@ public class Skillz extends JavaPlugin{
 	private void loadSkillz() {
 		this.skillManager = new SkillManager();
 		this.skillManager.loadSkillsSettings();
+		this.customManager = new CustomSkillManager();
+		this.customManager.loadCustomSkills();
 		YamlConfiguration c = new YamlConfiguration();
 		try{
 			c.load(skillzFile);

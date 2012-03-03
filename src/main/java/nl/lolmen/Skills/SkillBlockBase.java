@@ -45,6 +45,10 @@ public class SkillBlockBase extends SkillBase{
 		}
 	}
 	
+	public int getXP(Block block){
+		return this.getXP(block.getTypeId());
+	}
+	
 	public int getLevelNeeded(int blockID){
 		if(blockLevels.containsKey(blockID)){
 			return blockLevels.get(blockID);
