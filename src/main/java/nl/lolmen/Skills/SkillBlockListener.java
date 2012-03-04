@@ -10,6 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 
 public class SkillBlockListener implements Listener{
 	
@@ -26,7 +27,7 @@ public class SkillBlockListener implements Listener{
 		double time = System.nanoTime();
 		for (SkillBase base : plugin.skillManager.getSkills()) {
 			if (base instanceof SkillBlockBase) {
-				if(SkillsSettings.isDebug()){System.out.println("Skill " + base.getSkillName() + " = true");}
+				if(SkillsSettings.isDebug()){System.out.println("[Skillz - Debug] Skill " + base.getSkillName() + " = true");}
 				SkillBlockBase s = (SkillBlockBase) base;
 				if (!s.isEnabled()) {
 					continue;
@@ -40,7 +41,7 @@ public class SkillBlockListener implements Listener{
 			}
 			if(skill.hasBlock(event.getBlock())){
 				if(CPU.getLevel(event.getPlayer(), skill) < skill.getLevelNeeded(event.getBlock())){
-					event.getPlayer().sendMessage("You are not allowed to mine this block! "
+					event.getPlayer().sendMessage("You are not allowed to break this block! "
 							+ skill.getSkillName().substring(0, 1).toUpperCase()
 							+ skill.getSkillName().substring(1).toLowerCase()
 							+ " level needed:" + skill.getLevelNeeded(event.getBlock()));
@@ -52,7 +53,33 @@ public class SkillBlockListener implements Listener{
 			}
 		}
 		this.plugin.fb.blockBreak(event.getPlayer());
-		if(SkillsSettings.isDebug()){double end = System.nanoTime();double taken = (end - time) / 1000000; System.out.println("BLOCK_BREAK done in " + taken + "ms");}
+		if(SkillsSettings.isDebug()){double end = System.nanoTime();double taken = (end - time) / 1000000; System.out.println("[Skillz - Debug] BLOCK_BREAK done in " + taken + "ms");}
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onBlockPlace(BlockPlaceEvent event){
+		if(event.isCancelled()){
+			return;
+		}
+		double time = System.nanoTime();
+		for(CustomSkill skill : plugin.customManager.getSkillsUsing("BLOCK_PLACE")){
+			if(!skill.isEnabled()){
+				continue;
+			}
+			if(skill.hasBlock(event.getBlock())){
+				if(CPU.getLevel(event.getPlayer(), skill) < skill.getLevelNeeded(event.getBlock())){
+					event.getPlayer().sendMessage("You are not allowed to break this block! "
+							+ skill.getSkillName().substring(0, 1).toUpperCase()
+							+ skill.getSkillName().substring(1).toLowerCase()
+							+ " level needed:" + skill.getLevelNeeded(event.getBlock()));
+					event.setCancelled(true);
+					return;
+				}
+				int xpget = skill.getXP(event.getBlock()) * skill.getMultiplier();
+				skill.addXP(event.getPlayer(), xpget);
+			}
+		}
+		if(SkillsSettings.isDebug()){double end = System.nanoTime();double taken = (end - time) / 1000000; System.out.println("[Skillz - Debug] BLOCK_PLACE done in " + taken + "ms");}
 	}
 
 	private void handleSkill(SkillBlockBase s, BlockBreakEvent event) {
