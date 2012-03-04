@@ -1,6 +1,10 @@
 package nl.lolmen.Skills;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -17,7 +21,7 @@ public class CustomSkillManager {
 	
 	public void loadCustomSkills(){
 		if(!customFile.exists()){
-			
+			this.createCustomSkills();
 		}
 		YamlConfiguration c = YamlConfiguration.loadConfiguration(customFile);
 		try{
@@ -83,6 +87,27 @@ public class CustomSkillManager {
 			}
 		}
 		return set;
+	}
+	
+	private void createCustomSkills() {
+		Bukkit.getLogger().info("[Skillz] Trying to create default custom skills...");
+		try {
+			new File("plugins/Skillz/").mkdir();
+			File efile = new File("plugins" + File.separator + "Skillz" + File.separator + "custom.yml");
+			InputStream in = this.getClass().getClassLoader().getResourceAsStream("custom.yml");
+			OutputStream out = new BufferedOutputStream(new FileOutputStream(efile));
+			int c;
+			while ((c = in.read()) != -1) {
+				out.write(c);
+			}
+			out.flush();
+			out.close();
+			in.close();
+			Bukkit.getLogger().info("[Skillz] Custom skills created succesfully!");
+		} catch (Exception e) {
+			e.printStackTrace();
+			Bukkit.getLogger().info("[Skillz] Error creating custom skills file! Not using any!");
+		}
 	}
 
 }
