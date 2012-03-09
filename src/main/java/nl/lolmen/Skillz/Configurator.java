@@ -57,22 +57,17 @@ public class Configurator {
 		if(this.getTodonext().equals(todo.dbtype)){
 			if(input.startsWith("my")){
 				plugin.useMySQL = true;
-				plugin.useSQL = false;
 				this.setTodonext(todo.dbhost);
 				this.p.sendMessage("What is the database host? Usually localhost");
-			}
-			if(input.startsWith("sql")){
-				plugin.useSQL = true;
-				plugin.useMySQL = false;
-				this.setTodonext(todo.moneyReward);
-				this.p.sendMessage("How much money should a player get when he levels up?");
+				return;
 			}
 			if(input.startsWith("flat")){
 				plugin.useMySQL = false;
-				plugin.useSQL = false;
 				this.setTodonext(todo.moneyReward);
 				this.p.sendMessage("How much money should a player get when he levels up?");
+				return;
 			}
+			this.p.sendMessage("Not sure what database type this is: " + input);
 			return;
 		}
 		if(this.getTodonext().equals(todo.dbhost)){

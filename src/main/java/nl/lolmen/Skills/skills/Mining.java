@@ -2,14 +2,16 @@ package nl.lolmen.Skills.skills;
 
 import nl.lolmen.Skills.CPU;
 import nl.lolmen.Skills.SkillBlockBase;
+import nl.lolmen.Skillz.Skillz;
 
 import org.bukkit.entity.Player;
 
-
-//Mining one of the skills.
-
 public class Mining extends SkillBlockBase{
-		private int speed;
+		public Mining(Skillz plugin) {
+		super(plugin);
+	}
+
+	private int speed;
 	private int doubleDropChange;
 
 	public int getSpeed() {
@@ -32,5 +34,4 @@ public class Mining extends SkillBlockBase{
 		this.doubleDropChange = doubleDropChange;
 	}
 	
-
 }

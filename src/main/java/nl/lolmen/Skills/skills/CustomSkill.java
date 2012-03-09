@@ -5,9 +5,14 @@ import java.util.HashMap;
 import org.bukkit.block.Block;
 
 import nl.lolmen.Skills.SkillBase;
+import nl.lolmen.Skillz.Skillz;
 
 public class CustomSkill extends SkillBase{
 	
+	public CustomSkill(Skillz plugin) {
+		super(plugin);
+	}
+
 	private String uses;
 	private HashMap<Integer, Integer> blocks = new HashMap<Integer, Integer>();
 	private HashMap<Integer, Integer> blockLevels = new HashMap<Integer, Integer>();

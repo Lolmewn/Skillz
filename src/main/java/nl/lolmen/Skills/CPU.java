@@ -31,44 +31,48 @@ public class CPU {
 	}
 
 	public static void checkLeveling(Player p, SkillBase skill, int lvl,
-			int newXP) {
+			int newXP, Skillz main) {
 		if (lvl == 0) {
-			levelUp(p, skill, lvl + 1);
+			levelUp(p, skill, lvl + 1, main);
 		} else {
 			double result = newXP / ((lvl * lvl) * 10);
 			if (result >= 1) { 
-				levelUp(p, skill, lvl + 1);
-				checkLeveling(p, skill, lvl + 1, newXP);
+				levelUp(p, skill, lvl + 1, main);
+				checkLeveling(p, skill, lvl + 1, newXP, main);
 			}
 		}
 	}
 
-	public static void levelUp(Player p, SkillBase skill, int lvl) {
+	public static void levelUp(Player p, SkillBase skill, int lvl, Skillz main) {
 		SkillzLevelEvent event = new SkillzLevelEvent(p, skill, lvl);
 		if(event.isCancelled()){
 			return;
 		}
 		levelUps++;
-		Properties prop = new Properties();
-		try {
-			FileInputStream in = new FileInputStream(new File(folder, p
-					.getName().toLowerCase() + ".txt"));
-			prop.load(in);
-			String get = prop.getProperty(skill.getSkillName());
-			String[] array = get.split(";");
-			int xp = Integer.parseInt(array[0]);
-			String back = Integer.toString(xp) + ";" + Integer.toString(lvl);
-			prop.setProperty(skill.getSkillName(), back);
-			FileOutputStream out = new FileOutputStream(new File(folder, p
-					.getName().toLowerCase() + ".txt"));
-			prop.store(out, "Skill=XP;lvl");
-			in.close();
-			out.flush();
-			out.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(!main.useMySQL){
+			Properties prop = new Properties();
+			try {
+				FileInputStream in = new FileInputStream(new File(folder, p
+						.getName().toLowerCase() + ".txt"));
+				prop.load(in);
+				String get = prop.getProperty(skill.getSkillName());
+				String[] array = get.split(";");
+				int xp = Integer.parseInt(array[0]);
+				String back = Integer.toString(xp) + ";" + Integer.toString(lvl);
+				prop.setProperty(skill.getSkillName(), back);
+				FileOutputStream out = new FileOutputStream(new File(folder, p
+						.getName().toLowerCase() + ".txt"));
+				prop.store(out, "Skill=XP;lvl");
+				in.close();
+				out.flush();
+				out.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else{
+			main.mysql.executeStatement("UPDATE " + main.dbTable + " SET level=" + lvl + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "'");
 		}
 		if (SkillsSettings.isBroadcastOnLevelup()) {
 			Bukkit.getServer().broadcastMessage(

@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Properties;
 
 import nl.lolmen.API.SkillzXPGainEvent;
-import org.bukkit.Bukkit;
+import nl.lolmen.Skillz.Skillz;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,12 +22,17 @@ public class SkillBase {
 	private int moneyOnLevelup;
 	private int multiplier;
 	private boolean enabled;
+	private Skillz plugin;
 	
 	private HashMap<Integer, String> every_many_levels = new HashMap<Integer, String>();
 	private HashMap<Integer, Integer> every_many_levels_money = new HashMap<Integer, Integer>();
 	private HashMap<Integer, String> fixed_levels = new HashMap<Integer, String>();
 	private HashMap<Integer, Integer> fixed_levels_money = new HashMap<Integer, Integer>();
 	File folder = new File("plugins" + File.separator + "Skillz" + File.separator + "players" + File.separator);
+	
+	public SkillBase(Skillz plugin){
+		this.plugin = plugin;
+	}
 
 	public void addXP(final Player p, final int XP) {
 		if(SkillsSettings.isDebug()){
@@ -42,44 +50,61 @@ public class SkillBase {
 			}
 		}
 		final SkillBase skill = this;
-		int xp;
-		int lvl;
+		int xp = 0;
+		int lvl = 0;
 		SkillzXPGainEvent event = new SkillzXPGainEvent(p, skill, XP);
-		Bukkit.getServer().getPluginManager().callEvent(event);
+		plugin.getServer().getPluginManager().callEvent(event);
 		if(event.isCancelled()){
 			return;
 		}
 		CPU.xpUps += XP;
-		try {
-			if(!new File(folder, p.getName().toLowerCase() + ".txt").exists()){
-				new File(folder, p.getName().toLowerCase() + ".txt").createNewFile();
-				System.out.println("[Skillz] New file created for " + p.getName());
+		if(!plugin.useMySQL){
+			try {
+				if(!new File(folder, p.getName().toLowerCase() + ".txt").exists()){
+					new File(folder, p.getName().toLowerCase() + ".txt").createNewFile();
+					System.out.println("[Skillz] New file created for " + p.getName());
+				}
+				String skillname = skill.getSkillName().toLowerCase();
+				Properties prop = new Properties();
+				FileInputStream in = new FileInputStream(new File(folder, p.getName().toLowerCase() + ".txt"));
+				prop.load(in);
+				if (!prop.containsKey(skillname)) {
+					System.out.println("[Skillz] Skill " + skillname + " not found, adding!");
+					prop.put(skillname, "0;0");
+					prop.store(new FileOutputStream(new File(folder, p
+							.getName().toLowerCase() + ".txt")),
+							"Skill=XP;lvl");
+				}
+				String get = prop.getProperty(skillname);
+				String[] array = get.split(";");
+				xp = Integer.parseInt(array[0]);
+				lvl = Integer.parseInt(array[1]);
+				prop.setProperty(skillname,Integer.toString(xp + XP) + ";"+ array[1]);
+				FileOutputStream out = new FileOutputStream(new File(
+						folder, p.getName().toLowerCase() + ".txt"));
+				prop.store(out, "Skill=XP;lvl");
+				in.close();
+				out.flush();
+				out.close();
+				CPU.checkLeveling(p, skill, lvl, (xp + XP), plugin);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			String skillname = skill.getSkillName().toLowerCase();
-			Properties prop = new Properties();
-			FileInputStream in = new FileInputStream(new File(folder, p.getName().toLowerCase() + ".txt"));
-			prop.load(in);
-			if (!prop.containsKey(skillname)) {
-				System.out.println("[Skillz] Skill " + skillname + " not found, adding!");
-				prop.put(skillname, "0;0");
-				prop.store(new FileOutputStream(new File(folder, p
-						.getName().toLowerCase() + ".txt")),
-						"Skill=XP;lvl");
+		}else{
+			ResultSet set = this.plugin.mysql.executeQuery("SELECT * FROM " + this.plugin.dbTable + " WHERE player='" + p.getName() + "' AND skill='" + this.getSkillName() + "' LIMIT 1");
+			try {
+				while(set.next()){
+					xp = set.getInt("xp");
+					lvl = set.getInt("level");
+					if(SkillsSettings.isDebug()){
+						System.out.println("XP: " + xp + " LVL:" + lvl);
+					}
+					this.plugin.mysql.executeStatement("UPDATE " + this.plugin.dbTable + " SET xp=" + xp+XP + " , level=" + lvl + " WHERE player='" + p.getName() + " AND skill='" + this.getSkillName() + "'");
+					CPU.checkLeveling(p, skill, lvl, xp + XP, plugin);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-			String get = prop.getProperty(skillname);
-			String[] array = get.split(";");
-			xp = Integer.parseInt(array[0]);
-			lvl = Integer.parseInt(array[1]);
-			prop.setProperty(skillname,Integer.toString(xp + XP) + ";"+ array[1]);
-			FileOutputStream out = new FileOutputStream(new File(
-					folder, p.getName().toLowerCase() + ".txt"));
-			prop.store(out, "Skill=XP;lvl");
-			in.close();
-			out.flush();
-			out.close();
-			CPU.checkLeveling(p, skill, lvl, (xp + XP));
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 

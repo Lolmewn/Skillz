@@ -2,10 +2,16 @@ package nl.lolmen.Skills;
 
 import java.util.HashMap;
 
+import nl.lolmen.Skillz.Skillz;
+
 import org.bukkit.block.Block;
 
 public class SkillBlockBase extends SkillBase{
 
+	public SkillBlockBase(Skillz plugin) {
+		super(plugin);
+	}
+	
 	private boolean allFromFirstLevel;
 	private HashMap<Integer, Integer> blocks = new HashMap<Integer, Integer>();
 	private HashMap<Integer, Integer> blockLevels = new HashMap<Integer, Integer>();

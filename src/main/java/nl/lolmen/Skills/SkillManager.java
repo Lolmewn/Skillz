@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import nl.lolmen.Skills.skills.*;
 import nl.lolmen.Skillz.Configurator;
+import nl.lolmen.Skillz.Skillz;
 
 
 public class SkillManager {
@@ -23,6 +24,11 @@ public class SkillManager {
 	public boolean configed = true;
 	public boolean beingConfigged = false;
 	public Configurator configger;
+	private Skillz plugin;
+	
+	public SkillManager(Skillz main){
+		this.plugin = main;
+	}
 
 	public void loadSkillsSettings() {
 		if (!settings.exists()) {
@@ -80,7 +86,7 @@ public class SkillManager {
 					}
 				}
 				if (key.equalsIgnoreCase("archery")) {
-					Archery a = new Archery();
+					Archery a = new Archery(this.plugin);
 					a.setBlocks_till_XP(c.getInt("skills." + key + ".blocks-till-1XP-add", 10));
 					a.setItemOnLevelup(item);
 					a.setMoneyOnLevelup(money);
@@ -102,7 +108,7 @@ public class SkillManager {
 					continue;
 				}
 				if(keys.equalsIgnoreCase("acrobatics")){
-					Acrobatics a = new Acrobatics();
+					Acrobatics a = new Acrobatics(this.plugin);
 					a.setItemOnLevelup(item);
 					a.setMoneyOnLevelup(money);
 					a.setSkillName(keys);
@@ -123,7 +129,7 @@ public class SkillManager {
 					continue;
 				}
 				if (key.equalsIgnoreCase("mining")) {
-					Mining a = new Mining();
+					Mining a = new Mining(this.plugin);
 					a.setItemOnLevelup(item);
 					a.setMoneyOnLevelup(money);
 					a.setSkillName(key);
@@ -152,7 +158,7 @@ public class SkillManager {
 					continue;
 				}
 				if(key.equalsIgnoreCase("woodcutting")){
-					Woodcutting a = new Woodcutting();
+					Woodcutting a = new Woodcutting(this.plugin);
 					a.setItemOnLevelup(item);
 					a.setMoneyOnLevelup(money);
 					a.setSkillName(key);
@@ -179,7 +185,7 @@ public class SkillManager {
 					continue;
 				}
 				if(key.equalsIgnoreCase("digging")){
-					Digging a = new Digging();
+					Digging a = new Digging(this.plugin);
 					a.setItemOnLevelup(item);
 					a.setMoneyOnLevelup(money);
 					a.setSkillName(key);
@@ -206,7 +212,7 @@ public class SkillManager {
 					continue;
 				}
 				if(keys.startsWith("swords")){
-					Swords a = new Swords();
+					Swords a = new Swords(this.plugin);
 					a.setItemOnLevelup(item);
 					a.setMoneyOnLevelup(money);
 					a.setSkillName("swords");
@@ -228,7 +234,7 @@ public class SkillManager {
 					continue;
 				}
 				if(keys.startsWith("axes")){
-					Axes a = new Axes();
+					Axes a = new Axes(this.plugin);
 					a.setItemOnLevelup(item);
 					a.setMoneyOnLevelup(money);
 					a.setSkillName("axes");
@@ -250,7 +256,7 @@ public class SkillManager {
 					continue;
 				}
 				if(keys.startsWith("unarmed")){
-					Unarmed a = new Unarmed();
+					Unarmed a = new Unarmed(this.plugin);
 					a.setItemOnLevelup(item);
 					a.setMoneyOnLevelup(money);
 					a.setSkillName("unarmed");
@@ -272,7 +278,7 @@ public class SkillManager {
 					continue;
 				}
 				if(keys.startsWith("swimming")){
-					Swimming a = new Swimming();
+					Swimming a = new Swimming(this.plugin);
 					a.setItemOnLevelup(item);
 					a.setMoneyOnLevelup(money);
 					a.setSkillName("swimming");
@@ -292,7 +298,7 @@ public class SkillManager {
 					skills.put(key, a);
 					continue;
 				}
-				SkillBase a = new SkillBase();
+				SkillBase a = new SkillBase(this.plugin);
 				a.setItemOnLevelup(item);
 				a.setMoneyOnLevelup(money);
 				a.setSkillName(key);

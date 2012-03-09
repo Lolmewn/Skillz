@@ -25,11 +25,8 @@ import nl.lolmen.Skills.SkillEntityListener;
 import nl.lolmen.Skills.SkillManager;
 import nl.lolmen.Skills.SkillPlayerListener;
 import nl.lolmen.Skills.SkillsSettings;
+import nl.lolmen.Skillz.Metrics.Plotter;
 //import nl.lolmen.Skillz.Socketing.ServerSoc;
-import nl.lolmen.database.Metrics;
-import nl.lolmen.database.Metrics.Plotter;
-import nl.lolmen.database.MySQL;
-import nl.lolmen.database.SQLite;
 
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -62,8 +59,6 @@ public class Skillz extends JavaPlugin{
 	private Metrics metrics;
 	public SkillManager skillManager;
 	public CustomSkillManager customManager;
-
-	public SQLite dbManager = null;
 	public MySQL mysql = null;
 
 	//For faster block breaking
@@ -71,13 +66,12 @@ public class Skillz extends JavaPlugin{
 	public HashMap<Player, Integer> FCount = new HashMap<Player, Integer>();
 
 	//Settings
-	public boolean useSQL = false;
 	public boolean useMySQL = false;
 	protected String dbHost;
 	protected String dbPass;
 	protected String dbUser;
 	protected String dbName;
-	protected String dbTable;
+	public String dbTable;
 	protected int dbPort;
 	public String noPerm = ChatColor.RED + "You do not have Permissions to do this!";
 	public double version;
@@ -90,9 +84,6 @@ public class Skillz extends JavaPlugin{
 	public boolean broadcast;
 
 	public void onDisable() {
-		if ((this.useSQL) && (this.dbManager != null)) {
-			this.dbManager.close();
-		}
 		if ((this.useMySQL) && (this.mysql != null)) {
 			this.mysql.close();
 		}
@@ -173,10 +164,7 @@ public class Skillz extends JavaPlugin{
 		if(this.update){
 			checkUpdate();
 		}
-		if ((this.useSQL) && (!this.useMySQL)) {
-			loadSQL();
-		}
-		if ((!this.useSQL) && (this.useMySQL)) {
+		if(this.useMySQL){
 			loadMySQL();
 		}
 		this.setupPlugins();
@@ -191,9 +179,9 @@ public class Skillz extends JavaPlugin{
 	}
 
 	private void loadSkillz() {
-		this.skillManager = new SkillManager();
+		this.skillManager = new SkillManager(this);
 		this.skillManager.loadSkillsSettings();
-		this.customManager = new CustomSkillManager();
+		this.customManager = new CustomSkillManager(this);
 		this.customManager.loadCustomSkills();
 		YamlConfiguration c = new YamlConfiguration();
 		try{
@@ -256,44 +244,9 @@ public class Skillz extends JavaPlugin{
 		}
 	}
 
-	/**
-	 * Enables SQLite. Auto-enables after conversion
-	 * 
-	 */
-	public void loadSQL() {
-		log.info("SQLite warming up...");
-		log.info("SQLite temporarily broken, using flatfile");
-		useSQL = false;
-		/*
-		dbManager = new SQLite(log, logPrefix, "Skillz", "plugins/Skillz");
-		dbManager.open();
-		if (!dbManager.checkTable("Skillz")) {
-			String query = "CREATE TABLE Skillz ('id' INT PRIMARY KEY, 'player' TEXT NOT NULL, 'skill' TEXT NOT NULL, 'xp' int , 'level' int ) ;";
-			dbManager.createTable(query);
-			log.info("[Skillz] SQL Database created!");
-		}*/
-	}
-
 	public void loadMySQL() {
-		this.mysql = new MySQL(log, "", dbHost, Integer.toString(dbPort), dbName, dbUser, dbPass);
-		if (this.mysql.checkConnection()) {
-			this.log.info("MySQL connection successful");
-			this.log.info("MySQL temporarily broken, using flatfile");
-			this.useMySQL = false;
-			/*
-			try {
-				if(!mysql.checkTable(dbTable)){
-					log.info("Trying to create " + dbTable + " table in MySQL..");
-					String query = "CREATE TABLE " + dbTable + "(id INT PRIMARY KEY, player TEXT NOT NULL, skill TEXT NOT NULL, xp int , level int) ;";
-					mysql.createTable(query);
-					log.info("Skillz table created (hopefully) succesfully!");
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				useMySQL = false;
-			} */
-		} else {
-			this.log.severe("MySQL connection failed! ");
+		this.mysql = new MySQL(this.dbHost, this.dbPort, this.dbUser, this.dbPass, this.dbName, this.dbTable);
+		if(this.mysql.isFault()){
 			this.useMySQL = false;
 		}
 	}
@@ -323,37 +276,9 @@ public class Skillz extends JavaPlugin{
 						return true;
 					}
 					Player p = (Player)sender;
-					if (useSQL) {
-						String query = "SELECT * FROM Skillz WHERE player = '" + p.getName() + "';";
-						ResultSet res = dbManager.query(query);
-						if (res == null) {
-							p.sendMessage(ChatColor.RED + "You don't have any skillz! LOL");
-							return true;
-						}
-						try {
-							p.sendMessage(ChatColor.RED + "===Skillz===");
-							while (res.next()) {
-								String skill = res.getString("skill");
-								int xps = res.getInt("xp");
-								int lvl = res.getInt("level");
-								if(!sender.hasPermission("skillz." + skill)){
-									continue;
-								}
-								p.sendMessage(skill.substring(0, 1).toUpperCase()
-										+ skill.substring(1).toLowerCase()
-										+ " XP: " + ChatColor.RED + xps
-										+ ChatColor.WHITE + " Level: "
-										+ ChatColor.RED + lvl);
-							}
-							return true;
-						} catch (SQLException e) {
-							e.printStackTrace();
-							return true;
-						}
-					}
 					if(useMySQL){
 						String query = "SELECT * FROM skillz WHERE player = '" + ((Player)sender).getName() + "';";
-						ResultSet res = mysql.query(query);
+						ResultSet res = mysql.executeQuery(query);
 						if (res == null) {
 							p.sendMessage(ChatColor.RED + "You don't have any skillz! LOL");
 							return true;
@@ -458,15 +383,6 @@ public class Skillz extends JavaPlugin{
 								String from = args[1];
 								String to = args[2];
 								if(from.contains("flat")){
-									if(to.equalsIgnoreCase("sql")){
-										if(converter.flatToSQL()){
-											sender.sendMessage("Conversion succesful! Using SQLite now!");
-											return true;
-										}else{
-											sender.sendMessage("Something went wrong! Check the log!");
-											return true;
-										}
-									}
 									if(to.equalsIgnoreCase("mysql")){
 										if(converter.flatToMySQL()){
 											sender.sendMessage("Conversion succesful! Using MySQL now!");
@@ -476,26 +392,8 @@ public class Skillz extends JavaPlugin{
 											return true;
 										}
 									}
-								}
-								if(from.equalsIgnoreCase("sql")){
-									if(to.contains("flat")){
-										if(converter.SQLtoflat()){
-											sender.sendMessage("Conversion succesful! Using Flatfile!");
-											return true;
-										}else{
-											sender.sendMessage("Something went wrong! Check the log!");
-											return true;
-										}
-									}
-									if(to.equalsIgnoreCase("mysql")){
-										if(converter.SQLtoMySQL()){
-											sender.sendMessage("Conversion succesful! Using MySQL now!");
-											return true;
-										}else{
-											sender.sendMessage("Something went wrong! Check the log!");
-											return true;
-										}
-									}
+									sender.sendMessage("Not sure what you ment by " + to);
+									return true;
 								}
 								if(from.equalsIgnoreCase("mysql")){
 									if(to.contains("flat")){
@@ -507,18 +405,11 @@ public class Skillz extends JavaPlugin{
 											return true;
 										}
 									}
-									if(to.equalsIgnoreCase("sql")){
-										if(converter.MySQLtoSQL()){
-											sender.sendMessage("Conversion succesful! Using SQLite!");
-											return true;
-										}else{
-											sender.sendMessage("Something went wrong! Check the log!");
-											return true;
-										}
-									}
-									sender.sendMessage("You probally mistyped something!");
+									sender.sendMessage("Not sure what you ment by " + to);
 									return true;
 								}
+								sender.sendMessage("Not sure what you ment by " + from);
+								return true;
 							}else if(args.length == 2){
 								sender.sendMessage(ChatColor.RED + "Too little arguments!");
 								return true;
@@ -636,35 +527,10 @@ public class Skillz extends JavaPlugin{
 						sender.sendMessage(noPerm);
 						return true;
 					}
-					if(useSQL){
-						sender.sendMessage(ChatColor.RED + "===Skillz===");
-						String query = "SELECT * FROM Skillz WHERE player = '" + args[0] + "';";
-						ResultSet set = dbManager.query(query);
-						if(set == null){
-							sender.sendMessage(ChatColor.RED + "No such player known:" + ChatColor.AQUA + args[0]);
-							return true;
-						}
-						try {
-							while(set.next()){
-								String skill = set.getString("skill");
-								int xps = set.getInt("xp");
-								int lvl = set.getInt("level");
-								sender.sendMessage(skill.substring(0, 1).toUpperCase()
-										+ skill.substring(1).toLowerCase()
-										+ " XP: " + ChatColor.RED + xps
-										+ ChatColor.WHITE + " Level: "
-										+ ChatColor.RED + lvl);
-							}
-							return true;
-						} catch (SQLException e) {
-							e.printStackTrace();
-							return true;
-						}
-					}
 					if(useMySQL){
 						sender.sendMessage(ChatColor.RED + "===Skillz===");
 						String query = "SELECT * FROM Skillz WHERE player = '" + args[0] + "';";
-						ResultSet set = mysql.query(query);
+						ResultSet set = mysql.executeQuery(query);
 						if(set == null){
 							sender.sendMessage("No such player known:" + args[0]);
 							return true;
@@ -717,29 +583,10 @@ public class Skillz extends JavaPlugin{
 
 	private void getNextLevel(Player p, String string) {
 		string = string.toLowerCase();
-		if(useSQL){
-			String query = "SELECT * FROM Skillz WHERE player = '" + p.getName() + "' AND skill = '"+ string + "';";
-			ResultSet set = dbManager.query(query);
-			if(set == null){
-				p.sendMessage(ChatColor.RED + "There is no such skill: " + ChatColor.AQUA + string);
-				return;
-			}
-			try {
-				while(set.next()){
-					int xp = set.getInt("xp");
-					int lvl = set.getInt("level");
-					int remaining = ((lvl)*(lvl)*10)-xp;
-					p.sendMessage("XP remaining for " + ChatColor.RED + string + ChatColor.WHITE + ": " + ChatColor.RED + Integer.toString(remaining));
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return;
-		}
 		if(useMySQL){
 			try {
 				String query = "SELECT * FROM Skillz WHERE player = '" + p.getName() + "' AND skill = '"+ string + "';";
-				ResultSet set = mysql.query(query);
+				ResultSet set = mysql.executeQuery(query);
 				if(set == null){
 					p.sendMessage(ChatColor.RED + "There is no such skill: " + string);
 					return;
@@ -776,4 +623,5 @@ public class Skillz extends JavaPlugin{
 			e.printStackTrace();
 		}
 	}
+
 }

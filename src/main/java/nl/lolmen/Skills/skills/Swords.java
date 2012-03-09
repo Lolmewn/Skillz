@@ -7,9 +7,14 @@ import org.bukkit.Bukkit;
 import nl.lolmen.Skills.SkillBase;
 import nl.lolmen.Skills.SkillsSettings;
 import nl.lolmen.Skillz.MathProcessor;
+import nl.lolmen.Skillz.Skillz;
 
 public class Swords extends SkillBase{
 	
+	public Swords(Skillz plugin) {
+		super(plugin);
+	}
+
 	private int levelsPerExtraDamage;
 	private String critCalc;
 

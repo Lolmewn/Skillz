@@ -7,11 +7,16 @@ import org.bukkit.Bukkit;
 import nl.lolmen.Skills.SkillBase;
 import nl.lolmen.Skills.SkillsSettings;
 import nl.lolmen.Skillz.MathProcessor;
+import nl.lolmen.Skillz.Skillz;
 
 public class Archery extends SkillBase {
 	
 	private String critCalc;
 	private int blocks_till_XP;
+
+	public Archery(Skillz plugin) {
+		super(plugin);
+	}
 
 	public int getBlocks_till_XP() {
 		return blocks_till_XP;

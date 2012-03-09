@@ -9,15 +9,21 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import nl.lolmen.Skills.skills.CustomSkill;
+import nl.lolmen.Skillz.Skillz;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class CustomSkillManager {
 	
+	private Skillz plugin;
 	private File customFile = new File("plugins" + File.separator + "Skillz" + File.separator + "custom.yml");
 	
 	private HashMap<String, CustomSkill> customs = new HashMap<String, CustomSkill>();
+	
+	public CustomSkillManager(Skillz plugin){
+		this.plugin = plugin;
+	}
 	
 	public void loadCustomSkills(){
 		if(!customFile.exists()){
@@ -29,7 +35,7 @@ public class CustomSkillManager {
 				if(SkillsSettings.isDebug()){
 					Bukkit.getLogger().info("[Skillz - Debug] Starting to load " + key);
 				}
-				CustomSkill s = new CustomSkill();
+				CustomSkill s = new CustomSkill(this.plugin);
 				s.setSkillName(c.getString(key + ".name"));
 				s.setEnabled(c.getBoolean(key + ".enabled", true));
 				s.setMultiplier(c.getInt(key + ".XP-gain-multiplier", 1));
