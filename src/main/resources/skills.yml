@@ -2,8 +2,6 @@
 ##Made by Lolmewn##
 ###Global Settings###
 
-#MYSQL AND SQLITE ARE BROKEN#
-useSQLite: false
 useMySQL: false
 #no need to set this if useMySQL is false#
 MySQL-User: root
