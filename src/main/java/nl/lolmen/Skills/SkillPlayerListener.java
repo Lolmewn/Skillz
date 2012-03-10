@@ -58,7 +58,7 @@ public class SkillPlayerListener implements Listener {
 		}
 		if (plugin.useMySQL) {
 			try {
-				String query = "SELECT * FROM skillz WHERE player='" + p.getName() + "';";
+				String query = "SELECT * FROM " + this.plugin.dbTable + " WHERE player='" + p.getName() + "';";
 				ResultSet res = plugin.mysql.executeQuery(query);
 				if (res != null) {
 					while(res.next()){
