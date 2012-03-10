@@ -75,7 +75,7 @@ public class MySQL {
 			return 0;
 		}
 		if(SkillsSettings.isDebug()){
-			System.out.println("Statement: " + statement);
+			System.out.println("[Skillz - Debug] Statement: " + statement);
 		}
 		try {
 			this.st = this.con.createStatement();
