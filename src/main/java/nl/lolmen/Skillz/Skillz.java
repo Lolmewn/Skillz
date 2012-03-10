@@ -282,36 +282,6 @@ public class Skillz extends JavaPlugin{
 					return true;
 				}
 				if(args.length == 1 || args.length > 1){
-					if(args[0].equals("help")){
-						if(args.length == 1){
-							sender.sendMessage(ChatColor.RED + "=====Skillz=====");
-							sender.sendMessage(ChatColor.AQUA + "Page " +  ChatColor.RED +  "1" + ChatColor.AQUA + "/2");
-							sender.sendMessage("====Commands====");
-							sender.sendMessage("/skills - Shows your skills");
-							sender.sendMessage("/skills help - shows this");
-							sender.sendMessage("/skills check <skill> - shows XP to lvlup");
-							sender.sendMessage("/skills <player> - shows player's skills");
-							if(sender.isOp()){
-								sender.sendMessage("/skills convert <flat|sql|mysql> <flat|sql|mysql>");
-							}
-							return true;
-						}
-						if(args.length == 2){
-							if(args[1].equalsIgnoreCase(Integer.toString(2))){
-								sender.sendMessage(ChatColor.RED + "=====Skillz=====");
-								sender.sendMessage(ChatColor.AQUA + "Page " +  ChatColor.RED +  "2" + ChatColor.AQUA + "/2");
-								sender.sendMessage("====Skills====");
-								sender.sendMessage("Acrobatics: Falling damage - less damage");
-								sender.sendMessage("Archery: Arrow hit - more damage");
-								sender.sendMessage("Digging: Grass, Sand, Gravel or Dirt - double drop");
-								sender.sendMessage("Mining: Stone, Coalore, Ironore(2), redstoneore(3), Diamondore(4) - double drop");
-								return true;
-							}else{
-								sender.sendMessage("There's no such help page!");
-								return true;
-							}
-						}
-					}
 					if(args[0].equalsIgnoreCase("check")){
 						if(!sender.hasPermission("skillz.check")){
 							sender.sendMessage(noPerm);
