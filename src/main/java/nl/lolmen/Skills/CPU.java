@@ -88,7 +88,7 @@ public class CPU {
 		}
 		giveReward(p, skill, lvl);
 		giveItem(p, skill, lvl);
-		Skillz.high.checkScore(p, skill, lvl); 
+		main.high.checkScore(p, skill, lvl); 
 	}
 
 	private static void giveItem(Player p, SkillBase skill, int lvl) {
@@ -103,7 +103,7 @@ public class CPU {
 	private static void giveReward(Player p, SkillBase skill,int lvl) {
 		if(!SkillsSettings.HasVault()){
 			if(SkillsSettings.isDebug()){
-				System.out.println("Vault not found!");
+				System.out.println("[Skillz - Debug] Vault not found!");
 			}
 			return;
 		}

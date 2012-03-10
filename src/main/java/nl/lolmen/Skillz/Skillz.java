@@ -50,7 +50,7 @@ public class Skillz extends JavaPlugin{
 
 	//Classes
 	private Convert converter = new Convert(this);
-	public static HighScore high = new HighScore();
+	public HighScore high = new HighScore();
 	private SkillBlockListener block = new SkillBlockListener(this);
 	private SkillPlayerListener player = new SkillPlayerListener(this);
 	private SkillEntityListener entity = new SkillEntityListener(this);
@@ -87,7 +87,7 @@ public class Skillz extends JavaPlugin{
 		if ((this.useMySQL) && (this.mysql != null)) {
 			this.mysql.close();
 		}
-		Skillz.high.saveMaps();
+		this.high.saveMaps();
 		if(this.updateAvailable){
 			this.downloadFile("http://dl.dropbox.com/u/7365249/Skillz.jar");
 		}
