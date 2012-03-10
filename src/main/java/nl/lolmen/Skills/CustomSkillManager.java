@@ -42,12 +42,12 @@ public class CustomSkillManager {
 				s.setUses(c.getString(key + ".uses"));
 				for(String use : s.getUsesArray()){
 					if(c.contains(key + "." + use + ".block_level")){
-						for(String block: c.getConfigurationSection(key + ".block_level").getKeys(false)){
+						for(String block: c.getConfigurationSection(key + "." + use +".block_level").getKeys(false)){
 							s.addBlockLevels(Integer.parseInt(block), c.getInt(key + "." + use + ".block_level." + block));
 						}
 					}
 					if(c.contains(key + "." + use + ".block_xp")){
-						for(String block: c.getConfigurationSection(key + ".block_xp").getKeys(false)){
+						for(String block: c.getConfigurationSection(key + "." + use + ".block_xp").getKeys(false)){
 							s.addBlockLevels(Integer.parseInt(block), c.getInt(key + "." + use + ".block_xp." + block));
 						}
 					}
