@@ -56,17 +56,17 @@ class getSkills extends Thread {
 			ResultSet set = plugin.mysql.executeQuery("SELECT * FROM " + plugin.dbTable + " WHERE player='" + p.getName() + "' ORDER BY skill DESC");
 			if(set==null){
 				System.out.println("Something went wrong while reading the MySQL database.");
+				return;
 			}
 			try {
 				while(set.next()){
-					data.put(count, new SkillData(set.getString("skill"), set.getInt("xp"), set.getInt("level"), (int)Math.pow(set.getInt("level"), 2) * 10 - set.getInt("xp")));
+					data.put(count, new SkillData(set.getString("skill").startsWith("axes") || set.getString("skill").startsWith("swords") || set.getString("skill").startsWith("unarmed") ? set.getString("skill") + " Combat" : set.getString("skill"), set.getInt("xp"), set.getInt("level"), (int)Math.pow(set.getInt("level"), 2) * 10 - set.getInt("xp")));
 					totalXP+=set.getInt("xp");
 					totalLVL+=set.getInt("level");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			return;
 		}else{
 			try{
 				File f = new File("plugins" +File.separator+ "Skillz"+File.separator+ "players"+File.separator + p.getName().toLowerCase() + ".txt");
