@@ -72,7 +72,7 @@ public class CPU {
 				e.printStackTrace();
 			}
 		}else{
-			main.mysql.executeStatement("UPDATE " + main.dbTable + " SET level=" + lvl + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "'");
+			main.mysql.executeStatement("UPDATE " + main.dbTable + " SET level=" + lvl + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "' LIMIT 1");
 		}
 		if (SkillsSettings.isBroadcastOnLevelup()) {
 			Bukkit.getServer().broadcastMessage(

@@ -99,7 +99,7 @@ public class SkillBase {
 					if(SkillsSettings.isDebug()){
 						System.out.println("XP: " + xp + " LVL:" + lvl);
 					}
-					this.plugin.mysql.executeStatement("UPDATE " + this.plugin.dbTable + " SET xp=" + xp+XP + " , level=" + lvl + " WHERE player='" + p.getName() + " AND skill='" + this.getSkillName() + "'");
+					this.plugin.mysql.executeStatement("UPDATE " + this.plugin.dbTable + " SET xp=" + xp+XP + " , level=" + lvl + " WHERE player='" + p.getName() + " AND skill='" + this.getSkillName() + "' LIMIT 1");
 					CPU.checkLeveling(p, skill, lvl, xp + XP, plugin);
 				}
 			} catch (SQLException e) {
