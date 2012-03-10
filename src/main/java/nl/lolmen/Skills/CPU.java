@@ -31,6 +31,9 @@ public class CPU {
 			levelUp(p, skill, lvl + 1, main);
 		} else {
 			double result = newXP / ((lvl * lvl) * 10);
+			if(SkillsSettings.isDebug()){
+				System.out.println("[Skillz - Debug] checkLeveling: " + p.getName() + ", " + skill.getSkillName() + "," + lvl + "," + newXP + "," + result);
+			}
 			if (result >= 1) { 
 				levelUp(p, skill, lvl + 1, main);
 				checkLeveling(p, skill, lvl + 1, newXP, main);
