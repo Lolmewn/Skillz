@@ -22,13 +22,6 @@ public class CPU {
 	private static File folder = new File("plugins" + File.separator + "Skillz" + File.separator + "players" + File.separator);
 	public static int levelUps = 0;
 	public static int xpUps = 0;
-	
-	public static void addXP(final Player p, SkillBase skilled, final int XP) {
-		if(!p.hasPermission("skillz.skill." + skilled.getSkillName()) && SkillsSettings.isUsePerSkillPerms()){
-			return;
-		}
-		skilled.addXP(p, XP);
-	}
 
 	public static void checkLeveling(Player p, SkillBase skill, int lvl,
 			int newXP, Skillz main) {

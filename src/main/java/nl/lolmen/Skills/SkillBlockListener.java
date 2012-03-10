@@ -15,6 +15,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 public class SkillBlockListener implements Listener{
 	
 	private Skillz plugin;
+	
 	public SkillBlockListener(Skillz main){
 		this.plugin = main;
 	}
@@ -96,7 +97,7 @@ public class SkillBlockListener implements Listener{
 			}
 			int xpget = s.getXP(event.getBlock().getTypeId())
 					* s.getMultiplier();
-			CPU.addXP(p, s, xpget);
+			s.addXP(p, xpget);
 			if (s.getSkillName().equalsIgnoreCase("mining")) {
 				if(SkillsSettings.isDebug()){
 					System.out.println("It's mining, checking doubledrop");
@@ -110,6 +111,7 @@ public class SkillBlockListener implements Listener{
 		}
 	}
 	
+	@EventHandler
 	public void onBlockDamage(BlockDamageEvent event){
 		if(event.isCancelled()){return;}
 		int ticks = 10; //TODO calculate
