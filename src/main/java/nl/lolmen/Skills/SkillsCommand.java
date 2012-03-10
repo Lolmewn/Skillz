@@ -67,6 +67,7 @@ class getSkills extends Thread {
 					if(SkillsSettings.isDebug()){
 						System.out.println("[Skillz - Debug] Added " + skill);
 					}
+					count++;
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
