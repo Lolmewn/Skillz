@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import nl.lolmen.Skills.SkillsSettings;
+
 public class MySQL {
 	
 	private String host, username, password, database, table;
@@ -72,6 +74,9 @@ public class MySQL {
 			System.out.println("[Skillz] Can't execute statement, something wrong with connection");
 			return 0;
 		}
+		if(SkillsSettings.isDebug()){
+			System.out.println("Statement: " + statement);
+		}
 		try {
 			this.st = this.con.createStatement();
 			int re = this.st.executeUpdate(statement);
@@ -91,6 +96,9 @@ public class MySQL {
 		if(statement.toLowerCase().startsWith("update") || statement.toLowerCase().startsWith("insert") || statement.toLowerCase().startsWith("delete")){
 			this.executeStatement(statement);
 			return null;
+		}
+		if(SkillsSettings.isDebug()){
+			System.out.println("[Skillz - Debug] Query: " + statement);
 		}
 		try {
 			this.st = this.con.createStatement();
