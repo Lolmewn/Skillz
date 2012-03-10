@@ -190,6 +190,48 @@ public class CPU {
 			e.printStackTrace();
 		}
 	}
+
+	public static int getXP(Player p, SkillBase skill, Skillz main) {
+		if(main.useMySQL){
+			ResultSet set = main.mysql.executeQuery("SELECT * FROM " + main.dbTable + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "' LIMIT 1");
+			if(set == null){
+				if(SkillsSettings.isDebug()){
+					System.out.println("Something went wrong with ResultSet in getXP in CPU, set==null");
+				}
+				return 0;
+			}
+			try {
+				while(set.next()){
+					return set.getInt("xp");
+				}
+				return 0;
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return 0;
+			}
+		}
+		Properties prop = new Properties();
+		try {
+			File f = new File(folder, p.getName().toLowerCase() + ".txt");
+			if(!f.exists()){
+				return 0;
+			}
+			FileInputStream in = new FileInputStream(new File(folder, p
+					.getName().toLowerCase() + ".txt"));
+			prop.load(in);
+			String key = skill.getSkillName();
+			if (!prop.containsKey(key)) {
+				return 0;
+			}
+			String get = prop.getProperty(key);
+			in.close();
+			String[] dit = get.split(";");
+			return Integer.parseInt(dit[0]);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 	
 	
 }
