@@ -36,7 +36,7 @@ skills:
     enabled: true
     XP-gain-multiplier: 1
     blocks-till-1XP-add: 10
-    critChance: $LEVEL*0.3
+    critChance: $LEVEL/10*3
   Acrobatics:
     enabled: true
     XP-gain-multiplier: 2
@@ -45,21 +45,21 @@ skills:
     enabled: true
     XP-gain-multiplier: 1
     levelsPerExtraDamage: 12
-    critChance: $LEVEL*0.2
+    critChance: $LEVEL/5
   Swords Combat:
     enabled: true
     XP-gain-multiplier: 1
     levelsPerExtraDamage: 15
-    critChance: $LEVEL*0.2+1
+    critChance: $LEVEL/5+1
   Unarmed Combat:
     enabled: true
     XP-gain-multiplier: 1
     levelsPerExtraDamage: 12
-    critChance: $LEVEL*0.2+1/2
+    critChance: $LEVEL/5+1/2
   Swimming:
     enabled: true
     XP-gain-multiplier: 1
-    noDrownChance: $LEVEL*0.4+1
+    noDrownChance: $LEVEL/5*2+1
   woodcutting:
     enabled: true
     XP-gain-multiplier: 1
