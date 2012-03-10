@@ -304,7 +304,7 @@ public class Skillz extends JavaPlugin{
 					}
 					if(new File(maindir + "players/" + p.getName().toLowerCase() + ".txt").exists()){
 						sender.sendMessage(ChatColor.RED + "===Skillz===");
-						new SkillsCommand().sendSkills(p);
+						new SkillsCommand().sendSkills(p, this);
 						return true;
 					}
 					return true;
@@ -494,7 +494,7 @@ public class Skillz extends JavaPlugin{
 						}
 						try{
 							int page = Integer.parseInt(args[1]);
-							new SkillsCommand().sendSkills((Player)sender, page);
+							new SkillsCommand().sendSkills((Player)sender, page, this);
 							return true;
 						}catch(Exception e){
 							sender.sendMessage("Page must be an int!");
@@ -558,7 +558,7 @@ public class Skillz extends JavaPlugin{
 					Player p = getServer().getPlayer(args[0]);
 					if(p == null){
 						if(new File(maindir + "players/" + args[0].toLowerCase() + ".txt").exists()){
-							new SkillsCommand().sendSkills(sender, this.getServer().getOfflinePlayer(args[0]).getPlayer());
+							new SkillsCommand().sendSkills(sender, this.getServer().getOfflinePlayer(args[0]).getPlayer(), this);
 							return true;
 						}
 						sender.sendMessage("No player available by that name: " + args[0]);
@@ -571,7 +571,7 @@ public class Skillz extends JavaPlugin{
 						sender.sendMessage("Wrong page number! Expected an int!");
 						return true;
 					}
-					new SkillsCommand().sendSkills(sender, p, page);
+					new SkillsCommand().sendSkills(sender, p, page, this);
 					return true;
 				}
 			}catch(Exception e){
