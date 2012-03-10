@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -91,20 +89,8 @@ public class SkillBase {
 				e.printStackTrace();
 			}
 		}else{
-			ResultSet set = this.plugin.mysql.executeQuery("SELECT * FROM " + this.plugin.dbTable + " WHERE player='" + p.getName() + "' AND skill='" + this.getSkillName() + "' LIMIT 1");
-			try {
-				while(set.next()){
-					xp = set.getInt("xp");
-					lvl = set.getInt("level");
-					if(SkillsSettings.isDebug()){
-						System.out.println("XP: " + xp + " LVL:" + lvl);
-					}
-					this.plugin.mysql.executeStatement("UPDATE " + this.plugin.dbTable + " SET xp=" + xp+XP + " , level=" + lvl + " WHERE player='" + p.getName() + " AND skill='" + this.getSkillName() + "' LIMIT 1");
-					CPU.checkLeveling(p, skill, lvl, xp + XP, plugin);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			this.plugin.mysql.executeStatement("UPDATE " + this.plugin.dbTable + " SET xp=xp+" + XP + " , level=" + lvl + " WHERE player='" + p.getName() + " AND skill='" + this.getSkillName() + "' LIMIT 1");
+			CPU.checkLeveling(p, skill, lvl, xp + XP, plugin);
 		}
 	}
 

@@ -36,7 +36,7 @@ public class SkillzAPI {
 	}
 	
 	public int getLevel(Player player, SkillBase skill){
-		return CPU.getLevel(player, skill);
+		return CPU.getLevel(player, skill, plugin);
 	}
 		
 }

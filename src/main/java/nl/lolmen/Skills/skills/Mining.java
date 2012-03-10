@@ -7,8 +7,11 @@ import nl.lolmen.Skillz.Skillz;
 import org.bukkit.entity.Player;
 
 public class Mining extends SkillBlockBase{
+	
+	private Skillz plugin;
 		public Mining(Skillz plugin) {
 		super(plugin);
+		this.plugin = plugin;
 	}
 
 	private int speed;
@@ -23,7 +26,7 @@ public class Mining extends SkillBlockBase{
 	}
 
 	public boolean getWillDoubleDrop(Player p) {
-		if(CPU.getLevel(p, this) > Math.random() * doubleDropChange){
+		if(CPU.getLevel(p, this, plugin) > Math.random() * doubleDropChange){
 			return true;
 		}else{
 			return false;

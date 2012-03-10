@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import net.milkbowl.vault.economy.Economy;
@@ -68,7 +70,7 @@ public class CPU {
 			main.mysql.executeStatement("UPDATE " + main.dbTable + " SET level=" + lvl + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "' LIMIT 1");
 		}
 		if (SkillsSettings.isBroadcastOnLevelup()) {
-			Bukkit.getServer().broadcastMessage(
+			main.getServer().broadcastMessage(
 					ChatColor.RED + p.getDisplayName() + ChatColor.WHITE
 							+ " leveled up in " + ChatColor.RED + skill.getSkillName().toLowerCase()
 							+ ChatColor.WHITE + " and is now level "
@@ -118,7 +120,25 @@ public class CPU {
 		}
 	}
 
-	public static int getLevel(Player p, SkillBase skill) {
+	public static int getLevel(Player p, SkillBase skill, Skillz main) {
+		if(main.useMySQL){
+			ResultSet set = main.mysql.executeQuery("SELECT level FROM " + main.dbTable + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "'");
+			if(set == null){
+				if(SkillsSettings.isDebug()){
+					System.out.println("Something went wrong with ResultSet in getLevel in CPU, set==null");
+				}
+				return 0;
+			}
+			try {
+				while(set.next()){
+					return set.getInt("level");
+				}
+				return 0;
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return 0;
+			}
+		}
 		Properties prop = new Properties();
 		try {
 			File f = new File(folder, p.getName().toLowerCase() + ".txt");
@@ -142,7 +162,11 @@ public class CPU {
 		return 0;
 	}
 
-	public static void setLevelWithXP(Player p, SkillBase skill, int level) {
+	public static void setLevelWithXP(Player p, SkillBase skill, int level, Skillz main) {
+		if(main.useMySQL){
+			main.mysql.executeStatement("UPDATE " + main.dbTable + " SET level=" + level + " , xp=" + (level - 1) * (level - 1) * 10 + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "'");
+			return;
+		}
 		Properties prop = new Properties();
 		try {
 			FileInputStream in = new FileInputStream(new File(folder, p

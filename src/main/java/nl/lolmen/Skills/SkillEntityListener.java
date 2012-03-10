@@ -57,8 +57,8 @@ public class SkillEntityListener implements Listener{
 				Acrobatics a = (Acrobatics)s;
 				int damage = event.getDamage() * s.getMultiplier();
 				s.addXP(p, damage);
-				if(CPU.getLevel(p, s) >= a.getLevelsTillLessDMG()){
-					double deduct = CPU.getLevel(p, s) / a.getLevelsTillLessDMG();
+				if(CPU.getLevel(p, s, plugin) >= a.getLevelsTillLessDMG()){
+					double deduct = CPU.getLevel(p, s, plugin) / a.getLevelsTillLessDMG();
 					if(deduct >= event.getDamage()){
 						event.setDamage(0);
 					}else{
@@ -76,7 +76,7 @@ public class SkillEntityListener implements Listener{
 					return;
 				}
 				Swimming sw = (Swimming)s;
-				if(sw.wontDrown(CPU.getLevel(p, s))){
+				if(sw.wontDrown(CPU.getLevel(p, s, plugin))){
 					event.setCancelled(true);
 				}
 				s.addXP(p, s.getMultiplier());
@@ -109,11 +109,11 @@ public class SkillEntityListener implements Listener{
 					if(SkillsSettings.isDebug()){
 						plugin.log.info("[Skillz - Debug] Original damage: " + event.getDamage());
 					}
-					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s)));
+					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s, plugin)));
 					if(SkillsSettings.isDebug()){
 						plugin.log.info("[Skillz - Debug] Damage dealt after extra: " + event.getDamage());
 					}
-					if(sw.willCrit(CPU.getLevel(p, s))){
+					if(sw.willCrit(CPU.getLevel(p, s, plugin))){
 						event.setDamage(event.getDamage() * 2);
 						p.sendMessage("[Skillz] " + ChatColor.RED + "Critical strike!");
 						if(SkillsSettings.isDebug()){
@@ -147,11 +147,11 @@ public class SkillEntityListener implements Listener{
 					if(SkillsSettings.isDebug()){
 						plugin.log.info("Original damage: " + event.getDamage());
 					}
-					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s)));
+					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s, plugin)));
 					if(SkillsSettings.isDebug()){
 						plugin.log.info("Damage dealt after extra: " + event.getDamage());
 					}
-					if(sw.willCrit(CPU.getLevel(p, s))){
+					if(sw.willCrit(CPU.getLevel(p, s, plugin))){
 						event.setDamage(event.getDamage() * 2);
 						p.sendMessage("[Skillz] " + ChatColor.RED + "Critical strike!");
 						if(SkillsSettings.isDebug()){
@@ -185,11 +185,11 @@ public class SkillEntityListener implements Listener{
 					if(SkillsSettings.isDebug()){
 						plugin.log.info("[Skillz - Debug] Original damage: " + event.getDamage());
 					}
-					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s)));
+					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s, plugin)));
 					if(SkillsSettings.isDebug()){
 						plugin.log.info("Damage dealt after extra: " + event.getDamage());
 					}
-					if(sw.willCrit(CPU.getLevel(p, s))){
+					if(sw.willCrit(CPU.getLevel(p, s, plugin))){
 						event.setDamage(event.getDamage() * 2);
 						p.sendMessage("[Skillz] " + ChatColor.RED + "Critical strike!");
 						if(SkillsSettings.isDebug()){
@@ -228,7 +228,7 @@ public class SkillEntityListener implements Listener{
 					if(added > 4){
 						p.sendMessage("[Skillz] " + ChatColor.DARK_RED + "MULTI XP!");
 					}
-					if(s.willCrit(CPU.getLevel((Player)ent, s))){
+					if(s.willCrit(CPU.getLevel((Player)ent, s, plugin))){
 						event.setDamage(event.getDamage() * 2);
 						p.sendMessage("[Skillz] " + ChatColor.RED + "Critical hit!");
 					}
@@ -253,7 +253,7 @@ public class SkillEntityListener implements Listener{
 		if(SkillsSettings.isResetSkillsOnLevelup()){
 			for(String s: plugin.skillManager.skills.keySet()){
 				SkillBase skill = plugin.skillManager.skills.get(s);
-				CPU.setLevelWithXP(p, skill, 1);
+				CPU.setLevelWithXP(p, skill, 1, plugin);
 			}
 			p.sendMessage(SkillsSettings.getLevelsReset());
 			return;
@@ -261,10 +261,10 @@ public class SkillEntityListener implements Listener{
 		if(SkillsSettings.getLevelsDownOnDeath() != 0){
 			for(String s: plugin.skillManager.skills.keySet()){
 				SkillBase skill = plugin.skillManager.skills.get(s);
-				if(CPU.getLevel(p, skill) <= SkillsSettings.getLevelsDownOnDeath()){
-					CPU.setLevelWithXP(p, skill, 1);
+				if(CPU.getLevel(p, skill, plugin) <= SkillsSettings.getLevelsDownOnDeath()){
+					CPU.setLevelWithXP(p, skill, 1, plugin);
 				}else{
-					CPU.setLevelWithXP(p, skill, CPU.getLevel(p, skill)-SkillsSettings.getLevelsDownOnDeath());
+					CPU.setLevelWithXP(p, skill, CPU.getLevel(p, skill, plugin)-SkillsSettings.getLevelsDownOnDeath(), plugin);
 				}
 			}
 			p.sendMessage(SkillsSettings.getLevelsReset());

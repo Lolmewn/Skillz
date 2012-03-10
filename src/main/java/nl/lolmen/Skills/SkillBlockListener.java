@@ -41,7 +41,7 @@ public class SkillBlockListener implements Listener{
 				continue;
 			}
 			if(skill.hasBlock(event.getBlock())){
-				if(CPU.getLevel(event.getPlayer(), skill) < skill.getLevelNeeded(event.getBlock())){
+				if(CPU.getLevel(event.getPlayer(), skill, plugin) < skill.getLevelNeeded(event.getBlock())){
 					event.getPlayer().sendMessage("You are not allowed to break this block! "
 							+ skill.getSkillName().substring(0, 1).toUpperCase()
 							+ skill.getSkillName().substring(1).toLowerCase()
@@ -68,7 +68,7 @@ public class SkillBlockListener implements Listener{
 				continue;
 			}
 			if(skill.hasBlock(event.getBlock())){
-				if(CPU.getLevel(event.getPlayer(), skill) < skill.getLevelNeeded(event.getBlock())){
+				if(CPU.getLevel(event.getPlayer(), skill, plugin) < skill.getLevelNeeded(event.getBlock())){
 					event.getPlayer().sendMessage("You are not allowed to break this block! "
 							+ skill.getSkillName().substring(0, 1).toUpperCase()
 							+ skill.getSkillName().substring(1).toLowerCase()
@@ -87,7 +87,7 @@ public class SkillBlockListener implements Listener{
 		Player p = event.getPlayer();
 		if (s.hasBlock(event.getBlock())) {
 			int lvlneeded = s.getLevelNeeded(event.getBlock());
-			if (!s.isAllFromFirstLevel() && CPU.getLevel(p, s) < lvlneeded) {
+			if (!s.isAllFromFirstLevel() && CPU.getLevel(p, s, plugin) < lvlneeded) {
 				p.sendMessage("You are not allowed to mine this block! "
 						+ s.getSkillName().substring(0, 1).toUpperCase()
 						+ s.getSkillName().substring(1).toLowerCase()
