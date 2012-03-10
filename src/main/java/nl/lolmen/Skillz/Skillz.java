@@ -277,36 +277,8 @@ public class Skillz extends JavaPlugin{
 						return true;
 					}
 					Player p = (Player)sender;
-					if(useMySQL){
-						String query = "SELECT * FROM skillz WHERE player = '" + ((Player)sender).getName() + "';";
-						ResultSet res = mysql.executeQuery(query);
-						if (res == null) {
-							p.sendMessage(ChatColor.RED + "You don't have any skillz! LOL");
-							return true;
-						}
-						try {
-							p.sendMessage(ChatColor.RED + "===Skillz===");
-							while (res.next()) {
-								String skill = res.getString("skill");
-								if(!sender.hasPermission("skillz." + skill)){
-									continue;
-								}
-								int xps = res.getInt("xp");
-								int lvl = res.getInt("level");
-								p.sendMessage(skill.substring(0, 1).toUpperCase() + skill.substring(1).toLowerCase() + " XP: " + 
-										ChatColor.RED + xps + ChatColor.WHITE + " Level: " + ChatColor.RED + lvl);
-								return true;
-							}
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-						return true;
-					}
-					if(new File(maindir + "players/" + p.getName().toLowerCase() + ".txt").exists()){
-						sender.sendMessage(ChatColor.RED + "===Skillz===");
-						new SkillsCommand().sendSkills(p, this);
-						return true;
-					}
+					sender.sendMessage(ChatColor.RED + "===Skillz===");
+					new SkillsCommand().sendSkills(p, this);
 					return true;
 				}
 				if(args.length == 1 || args.length > 1){
