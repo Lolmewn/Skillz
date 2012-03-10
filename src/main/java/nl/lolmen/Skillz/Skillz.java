@@ -194,6 +194,7 @@ public class Skillz extends JavaPlugin{
 			this.dbPort = c.getInt("MySQL-Port", 3306); 
 			this.dbName = c.getString("MySQL-Database", "minecraft");
 			this.dbTable = c.getString("MySQL-Table", "Skillz");
+			this.useMySQL = c.getBoolean("useMySQL", false);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
