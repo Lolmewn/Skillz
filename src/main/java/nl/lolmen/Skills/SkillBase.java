@@ -89,8 +89,8 @@ public class SkillBase {
 				e.printStackTrace();
 			}
 		}else{
-			this.plugin.mysql.executeStatement("UPDATE " + this.plugin.dbTable + " SET xp=xp+" + XP + " , level=" + lvl + " WHERE player='" + p.getName() + " AND skill='" + this.getSkillName() + "' LIMIT 1");
-			CPU.checkLeveling(p, skill, lvl, xp + XP, plugin);
+			this.plugin.mysql.executeStatement("UPDATE " + this.plugin.dbTable + " SET xp=xp+" + XP + " WHERE player='" + p.getName() + "' AND skill='" + this.getSkillName() + "' LIMIT 1");
+			CPU.checkLeveling(p, skill, CPU.getLevel(p, skill, plugin), xp + XP, plugin);
 		}
 	}
 
