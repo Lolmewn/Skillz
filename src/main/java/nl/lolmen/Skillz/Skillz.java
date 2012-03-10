@@ -11,7 +11,6 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -29,6 +28,7 @@ import nl.lolmen.Skillz.Metrics.Plotter;
 //import nl.lolmen.Skillz.Socketing.ServerSoc;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -291,12 +291,11 @@ public class Skillz extends JavaPlugin{
 							sender.sendMessage(ChatColor.RED + "Only players can use this option!");
 							return true;
 						}
-						if(args.length == 1){
-							sender.sendMessage(ChatColor.RED + "But what do you want to check?");
-							return true;
-						}
-						for(int i = 1; i < args.length; i++){
-							getNextLevel((Player)sender, args[i]);
+						for(SkillBase s : this.skillManager.getSkills()){
+							if(!s.isEnabled()){
+								continue;
+							}
+							this.getNextLevel((Player)sender, s.getSkillName());
 						}
 						return true;					
 					}
@@ -470,47 +469,21 @@ public class Skillz extends JavaPlugin{
 						sender.sendMessage(noPerm);
 						return true;
 					}
-					if(useMySQL){
-						sender.sendMessage(ChatColor.RED + "===Skillz===");
-						String query = "SELECT * FROM Skillz WHERE player = '" + args[0] + "';";
-						ResultSet set = mysql.executeQuery(query);
-						if(set == null){
-							sender.sendMessage("No such player known:" + args[0]);
-							return true;
-						}
-						try {
-							while(set.next()){
-								String skill = set.getString("skill");
-								int xps = set.getInt("xp");
-								int lvl = set.getInt("level");
-								sender.sendMessage(skill.substring(0, 1).toUpperCase()
-										+ skill.substring(1).toLowerCase()
-										+ " XP: " + ChatColor.RED + xps
-										+ ChatColor.WHITE + " Level: "
-										+ ChatColor.RED + lvl);
-							}
-							return true;
-						} catch (SQLException e) {
-							e.printStackTrace();
-							return true;
-						}
-					}
-
-					sender.sendMessage(ChatColor.RED + "===Skillz===");
-					Player p = getServer().getPlayer(args[0]);
-					if(p == null){
-						if(new File(maindir + "players/" + args[0].toLowerCase() + ".txt").exists()){
-							new SkillsCommand().sendSkills(sender, this.getServer().getOfflinePlayer(args[0]).getPlayer(), this);
-							return true;
-						}
-						sender.sendMessage("No player available by that name: " + args[0]);
-						return true;
-					}
-					int page;
+					int page = 1;
 					try{
 						page = args.length == 2 ? Integer.parseInt(args[1]) : 1;
 					}catch(Exception e){
-						sender.sendMessage("Wrong page number! Expected an int!");
+						page = 1;
+					}
+					sender.sendMessage(ChatColor.RED + "===Skillz===");
+					Player p = getServer().getPlayer(args[0]);
+					if(p == null){
+						OfflinePlayer p2 = this.getServer().getOfflinePlayer(args[0]);
+						if(p2 == null){
+							sender.sendMessage("No player available by that name: " + args[0]);
+							return true;
+						}
+						new SkillsCommand().sendSkills(sender, p2.getName(), page, this);
 						return true;
 					}
 					new SkillsCommand().sendSkills(sender, p, page, this);
@@ -524,47 +497,55 @@ public class Skillz extends JavaPlugin{
 		return false;
 	}
 
-	private void getNextLevel(Player p, String string) {
-		string = string.toLowerCase();
-		if(useMySQL){
-			try {
-				String query = "SELECT * FROM Skillz WHERE player = '" + p.getName() + "' AND skill = '"+ string + "';";
-				ResultSet set = mysql.executeQuery(query);
-				if(set == null){
-					p.sendMessage(ChatColor.RED + "There is no such skill: " + string);
+	private void getNextLevel(final Player p, final String strings) {
+		Thread t = new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				String string = strings.toLowerCase();
+				if(useMySQL){
+					try {
+						String query = "SELECT * FROM " + dbTable + " WHERE player = '" + p.getName() + "' AND skill = '"+ string + "';";
+						ResultSet set = mysql.executeQuery(query);
+						if(set == null){
+							p.sendMessage(ChatColor.RED + "There is no such skill: " + string);
+							return;
+						}
+						while(set.next()){
+							int xp = set.getInt("xp");
+							int lvl = set.getInt("level");
+							int remaining = ((lvl)*(lvl)*10)-xp;
+							p.sendMessage("XP remaining for " + ChatColor.RED + string + ChatColor.WHITE + ": " + ChatColor.RED + Integer.toString(remaining));
+							return;
+						}
+						p.sendMessage(ChatColor.RED + "There is no such skill: " + string);
+						return;
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					return;
 				}
-
-				while(set.next()){
-					int xp = set.getInt("xp");
-					int lvl = set.getInt("level");
+				Properties prop = new Properties();
+				try {
+					FileInputStream in = new FileInputStream(maindir + "players/" + p.getName().toLowerCase() + ".txt");
+					prop.load(in);
+					if(!prop.containsKey(string)){
+						p.sendMessage(ChatColor.RED + "There is no such skill: " + string);
+						return;
+					}
+					String get = prop.getProperty(string);
+					String[] array = get.split(";");
+					int xp = Integer.parseInt(array[0]);
+					int lvl = Integer.parseInt(array[1]);
 					int remaining = ((lvl)*(lvl)*10)-xp;
 					p.sendMessage("XP remaining for " + ChatColor.RED + string + ChatColor.WHITE + ": " + ChatColor.RED + Integer.toString(remaining));
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
-			return;
-		}
-		Properties prop = new Properties();
-		try {
-			FileInputStream in = new FileInputStream(maindir + "players/" + p.getName().toLowerCase() + ".txt");
-			prop.load(in);
-			if(!prop.containsKey(string)){
-				p.sendMessage(ChatColor.RED + "There is no such skill: " + string);
-				return;
-			}
-			String get = prop.getProperty(string);
-			String[] array = get.split(";");
-			int xp = Integer.parseInt(array[0]);
-			int lvl = Integer.parseInt(array[1]);
-			int remaining = ((lvl)*(lvl)*10)-xp;
-			p.sendMessage("XP remaining for " + ChatColor.RED + string + ChatColor.WHITE + ": " + ChatColor.RED + Integer.toString(remaining));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		});
+		t.run();
 	}
-
 }

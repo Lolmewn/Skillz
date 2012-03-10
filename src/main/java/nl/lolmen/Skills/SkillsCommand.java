@@ -19,41 +19,48 @@ import org.bukkit.entity.Player;
 public class SkillsCommand {
 	
 	public void sendSkills(Player p, Skillz plugin){
-		this.sendSkills(p, 1,plugin);
+		this.sendSkills(p, 1, plugin);
 	}
 	
 	public void sendSkills(Player p, int page, Skillz plugin){
-		this.sendSkills(p, p, page,plugin);
+		this.sendSkills(p, p, page, plugin);
 	}
 	
 	public void sendSkills(CommandSender sender, Player p, Skillz plugin){
-		this.sendSkills(sender, p, 1,plugin);
+		this.sendSkills(sender, p, 1, plugin);
+	}
+	
+	public void sendSkills(CommandSender sender, String p, Skillz plugin){
+		this.sendSkills(sender, p, 1, plugin);
 	}
 	
 	public void sendSkills(CommandSender sender, Player p , int page, Skillz plugin){
+		this.sendSkills(sender, p.getName(), page, plugin);
+	}
+	
+	public void sendSkills(CommandSender sender, String p, int page, Skillz plugin){
 		new getSkills(sender, p, page, plugin);
 	}
 }
 
 
 class getSkills extends Thread {
-	private Player p;
+	private String p;
 	private int page;
 	private CommandSender sender;
 	private Skillz plugin;
-	
 	
 	public void run() {
 		Map<Integer, SkillData> data = new HashMap<Integer, SkillData>();
 		if(SkillsSettings.isDebug()){
 			if(sender instanceof Player){
-				System.out.println("Fetching file from " + p.getDisplayName() + " to " + ((Player)sender).getDisplayName());
+				System.out.println("Fetching file from " + p + " to " + ((Player)sender).getDisplayName());
 			}
-			sender.sendMessage("Fetching file from " + p.getDisplayName());
+			sender.sendMessage("Fetching file from " + p);
 		}
 		int count=0, totalXP=0, totalLVL=0;
 		if(plugin.useMySQL){
-			ResultSet set = plugin.mysql.executeQuery("SELECT * FROM " + plugin.dbTable + " WHERE player='" + p.getName() + "' ORDER BY skill DESC");
+			ResultSet set = plugin.mysql.executeQuery("SELECT * FROM " + plugin.dbTable + " WHERE player='" + p + "' ORDER BY skill DESC");
 			if(set==null){
 				System.out.println("Something went wrong while reading the MySQL database.");
 				return;
@@ -74,11 +81,11 @@ class getSkills extends Thread {
 			}
 		}else{
 			try{
-				File f = new File("plugins" +File.separator+ "Skillz"+File.separator+ "players"+File.separator + p.getName().toLowerCase() + ".txt");
+				File f = new File("plugins" +File.separator+ "Skillz"+File.separator+ "players"+File.separator + p.toLowerCase() + ".txt");
 				if(!f.exists()){
 					sender.sendMessage("Something went wrong while trying to fetch your personal file!");
 					sender.sendMessage("Tell an admin to take a look at his server.log , he'll know what to do ;)");
-					System.out.println("[Skillz] File for player " + p.getName() + " not found at " + f.getAbsolutePath());
+					System.out.println("[Skillz] File for player " + p+ " not found at " + f.getAbsolutePath());
 					return;
 				}
 				FileInputStream in = new FileInputStream(f);
@@ -150,10 +157,14 @@ class getSkills extends Thread {
 	}
 	
 	public getSkills(CommandSender sender, Player p, int page, Skillz plugin){
+		this(sender, p.getName(), page, plugin);
+	}
+	
+	public getSkills(CommandSender sender, String name, int page, Skillz plugin){
 		this.page = page;
-		this.p = p;
 		this.sender = sender;
 		this.plugin = plugin;
+		this.p = name;
 		this.start();
 	}
 }
