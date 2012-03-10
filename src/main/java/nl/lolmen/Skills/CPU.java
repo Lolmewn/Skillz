@@ -122,7 +122,7 @@ public class CPU {
 
 	public static int getLevel(Player p, SkillBase skill, Skillz main) {
 		if(main.useMySQL){
-			ResultSet set = main.mysql.executeQuery("SELECT level FROM " + main.dbTable + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "'");
+			ResultSet set = main.mysql.executeQuery("SELECT * FROM " + main.dbTable + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "' LIMIT 1");
 			if(set == null){
 				if(SkillsSettings.isDebug()){
 					System.out.println("Something went wrong with ResultSet in getLevel in CPU, set==null");
