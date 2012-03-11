@@ -42,6 +42,9 @@ public class SkillPlayerListener implements Listener {
 				FileInputStream in = new FileInputStream(new File(plugin.maindir + "players/" + p.getName().toLowerCase() + ".txt"));
 				prop.load(in);
 				for(SkillBase skill: plugin.skillManager.getSkills()){
+					if(!skill.isEnabled()){
+						continue;
+					}
 					prop.put(skill.getSkillName(), "0;0");
 				}
 				FileOutputStream out = new FileOutputStream(new File(plugin.maindir + "players/" + p.getName().toLowerCase() + ".txt"));
@@ -62,12 +65,15 @@ public class SkillPlayerListener implements Listener {
 				ResultSet res = plugin.mysql.executeQuery(query);
 				if (res != null) {
 					while(res.next()){
-						return;
+						return; //is in the database, no need to add him
 					}
 					//not in the DB after all
 				}
 				for(SkillBase skill : plugin.skillManager.getSkills()){
-					plugin.mysql.executeQuery("INSERT INTO " + this.plugin.dbTable + " (player, skill, xp, level) VALUES ('" + p.getName() + "', '" + skill.getSkillName() + "', 0, 0);");
+					if(!skill.isEnabled()){
+						continue;
+					}
+					this.plugin.mysql.executeQuery("INSERT INTO " + this.plugin.dbTable + " (player, skill, xp, level) VALUES ('" + p.getName() + "', '" + skill.getSkillName() + "', 0, 0);");
 				}
 				plugin.log.info("[Skillz] MySQL Entry created for " + p.getName() + "!");
 				double time2 = System.nanoTime();
