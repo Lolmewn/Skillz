@@ -51,12 +51,12 @@ public class SkillBase {
 		int xp = 0;
 		int lvl = 0;
 		SkillzXPGainEvent event = new SkillzXPGainEvent(p, skill, XP);
-		plugin.getServer().getPluginManager().callEvent(event);
+		this.plugin.getServer().getPluginManager().callEvent(event);
 		if(event.isCancelled()){
 			return;
 		}
 		CPU.xpUps += XP;
-		if(!plugin.useMySQL){
+		if(!this.plugin.useMySQL){
 			try {
 				if(!new File(folder, p.getName().toLowerCase() + ".txt").exists()){
 					new File(folder, p.getName().toLowerCase() + ".txt").createNewFile();
@@ -84,13 +84,13 @@ public class SkillBase {
 				in.close();
 				out.flush();
 				out.close();
-				CPU.checkLeveling(p, skill, lvl, (xp + XP), plugin);
+				CPU.checkLeveling(p, skill, lvl, (xp + XP), this.plugin);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}else{
-			this.plugin.mysql.executeStatement("UPDATE " + this.plugin.dbTable + " SET xp=xp+" + XP + " WHERE player='" + p.getName() + "' AND skill='" + this.getSkillName() + "' LIMIT 1");
-			CPU.checkLeveling(p, skill, CPU.getLevel(p, skill, plugin), CPU.getXP(p, skill, plugin), plugin);
+			this.plugin.getMySQL().executeStatement("UPDATE " + this.plugin.dbTable + " SET xp=xp+" + XP + " WHERE player='" + p.getName() + "' AND skill='" + this.getSkillName() + "' LIMIT 1");
+			CPU.checkLeveling(p, skill, CPU.getLevel(p, skill, this.plugin), CPU.getXP(p, skill, this.plugin), this.plugin);
 		}
 	}
 
@@ -104,18 +104,18 @@ public class SkillBase {
 	}
 
 	public ItemStack getItemOnLevelup(int level) {
-		String obv = itemOnLevelup;
-		for(int i: every_many_levels.keySet()){
+		String obv = this.itemOnLevelup;
+		for(int i : this.every_many_levels.keySet()){
 			double calc = (double)level / (double)i;
 			if(getDecimal(calc) == 0){
 				if(SkillsSettings.isDebug()){
 					System.out.println("[Skillz - Debug] Found match (item) -> " + level + " " + i + "  with decimal " + getDecimal(calc) + " and calc " + calc);
 				}
-				obv = every_many_levels.get(i);
+				obv = this.every_many_levels.get(i);
 			}
 		}
-		if(fixed_levels.containsKey(level)){
-			obv = fixed_levels.get(level).toLowerCase();
+		if(this.fixed_levels.containsKey(level)){
+			obv = this.fixed_levels.get(level).toLowerCase();
 		}
 		if(obv == null){
 			return null;
@@ -141,17 +141,17 @@ public class SkillBase {
 	}
 
 	public int getMoneyOnLevelup(int level) {
-		if(fixed_levels_money.containsKey(level)){
-			return fixed_levels_money.get(level);
+		if(this.fixed_levels_money.containsKey(level)){
+			return this.fixed_levels_money.get(level);
 		}
-		int money = moneyOnLevelup;
-		for(int i: every_many_levels_money.keySet()){
+		int money = this.moneyOnLevelup;
+		for(int i: this.every_many_levels_money.keySet()){
 			double calc = (double)level / (double)i;
 			if(getDecimal(calc) == 0){
 				if(SkillsSettings.isDebug()){
 					System.out.println("[Skillz - Debug] Found match (money) -> " + level + " " + i + "  with decimal " + getDecimal(calc) + " and calc " + calc);
 				}
-				money = every_many_levels_money.get(i);
+				money = this.every_many_levels_money.get(i);
 			}
 		}
 		return money;
@@ -188,7 +188,7 @@ public class SkillBase {
 				if(s.contains("ITEM;")){
 					String[] item = s.split(";");
 					if(item[1].contains(",")){
-						every_many_levels.put(level, item[1]);
+						this.every_many_levels.put(level, item[1]);
 						if(SkillsSettings.isDebug()){
 							System.out.println("[Skillz - Debug] Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
 						}
@@ -196,7 +196,7 @@ public class SkillBase {
 				}
 				if(s.contains("MONEY;")){
 					String[] item = s.split(";");
-					every_many_levels_money.put(level, Integer.parseInt(item[1]));
+					this.every_many_levels_money.put(level, Integer.parseInt(item[1]));
 					if(SkillsSettings.isDebug()){
 						System.out.println("[Skillz - Debug] Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
 					}
@@ -208,7 +208,7 @@ public class SkillBase {
 		}else if(det.contains("ITEM;")){
 			String[] item = det.split(";");
 			if(item[1].contains(",")){
-				every_many_levels.put(level, item[1]);
+				this.every_many_levels.put(level, item[1]);
 				if(SkillsSettings.isDebug()){
 					System.out.println("[Skillz - Debug] Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
 				}
@@ -217,7 +217,7 @@ public class SkillBase {
 		}else if(det.contains("MONEY;")){
 			String[] m = det.split(";");
 			try{
-				every_many_levels_money.put(level, Integer.parseInt(m[1]));
+				this.every_many_levels_money.put(level, Integer.parseInt(m[1]));
 				if(SkillsSettings.isDebug()){
 					System.out.println("[Skillz - Debug] Added " + m[1] + " for lvl " + level + " " + this.getSkillName());
 				}
@@ -240,7 +240,7 @@ public class SkillBase {
 				if(s.contains("ITEM;")){
 					String[] item = s.split(";");
 					if(item[1].contains(",")){
-						fixed_levels.put(level, item[1]);
+						this.fixed_levels.put(level, item[1]);
 						if(SkillsSettings.isDebug()){
 							System.out.println("[Skillz - Debug] Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
 						}
@@ -248,7 +248,7 @@ public class SkillBase {
 				}
 				if(s.contains("MONEY;")){
 					String[] item = s.split(";");
-					fixed_levels_money.put(level, Integer.parseInt(item[1]));
+					this.fixed_levels_money.put(level, Integer.parseInt(item[1]));
 					if(SkillsSettings.isDebug()){
 						System.out.println("[Skillz - Debug] Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
 					}
@@ -260,7 +260,7 @@ public class SkillBase {
 		}else if(det.contains("ITEM;")){
 			String[] item = det.split(";");
 			if(item[1].contains(",")){
-				fixed_levels.put(level, item[1]);
+				this.fixed_levels.put(level, item[1]);
 				if(SkillsSettings.isDebug()){
 					System.out.println("[Skillz - Debug] Added " + item[1] + " for lvl " + level + " " + this.getSkillName());
 				}
@@ -269,7 +269,7 @@ public class SkillBase {
 		}else if(det.contains("MONEY;")){
 			String[] m = det.split(";");
 			try{
-				fixed_levels_money.put(level, Integer.parseInt(m[1]));
+				this.fixed_levels_money.put(level, Integer.parseInt(m[1]));
 				if(SkillsSettings.isDebug()){
 					System.out.println("[Skillz - Debug] Added " + m[1] + " for lvl " + level + " " + this.getSkillName());
 				}

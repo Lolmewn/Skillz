@@ -20,15 +20,15 @@ public class SkillzAPI {
 	}
 	
 	public boolean hasSkill(String name){
-		return plugin.skillManager.skills.containsKey(name);
+		return plugin.getSkillManager().skills.containsKey(name);
 	}
 	
 	public SkillBase getSkill(String name){
-		return plugin.skillManager.skills.get(name);
+		return plugin.getSkillManager().skills.get(name);
 	}
 	
 	public void removeSkill(String name){
-		plugin.skillManager.skills.remove(name);
+		plugin.getSkillManager().skills.remove(name);
 	}
 	
 	public void addXP(Player player, SkillBase skill, int amount){

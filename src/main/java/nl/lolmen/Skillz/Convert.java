@@ -29,13 +29,13 @@ public class Convert {
 		plugin.getServer().broadcastMessage("Starting conversion, expect lag and maybe disconnection!");
 		File dir = new File(plugin.maindir + "players/");
 		File[] filename = dir.listFiles();
-		if(plugin.mysql == null){
+		if(plugin.getMySQL() == null){
 			plugin.loadMySQL();
 		}
-		if(plugin.mysql.isFault()){
+		if(plugin.getMySQL().isFault()){
 			return false;
 		}
-		plugin.mysql.executeStatement("DROP TABLE IF EXISTS " + plugin.dbTable);
+		plugin.getMySQL().executeStatement("DROP TABLE IF EXISTS " + plugin.dbTable);
 		for (File f : filename) {
 			String file = f.getName();
 			plugin.log.info("Converting " + file +" to MySQL..");
@@ -54,7 +54,7 @@ public class Convert {
 					int xp = Integer.parseInt(lvlsplit[0]);
 					int lvl = Integer.parseInt(lvlsplit[1]);
 					String query = "INSERT INTO Skillz (player, skill, xp, level) VALUES ('" + p + "', '" + skill + "', " + xp + ", " + lvl + ");";
-					plugin.mysql.executeQuery(query);
+					plugin.getMySQL().executeQuery(query);
 				}
 				in1.close();
 				plugin.useMySQL = true;
@@ -76,16 +76,16 @@ public class Convert {
 
 	public boolean MySQLtoFlat(){
 		start = System.nanoTime();
-		if(plugin.mysql == null){
+		if(plugin.getMySQL() == null){
 			plugin.loadMySQL();
 		}
-		if(plugin.mysql.isFault()){
+		if(plugin.getMySQL().isFault()){
 			return false;
 		}
 		String query = "SELECT * FROM " + this.plugin.dbTable;
 		ResultSet set;
 		try {
-			set = plugin.mysql.executeQuery(query);
+			set = plugin.getMySQL().executeQuery(query);
 			if(set == null){
 				plugin.log.warning("[Skillz] Something seems to be wrong with your MySQL database!");
 				return false;

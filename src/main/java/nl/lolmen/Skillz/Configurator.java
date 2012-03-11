@@ -2,7 +2,6 @@ package nl.lolmen.Skillz;
 
 import nl.lolmen.Skills.SkillsSettings;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -17,7 +16,7 @@ public class Configurator {
 	
 	public Configurator(Skillz s, Player p){
 		this.p = p;
-		plugin = s;
+		this.plugin = s;
 		this.start();
 	}
 	
@@ -27,13 +26,13 @@ public class Configurator {
 				"Also, you won't be able to see other's messages ", "Type start in chat to start the process, stop to stop it and pause to pause it"};
 		for(int i = 0; i < messages.length; i++){
 			final int count = i;
-			Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable(){
+			this.plugin.getServer().getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable(){
 				public void run() {
 					p.sendMessage(messages[count]);
 				}
 			}, count*60);
 		}
-		setTodonext(todo.start);
+		this.setTodonext(todo.start);
 	}
 	
 	public todo getTodonext() {
@@ -56,13 +55,13 @@ public class Configurator {
 		}
 		if(this.getTodonext().equals(todo.dbtype)){
 			if(input.startsWith("my")){
-				plugin.useMySQL = true;
+				this.plugin.useMySQL = true;
 				this.setTodonext(todo.dbhost);
 				this.p.sendMessage("What is the database host? Usually localhost");
 				return;
 			}
 			if(input.startsWith("flat")){
-				plugin.useMySQL = false;
+				this.plugin.useMySQL = false;
 				this.setTodonext(todo.moneyReward);
 				this.p.sendMessage("How much money should a player get when he levels up?");
 				return;
@@ -79,7 +78,7 @@ public class Configurator {
 		if(this.getTodonext().equals(todo.dbport)){
 			try{
 				int port = Integer.parseInt(input);
-				plugin.dbPort = port;
+				this.plugin.dbPort = port;
 				this.setTodonext(todo.dbuser);
 				this.p.sendMessage("What's the username of the database?");
 				return;
@@ -89,7 +88,7 @@ public class Configurator {
 			}
 		}
 		if(this.getTodonext().equals(todo.dbuser)){
-			plugin.dbUser = input;
+			this.plugin.dbUser = input;
 			this.setTodonext(todo.dbpass);
 			this.p.sendMessage("What's the password of the database?");
 			return;
@@ -101,13 +100,13 @@ public class Configurator {
 			return;
 		}
 		if(this.getTodonext().equals(todo.dbname)){
-			plugin.dbName = input;
+			this.plugin.dbName = input;
 			this.setTodonext(todo.dbtable);
 			this.p.sendMessage("What name do you want to give the Skills table?");
 			return;
 		}
 		if(this.getTodonext().equals(todo.dbtable)){
-			plugin.dbTable = input;
+			this.plugin.dbTable = input;
 			this.setTodonext(todo.moneyReward);
 			this.p.sendMessage("That's it for the database. How much money should a player get when he levels up?");
 			return;
@@ -134,14 +133,14 @@ public class Configurator {
 				Integer.parseInt(split[0]);
 				Integer.parseInt(split[1]);
 				SkillsSettings.setItemOnLevelup(input);
-				p.sendMessage("That was it for the config, you can always edit skills.yml to change it.");
-				plugin.skillManager.configed = true;
-				plugin.skillManager.beingConfigged = false;
+				this.p.sendMessage("That was it for the config, you can always edit skills.yml to change it.");
+				this.plugin.getSkillManager().configed = true;
+				this.plugin.getSkillManager().beingConfigged = false;
 			}catch(Exception e){
 				if(SkillsSettings.isDebug()){
 					e.printStackTrace();
 				}
-				p.sendMessage("There's something wrong with the input! \nItemID;Amount is the format, 89;2 is 2 glowstone for example.");
+				this.p.sendMessage("There's something wrong with the input! \nItemID;Amount is the format, 89;2 is 2 glowstone for example.");
 			}
 		}
 	}

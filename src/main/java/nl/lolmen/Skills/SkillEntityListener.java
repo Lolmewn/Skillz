@@ -26,6 +26,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 public class SkillEntityListener implements Listener{
 	
 	private Skillz plugin;
+	
 	public SkillEntityListener(Skillz main){
 		this.plugin = main;
 	}
@@ -47,7 +48,7 @@ public class SkillEntityListener implements Listener{
 			SkillBase s;
 			switch(event.getCause()){
 			case FALL:
-				s = plugin.skillManager.skills.get("acrobatics");
+				s = this.plugin.getSkillManager().skills.get("acrobatics");
 				if(s == null){
 					return;
 				}
@@ -57,8 +58,8 @@ public class SkillEntityListener implements Listener{
 				Acrobatics a = (Acrobatics)s;
 				int damage = event.getDamage() * s.getMultiplier();
 				s.addXP(p, damage);
-				if(CPU.getLevel(p, s, plugin) >= a.getLevelsTillLessDMG()){
-					double deduct = CPU.getLevel(p, s, plugin) / a.getLevelsTillLessDMG();
+				if(CPU.getLevel(p, s, this.plugin) >= a.getLevelsTillLessDMG()){
+					double deduct = CPU.getLevel(p, s, this.plugin) / a.getLevelsTillLessDMG();
 					if(deduct >= event.getDamage()){
 						event.setDamage(0);
 					}else{
@@ -68,7 +69,7 @@ public class SkillEntityListener implements Listener{
 				}
 				return;
 			case DROWNING:
-				s = plugin.skillManager.skills.get("swimming");
+				s = this.plugin.getSkillManager().skills.get("swimming");
 				if(s == null){
 					return;
 				}
@@ -76,7 +77,7 @@ public class SkillEntityListener implements Listener{
 					return;
 				}
 				Swimming sw = (Swimming)s;
-				if(sw.wontDrown(CPU.getLevel(p, s, plugin))){
+				if(sw.wontDrown(CPU.getLevel(p, s, this.plugin))){
 					event.setCancelled(true);
 				}
 				s.addXP(p, s.getMultiplier());
@@ -92,7 +93,7 @@ public class SkillEntityListener implements Listener{
 					if(SkillsSettings.isDebug()){
 						System.out.println("[Skillz - Debug] Adding some to Swords..");
 					}
-					SkillBase s = plugin.skillManager.skills.get("swords");
+					SkillBase s = this.plugin.getSkillManager().skills.get("swords");
 					if(s == null){
 						if(SkillsSettings.isDebug()){
 							System.out.println("[Skillz - Debug] Skill is null for some reason O.o Tried to get swords");
@@ -107,17 +108,17 @@ public class SkillEntityListener implements Listener{
 					}
 					Swords sw = (Swords)s;
 					if(SkillsSettings.isDebug()){
-						plugin.log.info("[Skillz - Debug] Original damage: " + event.getDamage());
+						this.plugin.log.info("[Skillz - Debug] Original damage: " + event.getDamage());
 					}
-					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s, plugin)));
+					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s, this.plugin)));
 					if(SkillsSettings.isDebug()){
-						plugin.log.info("[Skillz - Debug] Damage dealt after extra: " + event.getDamage());
+						this.plugin.log.info("[Skillz - Debug] Damage dealt after extra: " + event.getDamage());
 					}
-					if(sw.willCrit(CPU.getLevel(p, s, plugin))){
+					if(sw.willCrit(CPU.getLevel(p, s, this.plugin))){
 						event.setDamage(event.getDamage() * 2);
 						p.sendMessage("[Skillz] " + ChatColor.RED + "Critical strike!");
 						if(SkillsSettings.isDebug()){
-							plugin.log.info("[Skillz - Debug] Crit! Damage dealt: " + event.getDamage());
+							this.plugin.log.info("[Skillz - Debug] Crit! Damage dealt: " + event.getDamage());
 						}
 					}
 					s.addXP(p, s.getMultiplier());
@@ -130,7 +131,7 @@ public class SkillEntityListener implements Listener{
 					if(SkillsSettings.isDebug()){
 						System.out.println("[Skillz - Debug] Adding some to Axes..");
 					}
-					SkillBase s = plugin.skillManager.skills.get("axes");
+					SkillBase s = this.plugin.getSkillManager().skills.get("axes");
 					if(s == null){
 						if(SkillsSettings.isDebug()){
 							System.out.println("[Skillz - Debug] Axes == null? That's weird..");
@@ -145,17 +146,17 @@ public class SkillEntityListener implements Listener{
 					}
 					Axes sw = (Axes)s;
 					if(SkillsSettings.isDebug()){
-						plugin.log.info("Original damage: " + event.getDamage());
+						this.plugin.log.info("Original damage: " + event.getDamage());
 					}
-					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s, plugin)));
+					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s, this.plugin)));
 					if(SkillsSettings.isDebug()){
-						plugin.log.info("Damage dealt after extra: " + event.getDamage());
+						this.plugin.log.info("Damage dealt after extra: " + event.getDamage());
 					}
-					if(sw.willCrit(CPU.getLevel(p, s, plugin))){
+					if(sw.willCrit(CPU.getLevel(p, s, this.plugin))){
 						event.setDamage(event.getDamage() * 2);
 						p.sendMessage("[Skillz] " + ChatColor.RED + "Critical strike!");
 						if(SkillsSettings.isDebug()){
-							plugin.log.info("Crit! Damage dealt: " + event.getDamage());
+							this.plugin.log.info("Crit! Damage dealt: " + event.getDamage());
 						}
 					}
 					s.addXP(p, s.getMultiplier());
@@ -168,7 +169,7 @@ public class SkillEntityListener implements Listener{
 					if(SkillsSettings.isDebug()){
 						System.out.println("[Skillz - Debug] Adding some to unarmed");
 					}
-					SkillBase s = plugin.skillManager.skills.get("unarmed");
+					SkillBase s = this.plugin.getSkillManager().skills.get("unarmed");
 					if(s == null){
 						if(SkillsSettings.isDebug()){
 							System.out.println("[Skillz - Debug] unarmed == null? That's weird..");
@@ -183,17 +184,17 @@ public class SkillEntityListener implements Listener{
 					}
 					Unarmed sw = (Unarmed)s;
 					if(SkillsSettings.isDebug()){
-						plugin.log.info("[Skillz - Debug] Original damage: " + event.getDamage());
+						this.plugin.log.info("[Skillz - Debug] Original damage: " + event.getDamage());
 					}
-					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s, plugin)));
+					event.setDamage(event.getDamage() + sw.getExtraDamage(CPU.getLevel(p, s, this.plugin)));
 					if(SkillsSettings.isDebug()){
-						plugin.log.info("Damage dealt after extra: " + event.getDamage());
+						this.plugin.log.info("Damage dealt after extra: " + event.getDamage());
 					}
-					if(sw.willCrit(CPU.getLevel(p, s, plugin))){
+					if(sw.willCrit(CPU.getLevel(p, s, this.plugin))){
 						event.setDamage(event.getDamage() * 2);
 						p.sendMessage("[Skillz] " + ChatColor.RED + "Critical strike!");
 						if(SkillsSettings.isDebug()){
-							plugin.log.info("[Skillz - Debug] Crit! Damage dealt: " + event.getDamage());
+							this.plugin.log.info("[Skillz - Debug] Crit! Damage dealt: " + event.getDamage());
 						}
 					}
 					s.addXP(p, s.getMultiplier());
@@ -206,7 +207,7 @@ public class SkillEntityListener implements Listener{
 			if(att instanceof Arrow){
 				LivingEntity ent = ((Arrow)att).getShooter();
 				if(ent instanceof Player){
-					Archery s = (Archery) plugin.skillManager.skills.get("archery");
+					Archery s = (Archery)this.plugin.getSkillManager().skills.get("archery");
 					if(s == null){
 						return;
 					}
@@ -251,20 +252,18 @@ public class SkillEntityListener implements Listener{
 		}
 		Player p = (Player)event.getEntity();
 		if(SkillsSettings.isResetSkillsOnLevelup()){
-			for(String s: plugin.skillManager.skills.keySet()){
-				SkillBase skill = plugin.skillManager.skills.get(s);
-				CPU.setLevelWithXP(p, skill, 1, plugin);
+			for(SkillBase s : this.plugin.getSkillManager().getSkills()){
+				CPU.setLevelWithXP(p, s, 1, this.plugin);
 			}
 			p.sendMessage(SkillsSettings.getLevelsReset());
 			return;
 		}
 		if(SkillsSettings.getLevelsDownOnDeath() != 0){
-			for(String s: plugin.skillManager.skills.keySet()){
-				SkillBase skill = plugin.skillManager.skills.get(s);
-				if(CPU.getLevel(p, skill, plugin) <= SkillsSettings.getLevelsDownOnDeath()){
-					CPU.setLevelWithXP(p, skill, 1, plugin);
+			for(SkillBase s : this.plugin.getSkillManager().getSkills()){
+				if(CPU.getLevel(p, s, this.plugin) <= SkillsSettings.getLevelsDownOnDeath()){
+					CPU.setLevelWithXP(p, s, 1, this.plugin);
 				}else{
-					CPU.setLevelWithXP(p, skill, CPU.getLevel(p, skill, plugin)-SkillsSettings.getLevelsDownOnDeath(), plugin);
+					CPU.setLevelWithXP(p, s, CPU.getLevel(p, s, this.plugin)-SkillsSettings.getLevelsDownOnDeath(), this.plugin);
 				}
 			}
 			p.sendMessage(SkillsSettings.getLevelsReset());

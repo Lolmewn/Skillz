@@ -70,7 +70,7 @@ public class CPU {
 				e.printStackTrace();
 			}
 		}else{
-			main.mysql.executeStatement("UPDATE " + main.dbTable + " SET level=" + lvl + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "' LIMIT 1");
+			main.getMySQL().executeStatement("UPDATE " + main.dbTable + " SET level=" + lvl + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "' LIMIT 1");
 		}
 		if (SkillsSettings.isBroadcastOnLevelup()) {
 			main.getServer().broadcastMessage(
@@ -125,7 +125,7 @@ public class CPU {
 
 	public static int getLevel(Player p, SkillBase skill, Skillz main) {
 		if(main.useMySQL){
-			ResultSet set = main.mysql.executeQuery("SELECT * FROM " + main.dbTable + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "' LIMIT 1");
+			ResultSet set = main.getMySQL().executeQuery("SELECT * FROM " + main.dbTable + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "' LIMIT 1");
 			if(set == null){
 				if(SkillsSettings.isDebug()){
 					System.out.println("Something went wrong with ResultSet in getLevel in CPU, set==null");
@@ -167,7 +167,7 @@ public class CPU {
 
 	public static void setLevelWithXP(Player p, SkillBase skill, int level, Skillz main) {
 		if(main.useMySQL){
-			main.mysql.executeStatement("UPDATE " + main.dbTable + " SET level=" + level + " , xp=" + (level - 1) * (level - 1) * 10 + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "'");
+			main.getMySQL().executeStatement("UPDATE " + main.dbTable + " SET level=" + level + " , xp=" + (level - 1) * (level - 1) * 10 + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "'");
 			return;
 		}
 		Properties prop = new Properties();
@@ -193,7 +193,7 @@ public class CPU {
 
 	public static int getXP(Player p, SkillBase skill, Skillz main) {
 		if(main.useMySQL){
-			ResultSet set = main.mysql.executeQuery("SELECT * FROM " + main.dbTable + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "' LIMIT 1");
+			ResultSet set = main.getMySQL().executeQuery("SELECT * FROM " + main.dbTable + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "' LIMIT 1");
 			if(set == null){
 				if(SkillsSettings.isDebug()){
 					System.out.println("Something went wrong with ResultSet in getXP in CPU, set==null");

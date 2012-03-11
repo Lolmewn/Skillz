@@ -57,9 +57,9 @@ public class Skillz extends JavaPlugin{
 	public FastBreak fb = new FastBreak();
 	public static SkillzAPI api = new SkillzAPI();
 	private Metrics metrics;
-	public SkillManager skillManager;
-	public CustomSkillManager customManager;
-	public MySQL mysql = null;
+	private SkillManager skillManager;
+	private CustomSkillManager customManager;
+	private MySQL mysql = null;
 
 	//For faster block breaking
 	public HashMap<Player, Block> FBlock = new HashMap<Player, Block>();
@@ -94,6 +94,7 @@ public class Skillz extends JavaPlugin{
 		this.getServer().getScheduler().cancelTasks(this);
 		this.log.info("Disabled!");
 	}
+	
 	private void downloadFile(String site){
 		try {
 			this.log.info("Updating Skillz.. Please wait.");
@@ -221,6 +222,18 @@ public class Skillz extends JavaPlugin{
 
 	public SkillzAPI api(){
 		return Skillz.api;
+	}
+	
+	public SkillManager getSkillManager(){
+		return this.skillManager;
+	}
+	
+	public CustomSkillManager getCustomSkillManager(){
+		return this.customManager;
+	}
+	
+	public MySQL getMySQL(){
+		return this.mysql;
 	}
 
 	private void setupPlugins() {

@@ -26,7 +26,7 @@ public class SkillBlockListener implements Listener{
 			return;
 		}
 		double time = System.nanoTime();
-		for (SkillBase base : plugin.skillManager.getSkills()) {
+		for (SkillBase base : this.plugin.getSkillManager().getSkills()) {
 			if (base instanceof SkillBlockBase) {
 				if(SkillsSettings.isDebug()){System.out.println("[Skillz - Debug] Skill " + base.getSkillName() + " = true");}
 				SkillBlockBase s = (SkillBlockBase) base;
@@ -36,12 +36,12 @@ public class SkillBlockListener implements Listener{
 				handleSkill(s, event);
 			}
 		}
-		for(CustomSkill skill : plugin.customManager.getSkillsUsing("BLOCK_BREAK")){
+		for(CustomSkill skill : this.plugin.getCustomSkillManager().getSkillsUsing("BLOCK_BREAK")){
 			if(!skill.isEnabled()){
 				continue;
 			}
 			if(skill.hasBlock(event.getBlock())){
-				if(CPU.getLevel(event.getPlayer(), skill, plugin) < skill.getLevelNeeded(event.getBlock())){
+				if(CPU.getLevel(event.getPlayer(), skill, this.plugin) < skill.getLevelNeeded(event.getBlock())){
 					event.getPlayer().sendMessage("You are not allowed to break this block! "
 							+ skill.getSkillName().substring(0, 1).toUpperCase()
 							+ skill.getSkillName().substring(1).toLowerCase()
@@ -63,12 +63,12 @@ public class SkillBlockListener implements Listener{
 			return;
 		}
 		double time = System.nanoTime();
-		for(CustomSkill skill : plugin.customManager.getSkillsUsing("BLOCK_PLACE")){
+		for(CustomSkill skill : this.plugin.getCustomSkillManager().getSkillsUsing("BLOCK_PLACE")){
 			if(!skill.isEnabled()){
 				continue;
 			}
 			if(skill.hasBlock(event.getBlock())){
-				if(CPU.getLevel(event.getPlayer(), skill, plugin) < skill.getLevelNeeded(event.getBlock())){
+				if(CPU.getLevel(event.getPlayer(), skill, this.plugin) < skill.getLevelNeeded(event.getBlock())){
 					event.getPlayer().sendMessage("You are not allowed to break this block! "
 							+ skill.getSkillName().substring(0, 1).toUpperCase()
 							+ skill.getSkillName().substring(1).toLowerCase()
@@ -87,7 +87,7 @@ public class SkillBlockListener implements Listener{
 		Player p = event.getPlayer();
 		if (s.hasBlock(event.getBlock())) {
 			int lvlneeded = s.getLevelNeeded(event.getBlock());
-			if (!s.isAllFromFirstLevel() && CPU.getLevel(p, s, plugin) < lvlneeded) {
+			if (!s.isAllFromFirstLevel() && CPU.getLevel(p, s, this.plugin) < lvlneeded) {
 				p.sendMessage("You are not allowed to mine this block! "
 						+ s.getSkillName().substring(0, 1).toUpperCase()
 						+ s.getSkillName().substring(1).toLowerCase()

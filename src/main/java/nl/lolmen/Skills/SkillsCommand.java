@@ -53,14 +53,14 @@ class getSkills extends Thread {
 	public void run() {
 		Map<Integer, SkillData> data = new HashMap<Integer, SkillData>();
 		if(SkillsSettings.isDebug()){
-			if(sender instanceof Player){
-				System.out.println("Fetching file from " + p + " to " + ((Player)sender).getDisplayName());
+			if(this.sender instanceof Player){
+				System.out.println("Fetching file from " + p + " to " + ((Player)this.sender).getDisplayName());
 			}
-			sender.sendMessage("Fetching file from " + p);
+			this.sender.sendMessage("Fetching file from " + p);
 		}
 		int count=0, totalXP=0, totalLVL=0;
-		if(plugin.useMySQL){
-			ResultSet set = plugin.mysql.executeQuery("SELECT * FROM " + plugin.dbTable + " WHERE player='" + p + "' ORDER BY skill DESC");
+		if(this.plugin.useMySQL){
+			ResultSet set = this.plugin.getMySQL().executeQuery("SELECT * FROM " + this.plugin.dbTable + " WHERE player='" + p + "' ORDER BY skill DESC");
 			if(set==null){
 				System.out.println("Something went wrong while reading the MySQL database.");
 				return;
@@ -81,11 +81,11 @@ class getSkills extends Thread {
 			}
 		}else{
 			try{
-				File f = new File("plugins" +File.separator+ "Skillz"+File.separator+ "players"+File.separator + p.toLowerCase() + ".txt");
+				File f = new File("plugins" + File.separator + "Skillz" + File.separator+ "players" + File.separator + p.toLowerCase() + ".txt");
 				if(!f.exists()){
-					sender.sendMessage("Something went wrong while trying to fetch your personal file!");
-					sender.sendMessage("Tell an admin to take a look at his server.log , he'll know what to do ;)");
-					System.out.println("[Skillz] File for player " + p+ " not found at " + f.getAbsolutePath());
+					this.sender.sendMessage("Something went wrong while trying to fetch your personal file!");
+					this.sender.sendMessage("Tell an admin to take a look at his server.log , he'll know what to do ;)");
+					System.out.println("[Skillz] File for player " + this.p + " not found at " + f.getAbsolutePath());
 					return;
 				}
 				FileInputStream in = new FileInputStream(f);
@@ -121,12 +121,12 @@ class getSkills extends Thread {
 				e.printStackTrace();
 			}
 		}
-		if(!(data.size() > page * 8 - 8)){
-			sender.sendMessage(ChatColor.RED + "There is no page " + page + "!");
+		if(!(data.size() > this.page * 8 - 8)){
+			this.sender.sendMessage(ChatColor.RED + "There is no page " + this.page + "!");
 			return;
 		}
-		for(int i = 0; i < page * 8; i++){
-			int get = i + (page-1)*8;
+		for(int i = 0; i < this.page * 8; i++){
+			int get = i + (this.page-1)*8;
 			if(data.containsKey(get)){
 				SkillData d = data.get(get);
 				double percent = 100 - (d.getRem() / (Math.pow(d.getLVL(), 2) * 10 - Math.pow(d.getLVL() - 1, 2) * 10) * 100);
@@ -146,14 +146,14 @@ class getSkills extends Thread {
 					str.append(ChatColor.RED + "|");
 				}
 				str.append(ChatColor.WHITE + "]");
-				sender.sendMessage(ChatColor.RED + d.getSkill()+ ChatColor.WHITE + " Level: " + ChatColor.GREEN + d.getLVL() + ChatColor.WHITE + " XP: " + ChatColor.GREEN + d.getXP()  + " " + str.toString());
+				this.sender.sendMessage(ChatColor.RED + d.getSkill()+ ChatColor.WHITE + " Level: " + ChatColor.GREEN + d.getLVL() + ChatColor.WHITE + " XP: " + ChatColor.GREEN + d.getXP()  + " " + str.toString());
 			}else{
 				if(SkillsSettings.isDebug()){
-					sender.sendMessage("[Skillz - Debug] No value: " + get);
+					this.sender.sendMessage("[Skillz - Debug] No value: " + get);
 				}
 			}
 		}
-		sender.sendMessage(ChatColor.RED + "Total Level: " + ChatColor.GREEN + totalLVL + ChatColor.RED + " Total XP: " + ChatColor.GREEN + totalXP);
+		this.sender.sendMessage(ChatColor.RED + "Total Level: " + ChatColor.GREEN + totalLVL + ChatColor.RED + " Total XP: " + ChatColor.GREEN + totalXP);
 	}
 	
 	public getSkills(CommandSender sender, Player p, int page, Skillz plugin){
