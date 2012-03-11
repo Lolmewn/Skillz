@@ -23,7 +23,7 @@ public class SkillsCommand {
 	}
 	
 	public void sendSkills(Player p, int page, Skillz plugin){
-		this.sendSkills(p, p, page, plugin);
+		this.sendSkills(p, p.getName(), page, plugin);
 	}
 	
 	public void sendSkills(CommandSender sender, Player p, Skillz plugin){
