@@ -1,8 +1,11 @@
 package nl.lolmen.Skillz;
 
+import java.io.IOException;
+
 import nl.lolmen.Skills.SkillsSettings;
 
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class Configurator {
@@ -49,13 +52,14 @@ public class Configurator {
 		}
 		if(input.equalsIgnoreCase("start") && this.getTodonext().equals(todo.start)){
 			this.p.sendMessage(ChatColor.GRAY + "Starting the configuration of Skillz..");
-			this.p.sendMessage("What type of database do you want to use? "+ ChatColor.RED + "flatfile/sqlite/mysql");
+			this.p.sendMessage("What type of database do you want to use? "+ ChatColor.RED + "flatfile/mysql");
 			this.setTodonext(todo.dbtype);
 			return;
 		}
 		if(this.getTodonext().equals(todo.dbtype)){
 			if(input.startsWith("my")){
 				this.plugin.useMySQL = true;
+				this.changeSetting("useMySQL", true);
 				this.setTodonext(todo.dbhost);
 				this.p.sendMessage("What is the database host? Usually localhost");
 				return;
@@ -71,6 +75,7 @@ public class Configurator {
 		}
 		if(this.getTodonext().equals(todo.dbhost)){
 			this.plugin.dbHost = input;
+			this.changeSetting("MySQL-Host", input);
 			this.setTodonext(todo.dbport);
 			this.p.sendMessage("What port is the database running on?");
 			return;
@@ -79,6 +84,7 @@ public class Configurator {
 			try{
 				int port = Integer.parseInt(input);
 				this.plugin.dbPort = port;
+				this.changeSetting("MySQL-Port", port);
 				this.setTodonext(todo.dbuser);
 				this.p.sendMessage("What's the username of the database?");
 				return;
@@ -89,31 +95,54 @@ public class Configurator {
 		}
 		if(this.getTodonext().equals(todo.dbuser)){
 			this.plugin.dbUser = input;
+			this.changeSetting("MySQL-User", input);
 			this.setTodonext(todo.dbpass);
 			this.p.sendMessage("What's the password of the database?");
 			return;
 		}
 		if(this.getTodonext().equals(todo.dbpass)){
 			plugin.dbPass = input;
+			this.changeSetting("MySQL-Pass", input);
 			this.setTodonext(todo.dbname);
-			this.p.sendMessage("What's the database's table? Usually minecraft");
+			this.p.sendMessage("What's the database's name? Usually minecraft");
 			return;
 		}
 		if(this.getTodonext().equals(todo.dbname)){
 			this.plugin.dbName = input;
+			this.changeSetting("MySQL-Database", input);
 			this.setTodonext(todo.dbtable);
 			this.p.sendMessage("What name do you want to give the Skills table?");
 			return;
 		}
 		if(this.getTodonext().equals(todo.dbtable)){
 			this.plugin.dbTable = input;
+			this.changeSetting("MySQL-Table", input);
 			this.setTodonext(todo.moneyReward);
-			this.p.sendMessage("That's it for the database. How much money should a player get when he levels up?");
+			this.p.sendMessage("That's it for the database. Testing connection..");
+			if(this.plugin.getMySQL() == null){
+				this.plugin.loadMySQL();
+				if(this.plugin.getMySQL() == null || this.plugin.getMySQL().isFault()){
+					this.p.sendMessage("Something is wrong with the database! Check the logs!");
+					this.p.sendMessage("We'll just continue. How much money should a player get when he levels up?");
+					return;
+				}
+				this.p.sendMessage("MySQL connection succesful, table " + this.plugin.dbTable + " has been created.");
+				this.p.sendMessage("How much money should a player get when he levels up?");
+				return;
+			}
+			if(this.plugin.getMySQL().isFault()){
+				this.p.sendMessage("Something is wrong with the database! Check the logs!");
+				this.p.sendMessage("We'll just continue. How much money should a player get when he levels up?");
+				return;
+			}
+			this.p.sendMessage("That's weird.. the database is already connected and setup! No need to do anything then.");
+			this.p.sendMessage("How much money should a player get when he levels up?");
 			return;
 		}
 		if(this.getTodonext().equals(todo.moneyReward)){
 			try{
 				int port = Integer.parseInt(input);
+				this.changeSetting("moneyOnLevelup", port);
 				SkillsSettings.setMoneyOnLevelup(port);
 				this.setTodonext(todo.itemReward);
 				this.p.sendMessage("What items should a player get when they level up? \nItemID;Amount is the format, 89;2 is 2 glowstone for example.");
@@ -133,6 +162,7 @@ public class Configurator {
 				Integer.parseInt(split[0]);
 				Integer.parseInt(split[1]);
 				SkillsSettings.setItemOnLevelup(input);
+				this.changeSetting("itenOnLevelup", input);
 				this.p.sendMessage("That was it for the config, you can always edit skills.yml to change it.");
 				this.plugin.getSkillManager().configed = true;
 				this.plugin.getSkillManager().beingConfigged = false;
@@ -140,7 +170,8 @@ public class Configurator {
 				if(SkillsSettings.isDebug()){
 					e.printStackTrace();
 				}
-				this.p.sendMessage("There's something wrong with the input! \nItemID;Amount is the format, 89;2 is 2 glowstone for example.");
+				this.p.sendMessage("There's something wrong with the input! ");
+				this.p.sendMessage("ItemID;Amount is the format, 89;2 is 2 glowstone for example.");
 			}
 		}
 	}
@@ -155,6 +186,17 @@ public class Configurator {
 
 	public void setPaused(boolean paused) {
 		this.paused = paused;
+	}
+	
+	private void changeSetting(String path, Object value){
+		YamlConfiguration c = YamlConfiguration.loadConfiguration(plugin.skillzFile);
+		c.set(path, value);
+		try {
+			c.save(plugin.skillzFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+			this.plugin.log.warning("Something went wrong while saving settings to file!");
+		}
 	}
 
 }
