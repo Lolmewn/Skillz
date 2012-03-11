@@ -168,14 +168,14 @@ public class Skillz extends JavaPlugin{
 			loadMySQL();
 		}
 		this.setupPlugins();
-		high.loadMaps();
+		this.high.loadMaps();
 		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(block, this);
-		pm.registerEvents(entity, this);
-		pm.registerEvents(player, this);
+		pm.registerEvents(this.block, this);
+		pm.registerEvents(this.entity, this);
+		pm.registerEvents(this.player, this);
 		double end = System.nanoTime();
 		double taken = (end - time) / 1000000;
-		this.getLogger().info("version " + this.version + " build " + getDescription().getVersion() + " enabled - took " + taken + "ms!");
+		this.getLogger().info("version " + this.version + " build " + this.getDescription().getVersion() + " enabled - took " + taken + "ms!");
 	}
 
 	private void loadSkillz() {
@@ -185,7 +185,7 @@ public class Skillz extends JavaPlugin{
 		this.customManager.loadCustomSkills();
 		YamlConfiguration c = new YamlConfiguration();
 		try{
-			c.load(skillzFile);
+			c.load(this.skillzFile);
 			this.version = c.getDouble("version", 5.51);
 			this.update = c.getBoolean("update", true);
 			this.dbUser = c.getString("MySQL-User", "root");
@@ -246,13 +246,13 @@ public class Skillz extends JavaPlugin{
 		test = getServer().getPluginManager().getPlugin("Vault");
 		if(test != null){
 			SkillsSettings.setHasVault(true);
-			log.info("Hooked into Vault, just in case :)");
+			this.log.info("Hooked into Vault, just in case :)");
 			return;
 		}else{
 			if(SkillsSettings.getMoneyOnLevelup() == 0){
 				return;
 			}
-			log.warning("Vault not found. Money reward -> 0");
+			this.log.warning("Vault not found. Money reward -> 0");
 			SkillsSettings.setMoneyOnLevelup(0);
 		}
 	}
@@ -281,7 +281,7 @@ public class Skillz extends JavaPlugin{
 			try{
 				if(args.length == 0){
 					if(!sender.hasPermission("skillz.skills")){
-						sender.sendMessage(noPerm);
+						sender.sendMessage(this.noPerm);
 						return true;
 					}
 					if(!(sender instanceof Player)){
@@ -296,14 +296,14 @@ public class Skillz extends JavaPlugin{
 				if(args.length == 1 || args.length > 1){
 					if(args[0].equalsIgnoreCase("check")){
 						if(!sender.hasPermission("skillz.check")){
-							sender.sendMessage(noPerm);
+							sender.sendMessage(this.noPerm);
 							return true;
 						}
 						if(!(sender instanceof Player)){
 							sender.sendMessage(ChatColor.RED + "Only players can use this option!");
 							return true;
 						}
-						for(SkillBase s : this.skillManager.getSkills()){
+						for(SkillBase s : this.getSkillManager().getSkills()){
 							if(!s.isEnabled()){
 								continue;
 							}
@@ -314,14 +314,17 @@ public class Skillz extends JavaPlugin{
 					if(args[0].equalsIgnoreCase("top")){
 						if(args.length == 1){
 							sender.sendMessage(ChatColor.RED + "===HighScores===");
-							for(SkillBase s:this.skillManager.getSkills()){
-								sender.sendMessage(high.gethighest(s));
+							for(SkillBase s:this.getSkillManager().getSkills()){
+								if(!s.isEnabled()){
+									continue;
+								}
+								sender.sendMessage(this.high.gethighest(s));
 							}
 							return true;
 						}else if(args.length == 2){
 							sender.sendMessage(ChatColor.RED + "===HighScores===");
-							if(this.skillManager.skills.containsKey(args[1])){
-								sender.sendMessage(high.gethighest(this.skillManager.skills.get(args[1])));
+							if(this.getSkillManager().skills.containsKey(args[1])){
+								sender.sendMessage(this.high.gethighest(this.skillManager.skills.get(args[1])));
 							}else{
 								sender.sendMessage("No such skill: " + args[1]);
 							}
@@ -338,7 +341,7 @@ public class Skillz extends JavaPlugin{
 								String to = args[2];
 								if(from.contains("flat")){
 									if(to.equalsIgnoreCase("mysql")){
-										if(converter.flatToMySQL()){
+										if(this.converter.flatToMySQL()){
 											sender.sendMessage("Conversion succesful! Using MySQL now!");
 											return true;
 										}else{
@@ -351,7 +354,7 @@ public class Skillz extends JavaPlugin{
 								}
 								if(from.equalsIgnoreCase("mysql")){
 									if(to.contains("flat")){
-										if(converter.MySQLtoFlat()){
+										if(this.converter.MySQLtoFlat()){
 											sender.sendMessage("Conversion succesful! Using Flatfile!");
 											return true;
 										}else{
@@ -372,7 +375,7 @@ public class Skillz extends JavaPlugin{
 								return true;
 							}
 						}else{
-							sender.sendMessage(noPerm);
+							sender.sendMessage(this.noPerm);
 							return true;
 						}
 					}
@@ -384,16 +387,16 @@ public class Skillz extends JavaPlugin{
 							}
 							Player p = (Player)sender;
 							if(!p.hasPermission("skillz.reset.self")){
-								p.sendMessage(noPerm);
+								p.sendMessage(this.noPerm);
 								return true;
 							}
-							if(!new File(maindir + "players" + File.separator + p.getName().toLowerCase() + ".txt").exists()){
+							if(!new File(this.maindir + "players" + File.separator + p.getName().toLowerCase() + ".txt").exists()){
 								p.sendMessage("You don't have a skillz file, nothing to reset!");
 								return true;
 							}
-							File f = new File(maindir + "players/" + p.getName().toLowerCase() + ".txt");
+							File f = new File(this.maindir + "players/" + p.getName().toLowerCase() + ".txt");
 							if(f.delete()){
-								player.onPlayerJoin(new PlayerJoinEvent(p, p.getName()));
+								this.player.onPlayerJoin(new PlayerJoinEvent(p, p.getName()));
 								p.sendMessage("A new file should have been created!");
 								return true;
 							}
@@ -403,16 +406,16 @@ public class Skillz extends JavaPlugin{
 
 						}
 						if(!sender.hasPermission("skillz.reset.other")){
-							sender.sendMessage(noPerm);
+							sender.sendMessage(this.noPerm);
 						}
 						for(int i = 1; i < args.length; i++){
 							Player target = getServer().getPlayer(args[i]);
 							if(target == null){
-								if(!new File(maindir + "players" + File.separator + args[i] + ".txt").exists()){
+								if(!new File(this.maindir + "players" + File.separator + args[i] + ".txt").exists()){
 									sender.sendMessage("You don't have a skillz file, nothing to reset!");
 									return true;
 								}
-								File f = new File(maindir + "players/" + args[i] + ".txt");
+								File f = new File(this.maindir + "players/" + args[i] + ".txt");
 								if(f.delete()){
 									sender.sendMessage("A new file will be created the next time he logs in!");
 									return true;
@@ -420,7 +423,6 @@ public class Skillz extends JavaPlugin{
 									sender.sendMessage("For some reason, " + args[i] + "'s file could not be deleted. It will be when the server gets restarted.");
 									f.deleteOnExit();
 								}
-
 								continue;
 							}
 							if(!new File(maindir + "players" + File.separator + target.getName() + ".txt").exists()){
@@ -429,7 +431,7 @@ public class Skillz extends JavaPlugin{
 							}
 							File f = new File(maindir + "players/" + target.getName() + ".txt");
 							if(f.delete()){
-								player.onPlayerJoin(new PlayerJoinEvent(target, target.getName()));
+								this.player.onPlayerJoin(new PlayerJoinEvent(target, target.getName()));
 								sender.sendMessage(target.getName() + "'s player file deleted and regenerated!");
 							}else{
 								sender.sendMessage("For some reason,  " + target.getName() + "'s file could not be deleted. It will be when the server gets restarted.");
@@ -456,11 +458,11 @@ public class Skillz extends JavaPlugin{
 					}
 					if(args[0].equalsIgnoreCase("config")){
 						if(sender.isOp()){
-							if(this.skillManager.beingConfigged){
+							if(this.getSkillManager().beingConfigged){
 								sender.sendMessage("Someone is already configging the plugin!");
 								return true;
 							}
-							if(this.skillManager.configed){
+							if(this.getSkillManager().configed){
 								sender.sendMessage("Skillz already is configed! Edit skills.yml to edit");
 								return true;
 							}
@@ -468,8 +470,8 @@ public class Skillz extends JavaPlugin{
 								sender.sendMessage("You have to be player to use this command!");
 								return true;
 							}
-							this.skillManager.configger = new Configurator(this, (Player)sender);
-							this.skillManager.beingConfigged = true;
+							this.getSkillManager().configger = new Configurator(this, (Player)sender);
+							this.getSkillManager().beingConfigged = true;
 						}else{
 							sender.sendMessage("You have to be OP to use this command!");
 						}
@@ -478,7 +480,7 @@ public class Skillz extends JavaPlugin{
 
 					//Get another players Skills
 					if(!sender.hasPermission("skillz.skills.other")){
-						sender.sendMessage(noPerm);
+						sender.sendMessage(this.noPerm);
 						return true;
 					}
 					int page = 1;
@@ -511,7 +513,6 @@ public class Skillz extends JavaPlugin{
 
 	private void getNextLevel(final Player p, final String strings) {
 		Thread t = new Thread(new Runnable(){
-
 			@Override
 			public void run() {
 				String string = strings.toLowerCase();
