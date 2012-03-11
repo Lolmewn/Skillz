@@ -129,24 +129,29 @@ class getSkills extends Thread {
 			int get = i + (this.page-1)*8;
 			if(data.containsKey(get)){
 				SkillData d = data.get(get);
-				double percent = 100 - (d.getRem() / (Math.pow(d.getLVL(), 2) * 10 - Math.pow(d.getLVL() - 1, 2) * 10) * 100);
-				int stripes = (int)percent / (100/20); //Draws the red stripes
-				if(d.getLVL() == 0){
-					stripes = 0;
+				if(this.plugin.getSkillManager().skills.containsKey(d.getSkill()) && this.plugin.getSkillManager().skills.get(d.getSkill()).isEnabled() || this.plugin.getCustomSkillManager().getSkill(d.getSkill()) != null && this.plugin.getCustomSkillManager().getSkill(d.getSkill()).isEnabled()){
+					double percent = 100 - (d.getRem() / (Math.pow(d.getLVL(), 2) * 10 - Math.pow(d.getLVL() - 1, 2) * 10) * 100);
+					int stripes = (int)percent / (100/20); //Draws the red stripes
+					if(d.getLVL() == 0){
+						stripes = 0;
+					}
+					if(SkillsSettings.isDebug()){
+						System.out.println("[Skillz - Debug] Percent: " + percent + " stripes: " + stripes);
+					}
+					StringBuilder str = new StringBuilder();
+					str.append(ChatColor.WHITE + "[");
+					for(int b = 0; b < stripes; b++){
+						str.append(ChatColor.GREEN + "|");
+					}
+					for(int a = 0; a < 20 - stripes; a++){
+						str.append(ChatColor.RED + "|");
+					}
+					str.append(ChatColor.WHITE + "]");
+					this.sender.sendMessage(ChatColor.RED + d.getSkill()+ ChatColor.WHITE + " Level: " + ChatColor.GREEN + d.getLVL() + ChatColor.WHITE + " XP: " + ChatColor.GREEN + d.getXP()  + " " + str.toString());
+				}else{
+					i--;
+					//The skill is not enabled, or doesn't exist in the managers.
 				}
-				if(SkillsSettings.isDebug()){
-					System.out.println("[Skillz - Debug] Percent: " + percent + " stripes: " + stripes);
-				}
-				StringBuilder str = new StringBuilder();
-				str.append(ChatColor.WHITE + "[");
-				for(int b = 0; b < stripes; b++){
-					str.append(ChatColor.GREEN + "|");
-				}
-				for(int a = 0; a < 20 - stripes; a++){
-					str.append(ChatColor.RED + "|");
-				}
-				str.append(ChatColor.WHITE + "]");
-				this.sender.sendMessage(ChatColor.RED + d.getSkill()+ ChatColor.WHITE + " Level: " + ChatColor.GREEN + d.getLVL() + ChatColor.WHITE + " XP: " + ChatColor.GREEN + d.getXP()  + " " + str.toString());
 			}else{
 				if(SkillsSettings.isDebug()){
 					this.sender.sendMessage("[Skillz - Debug] No value: " + get);

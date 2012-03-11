@@ -77,6 +77,13 @@ public class CustomSkillManager {
 		}
 	}
 	
+	public CustomSkill getSkill(String name){
+		if(this.customs.containsKey(name)){
+			return this.customs.get(name);
+		}
+		return null;
+	}
+	
 	public HashSet<CustomSkill> getSkills(){
 		HashSet<CustomSkill> set = new HashSet<CustomSkill>();
 		for(String item : this.customs.keySet()){
