@@ -128,8 +128,8 @@ public class Skillz extends JavaPlugin{
 		this.makeSettings();
 		this.loadSkillz();
 		try {
-			this.metrics = new Metrics();
-			this.metrics.addCustomData(this, new Plotter(){
+			this.metrics = new Metrics(this);
+			this.metrics.addCustomData(new Plotter(){
 
 				@Override
 				public String getColumnName() {
@@ -143,12 +143,11 @@ public class Skillz extends JavaPlugin{
 					return amount;
 				}
 			});
-			this.metrics.addCustomData(this, new Plotter(){
+			this.metrics.addCustomData(new Plotter(){
 				@Override
 				public String getColumnName() {
 					return "Total XP-Gained";
 				}
-
 				@Override
 				public int getValue() {
 					int amount = CPU.xpUps;
@@ -156,7 +155,7 @@ public class Skillz extends JavaPlugin{
 					return amount;
 				}
 			});
-			this.metrics.beginMeasuringPlugin(this);
+			this.metrics.start();
 			this.getLogger().info("Metrics loaded! View them @ http://metrics.griefcraft.com/plugin/Skillz");
 		} catch (IOException e) {
 			e.printStackTrace();
