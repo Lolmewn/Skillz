@@ -6,8 +6,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class Configurator {
-	Player p;
-	Skillz plugin;
+	private Player p;
+	private Skillz plugin;
 	private todo todonext;
 	public enum todo{
 		start, dbtype, dbhost, dbpass, dbuser, dbport, dbname, moneyReward, itemReward, dbtable
