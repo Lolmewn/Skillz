@@ -101,9 +101,6 @@ class getSkills extends Thread {
 					}
 					String[] first = strLine.split("=");
 					String skill = first[0];
-					if(skill.startsWith("axes") || skill.startsWith("swords") || skill.startsWith("unarmed")){
-						skill+=" Combat";
-					}
 					String[] second = first[1].split(";");
 					int xp = Integer.parseInt(second[0]);
 					int lvl = Integer.parseInt(second[1]);
@@ -148,7 +145,11 @@ class getSkills extends Thread {
 						str.append(ChatColor.RED + "|");
 					}
 					str.append(ChatColor.WHITE + "]");
-					this.sender.sendMessage(ChatColor.RED + d.getSkill()+ ChatColor.WHITE + " Level: " + ChatColor.GREEN + d.getLVL() + ChatColor.WHITE + " XP: " + ChatColor.GREEN + d.getXP()  + " " + str.toString());
+					String skill = d.getSkill();
+					if(skill.startsWith("axes") || skill.startsWith("swords") || skill.startsWith("unarmed")){
+						skill+=" Combat";
+					}
+					this.sender.sendMessage(ChatColor.RED + skill + ChatColor.WHITE + " Level: " + ChatColor.GREEN + d.getLVL() + ChatColor.WHITE + " XP: " + ChatColor.GREEN + d.getXP()  + " " + str.toString());
 					sent++;
 				}else{
 					if(SkillsSettings.isDebug()){

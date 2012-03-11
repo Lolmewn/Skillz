@@ -295,7 +295,7 @@ public class SkillManager {
 							a.add_to_fixed_levels(i, optRewardFixed.get(i));
 						}
 					}
-					skills.put(key, a);
+					skills.put(keys, a);
 					continue;
 				}
 				SkillBase a = new SkillBase(this.plugin);
