@@ -61,7 +61,7 @@ class getSkills extends Thread {
 		if(this.plugin.useMySQL){
 			ResultSet set = this.plugin.getMySQL().executeQuery("SELECT * FROM " + this.plugin.dbTable + " WHERE player='" + p + "' ORDER BY skill DESC");
 			if(set==null){
-				System.out.println("Something went wrong while reading the MySQL database.");
+				System.out.println("[Skillz] Something went wrong while reading the MySQL database.");
 				return;
 			}
 			try {
