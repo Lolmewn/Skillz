@@ -93,7 +93,7 @@ public class SkillManager {
 					a.setSkillName(key);
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
-					a.setCritCalc(c.getString("skills." + key + ".critChance", "$LEVEL*0.1"));
+					a.setCritCalc(c.getString("skills." + key + ".critChance", "$LEVEL/10"));
 					if(!optReward.isEmpty()){
 						for(int i : optReward.keySet()){
 							a.add_to_every_many_levels(i, optReward.get(i));
@@ -219,7 +219,7 @@ public class SkillManager {
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
 					a.setLevelsPerExtraDamage(c.getInt("skills." + key + ".levelsPerExtraDamage", 20));
-					a.setCritCalc(c.getString("skills." + key + ".critChance", "$LEVEL*0.1"));
+					a.setCritCalc(c.getString("skills." + key + ".critChance", "$LEVEL/10"));
 					if(!optReward.isEmpty()){
 						for(int i : optReward.keySet()){
 							a.add_to_every_many_levels(i, optReward.get(i));
@@ -241,7 +241,7 @@ public class SkillManager {
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
 					a.setLevelsPerExtraDamage(c.getInt("skills." + key + ".levelsPerExtraDamage", 20));
-					a.setCritCalc(c.getString("skills." + key + ".critChance", "$LEVEL*0.1"));
+					a.setCritCalc(c.getString("skills." + key + ".critChance", "$LEVEL/10"));
 					if(!optReward.isEmpty()){
 						for(int i : optReward.keySet()){
 							a.add_to_every_many_levels(i, optReward.get(i));
@@ -263,7 +263,7 @@ public class SkillManager {
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
 					a.setLevelsPerExtraDamage(c.getInt("skills." + key + ".levelsPerExtraDamage", 20));
-					a.setCritCalc(c.getString("skills." + key + ".critChance", "$LEVEL*0.1"));
+					a.setCritCalc(c.getString("skills." + key + ".critChance", "$LEVEL/10"));
 					if(!optReward.isEmpty()){
 						for(int i : optReward.keySet()){
 							a.add_to_every_many_levels(i, optReward.get(i));
@@ -284,7 +284,7 @@ public class SkillManager {
 					a.setSkillName("swimming");
 					a.setEnabled(enabled);
 					a.setMultiplier(multiplier);
-					a.setNoDrownChance(c.getString("skills." + key + ".critChance", "$LEVEL*0.1"));
+					a.setNoDrownChance(c.getString("skills." + key + ".critChance", "$LEVEL/10"));
 					if(!optReward.isEmpty()){
 						for(int i : optReward.keySet()){
 							a.add_to_every_many_levels(i, optReward.get(i));
