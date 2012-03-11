@@ -150,6 +150,9 @@ class getSkills extends Thread {
 					this.sender.sendMessage(ChatColor.RED + d.getSkill()+ ChatColor.WHITE + " Level: " + ChatColor.GREEN + d.getLVL() + ChatColor.WHITE + " XP: " + ChatColor.GREEN + d.getXP()  + " " + str.toString());
 				}else{
 					i--;
+					if(SkillsSettings.isDebug()){
+						this.plugin.log.info("[Skillz - Debug] Not showing disabled skill " + d.getSkill());
+					}
 					//The skill is not enabled, or doesn't exist in the managers.
 				}
 			}else{
