@@ -129,7 +129,7 @@ class getSkills extends Thread {
 			int get = i + (this.page-1)*8;
 			if(data.containsKey(get)){
 				SkillData d = data.get(get);
-				if(this.plugin.getSkillManager().skills.containsKey(d.getSkill()) && this.plugin.getSkillManager().skills.get(d.getSkill()).isEnabled() || this.plugin.getCustomSkillManager().getSkill(d.getSkill()) != null && this.plugin.getCustomSkillManager().getSkill(d.getSkill()).isEnabled()){
+				if((this.plugin.getSkillManager().skills.containsKey(d.getSkill()) && this.plugin.getSkillManager().skills.get(d.getSkill()).isEnabled()) || (this.plugin.getCustomSkillManager().getSkill(d.getSkill()) != null && this.plugin.getCustomSkillManager().getSkill(d.getSkill()).isEnabled())){
 					double percent = 100 - (d.getRem() / (Math.pow(d.getLVL(), 2) * 10 - Math.pow(d.getLVL() - 1, 2) * 10) * 100);
 					int stripes = (int)percent / (100/20); //Draws the red stripes
 					if(d.getLVL() == 0){
