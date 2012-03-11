@@ -54,9 +54,8 @@ class getSkills extends Thread {
 		Map<Integer, SkillData> data = new HashMap<Integer, SkillData>();
 		if(SkillsSettings.isDebug()){
 			if(this.sender instanceof Player){
-				System.out.println("Fetching file from " + p + " to " + ((Player)this.sender).getDisplayName());
+				System.out.println("[Skillz - Debug] Fetching file from " + p + " to " + ((Player)this.sender).getDisplayName());
 			}
-			this.sender.sendMessage("Fetching file from " + p);
 		}
 		int count=0, totalXP=0, totalLVL=0;
 		if(this.plugin.useMySQL){
@@ -72,7 +71,7 @@ class getSkills extends Thread {
 					totalXP+=set.getInt("xp");
 					totalLVL+=set.getInt("level");
 					if(SkillsSettings.isDebug()){
-						System.out.println("[Skillz - Debug] Added " + skill);
+						System.out.println("[Skillz - Debug] Added " + skill + " to data set");
 					}
 					count++;
 				}
@@ -130,7 +129,8 @@ class getSkills extends Thread {
 		while(sent != 8){
 			if(data.containsKey(getCounter)){
 				SkillData d = data.get(getCounter);
-				if((this.plugin.getSkillManager().skills.containsKey(d.getSkill()) && this.plugin.getSkillManager().skills.get(d.getSkill()).isEnabled()) || (this.plugin.getCustomSkillManager().getSkill(d.getSkill()) != null && this.plugin.getCustomSkillManager().getSkill(d.getSkill()).isEnabled())){
+				if((this.plugin.getSkillManager().skills.containsKey(d.getSkill().toLowerCase()) && this.plugin.getSkillManager().skills.get(d.getSkill().toLowerCase()).isEnabled()) || 
+						(this.plugin.getCustomSkillManager().getSkill(d.getSkill().toLowerCase()) != null && this.plugin.getCustomSkillManager().getSkill(d.getSkill().toLowerCase()).isEnabled())){
 					double percent = 100 - (d.getRem() / (Math.pow(d.getLVL(), 2) * 10 - Math.pow(d.getLVL() - 1, 2) * 10) * 100);
 					int stripes = (int)percent / (100/20); //Draws the red stripes
 					if(d.getLVL() == 0){
@@ -158,7 +158,7 @@ class getSkills extends Thread {
 				}
 			}else{
 				if(SkillsSettings.isDebug()){
-					this.sender.sendMessage("[Skillz - Debug] No value: " + getCounter + ", breaking");
+					this.plugin.log.info("[Skillz - Debug] No value: " + getCounter + ", breaking");
 				}
 				break;
 			}
