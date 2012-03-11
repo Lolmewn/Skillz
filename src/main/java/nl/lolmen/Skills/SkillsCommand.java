@@ -67,7 +67,7 @@ class getSkills extends Thread {
 			try {
 				while(set.next()){
 					String skill = set.getString("skill").toLowerCase();
-					data.put(count, new SkillData(skill.startsWith("axes") || skill.startsWith("swords") || skill.startsWith("unarmed") ? skill + " Combat" : skill, set.getInt("xp"), set.getInt("level"), (int)Math.pow(set.getInt("level"), 2) * 10 - set.getInt("xp")));
+					data.put(count, new SkillData(skill, set.getInt("xp"), set.getInt("level"), (int)Math.pow(set.getInt("level"), 2) * 10 - set.getInt("xp")));
 					totalXP+=set.getInt("xp");
 					totalLVL+=set.getInt("level");
 					if(SkillsSettings.isDebug()){
