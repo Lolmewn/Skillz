@@ -12,7 +12,6 @@
 			<url>http://nexus.getspout.org/content/groups/public/</url>
 		</repository>
 	</repositories>
-	
 	<build>
 		<plugins>
 			<plugin>
@@ -20,8 +19,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.0.2</version>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 			
@@ -31,7 +30,7 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>craftbukkit</artifactId>
-			<version>1.2.3-R0.2-SNAPSHOT</version>
+			<version>1.2.3-R0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.milkbowl</groupId>
