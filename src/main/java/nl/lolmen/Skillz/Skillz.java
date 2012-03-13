@@ -513,7 +513,6 @@ public class Skillz extends JavaPlugin{
 
 	private void getNextLevel(final Player p, final String strings) {
 		Thread t = new Thread(new Runnable(){
-			@Override
 			public void run() {
 				String string = strings.toLowerCase();
 				if(useMySQL){
