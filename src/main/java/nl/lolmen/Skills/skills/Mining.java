@@ -28,9 +28,8 @@ public class Mining extends SkillBlockBase{
 	public boolean getWillDoubleDrop(Player p) {
 		if(CPU.getLevel(p, this, plugin) > Math.random() * doubleDropChange){
 			return true;
-		}else{
-			return false;
 		}
+		return false;
 	}
 
 	public void setDoubleDropChange(int doubleDropChange) {

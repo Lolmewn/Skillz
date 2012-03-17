@@ -35,6 +35,9 @@ public class SkillBlockBase extends SkillBase{
 		this.blocks = blocks;
 	}
 	
+	/**
+	 * @param data BlockData 
+	 */
 	public boolean hasBlock(int block, byte data){
 		return blocks.containsKey(block);
 	}
@@ -46,9 +49,8 @@ public class SkillBlockBase extends SkillBase{
 	public int getXP(int block){
 		if(blocks.containsKey(block)){
 			return blocks.get(block);
-		}else{
-			return 0;
 		}
+		return 0;
 	}
 	
 	public int getXP(Block block){
@@ -58,9 +60,8 @@ public class SkillBlockBase extends SkillBase{
 	public int getLevelNeeded(int blockID){
 		if(blockLevels.containsKey(blockID)){
 			return blockLevels.get(blockID);
-		}else{
-			return 0;
 		}
+		return 0;
 	}
 	public int getLevelNeeded(Block b){
 		return getLevelNeeded(b.getTypeId());

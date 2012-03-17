@@ -200,7 +200,8 @@ public class Metrics {
         plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
             private boolean firstPost = true;
 
-            public void run() {
+            @Override
+			public void run() {
                 try {
                     // We use the inverse of firstPost because if it is the first time we are posting,
                     // it is not a interval ping, so it evaluates to FALSE
@@ -295,23 +296,21 @@ public class Metrics {
 
         if (response.startsWith("ERR")) {
             throw new IOException(response); //Throw the exception
-        } else {
-            // Is this the first update this hour?
-            if (response.contains("OK This is your first update this hour")) {
-                synchronized (graphs) {
-                    Iterator<Graph> iter = graphs.iterator();
-
-                    while (iter.hasNext()) {
-                        Graph graph = iter.next();
-
-                        for (Plotter plotter : graph.getPlotters()) {
-                            plotter.reset();
-                        }
-                    }
-                }
-            }
         }
-        //if (response.startsWith("OK")) - We should get "OK" followed by an optional description if everything goes right
+		// Is this the first update this hour?
+		if (response.contains("OK This is your first update this hour")) {
+		    synchronized (graphs) {
+		        Iterator<Graph> iter = graphs.iterator();
+
+		        while (iter.hasNext()) {
+		            Graph graph = iter.next();
+
+		            for (Plotter plotter : graph.getPlotters()) {
+		                plotter.reset();
+		            }
+		        }
+		    }
+		}
     }
 
     /**

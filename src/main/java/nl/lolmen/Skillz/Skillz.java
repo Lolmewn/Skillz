@@ -83,6 +83,7 @@ public class Skillz extends JavaPlugin{
 	public boolean hasVault;
 	public boolean broadcast;
 
+	@Override
 	public void onDisable() {
 		if ((this.useMySQL) && (this.mysql != null)) {
 			this.mysql.close();
@@ -122,6 +123,7 @@ public class Skillz extends JavaPlugin{
 		}
 	}
 
+	@Override
 	public void onEnable() {
 		double time = System.nanoTime();
 		this.log = this.getLogger();
@@ -248,13 +250,12 @@ public class Skillz extends JavaPlugin{
 			SkillsSettings.setHasVault(true);
 			this.log.info("Hooked into Vault, just in case :)");
 			return;
-		}else{
-			if(SkillsSettings.getMoneyOnLevelup() == 0){
-				return;
-			}
-			this.log.warning("Vault not found. Money reward -> 0");
-			SkillsSettings.setMoneyOnLevelup(0);
 		}
+		if(SkillsSettings.getMoneyOnLevelup() == 0){
+			return;
+		}
+		this.log.warning("Vault not found. Money reward -> 0");
+		SkillsSettings.setMoneyOnLevelup(0);
 	}
 
 	public void loadMySQL() {
@@ -276,8 +277,12 @@ public class Skillz extends JavaPlugin{
 		}	
 	}
 
+	/**
+	 * @param str Command name, not used, using cmd.getName() 
+	 */
+	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String str, String[] args){
-		if(str.equalsIgnoreCase("skills")){
+		if(cmd.getName().equalsIgnoreCase("skills")){
 			try{
 				if(args.length == 0){
 					if(!sender.hasPermission("skillz.skills")){
@@ -344,10 +349,9 @@ public class Skillz extends JavaPlugin{
 										if(this.converter.flatToMySQL()){
 											sender.sendMessage("Conversion succesful! Using MySQL now!");
 											return true;
-										}else{
-											sender.sendMessage("Something went wrong! Check the log!");
-											return true;
 										}
+										sender.sendMessage("Something went wrong! Check the log!");
+										return true;
 									}
 									sender.sendMessage("Not sure what you ment by " + to);
 									return true;
@@ -357,10 +361,9 @@ public class Skillz extends JavaPlugin{
 										if(this.converter.MySQLtoFlat()){
 											sender.sendMessage("Conversion succesful! Using Flatfile!");
 											return true;
-										}else{
-											sender.sendMessage("Something went wrong! Check the log!");
-											return true;
 										}
+										sender.sendMessage("Something went wrong! Check the log!");
+										return true;
 									}
 									sender.sendMessage("Not sure what you ment by " + to);
 									return true;
@@ -374,10 +377,9 @@ public class Skillz extends JavaPlugin{
 								sender.sendMessage(ChatColor.RED + "Too many arguments!");
 								return true;
 							}
-						}else{
-							sender.sendMessage(this.noPerm);
-							return true;
 						}
+						sender.sendMessage(this.noPerm);
+						return true;
 					}
 					if(args[0].equalsIgnoreCase("reset")){
 						if(args.length == 1){
@@ -419,10 +421,9 @@ public class Skillz extends JavaPlugin{
 								if(f.delete()){
 									sender.sendMessage("A new file will be created the next time he logs in!");
 									return true;
-								}else{
-									sender.sendMessage("For some reason, " + args[i] + "'s file could not be deleted. It will be when the server gets restarted.");
-									f.deleteOnExit();
 								}
+								sender.sendMessage("For some reason, " + args[i] + "'s file could not be deleted. It will be when the server gets restarted.");
+								f.deleteOnExit();
 								continue;
 							}
 							if(!new File(maindir + "players" + File.separator + target.getName() + ".txt").exists()){
@@ -513,6 +514,7 @@ public class Skillz extends JavaPlugin{
 
 	private void getNextLevel(final Player p, final String strings) {
 		Thread t = new Thread(new Runnable(){
+			@Override
 			public void run() {
 				String string = strings.toLowerCase();
 				if(useMySQL){

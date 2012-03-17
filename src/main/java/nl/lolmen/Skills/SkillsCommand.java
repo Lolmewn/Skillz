@@ -50,6 +50,7 @@ class getSkills extends Thread {
 	private CommandSender sender;
 	private Skillz plugin;
 	
+	@Override
 	public void run() {
 		Map<Integer, SkillData> data = new HashMap<Integer, SkillData>();
 		if(SkillsSettings.isDebug()){

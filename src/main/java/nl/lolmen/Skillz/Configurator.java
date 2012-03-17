@@ -30,6 +30,7 @@ public class Configurator {
 		for(int i = 0; i < messages.length; i++){
 			final int count = i;
 			this.plugin.getServer().getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable(){
+				@Override
 				public void run() {
 					p.sendMessage(messages[count]);
 				}

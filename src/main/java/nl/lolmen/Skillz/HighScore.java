@@ -128,6 +128,7 @@ class data {
 		return lvl;
 	}
 	
+	@Override
 	public String toString(){
 		return p + " " + Integer.toString(lvl);
 	}
