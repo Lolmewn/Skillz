@@ -1,0 +1,112 @@
+10
+
+dir
+0
+svn://lolmewn@svn.bukkit.org/minecraft/skillz/mainline/trunk/src/main/java/nl/lolmen/Skills
+svn://lolmewn@svn.bukkit.org/minecraft/skillz/mainline
+add
+
+
+
+
+
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+67813997-ed3d-40b4-8710-156d9e4664d7
+
+CPU.java
+file
+
+
+
+add
+
+CustomSkillManager.java
+file
+
+
+
+add
+
+ItemHandler.java
+file
+
+
+
+add
+
+SkillBase.java
+file
+
+
+
+add
+
+SkillBlockBase.java
+file
+
+
+
+add
+
+SkillBlockListener.java
+file
+
+
+
+add
+
+SkillEntityListener.java
+file
+
+
+
+add
+
+SkillManager.java
+file
+
+
+
+add
+
+SkillPlayerListener.java
+file
+
+
+
+add
+
+SkillsCommand.java
+file
+
+
+
+add
+
+SkillsSettings.java
+file
+
+
+
+add
+
+skills
+dir
+
+
+
+add
+

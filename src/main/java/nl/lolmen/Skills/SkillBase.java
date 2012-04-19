@@ -40,7 +40,7 @@ public class SkillBase {
 			if(SkillsSettings.isDebug()){
 				System.out.println("[Skillz - Debug] Using per-Skill-Perms");
 			}
-			if(!p.hasPermission("skills." + this.getSkillName())){
+			if(!p.hasPermission("skillz.skill" + this.getSkillName())){
 				if(SkillsSettings.isDebug()){
 					System.out.println(p.getDisplayName() + " doesn't have perms to gain XP");
 				}
