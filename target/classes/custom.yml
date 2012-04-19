@@ -1,0 +1,29 @@
+###Custom Skillz###
+##Make your own Skills##
+
+example_Skill:
+    name: Derp
+    enabled: false
+    uses: BLOCK_BREAK,BLOCK_PLACE
+    XP-gain-multiplier: 1
+    BLOCK_BREAK:
+        block_level:
+            1: 4
+        block_xp:
+            1: 5
+            4: 1
+    BLOCK_PLACE:
+        block_level:
+            379: 20
+            17: 4
+        block_xp:
+            4: 1
+            3: 1
+            12: 1
+    reward:
+        money: 10
+        item: 50,4
+        every_many_levels:
+            5: MONEY;50:ITEM;50,10
+        fixed_levels:
+            8: MONEY;40:ITEM;264,2
