@@ -17,7 +17,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -60,6 +59,7 @@ public class Skillz extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        this.getUserManager().save(false);
         if ((this.useMySQL) && (this.mysql != null)) {
             this.mysql.close();
         }
@@ -102,16 +102,15 @@ public class Skillz extends JavaPlugin {
         double time = System.nanoTime();
         this.makeSettings();
         this.loadUserManager();
+        this.startUserSavingThread();
         this.loadSkillz();
         try {
             this.metrics = new Metrics(this);
             this.metrics.addCustomData(new Plotter() {
-
                 @Override
                 public String getColumnName() {
                     return "Total Level-Ups";
                 }
-
                 @Override
                 public int getValue() {
                     int amount = CPU.levelUps;
@@ -120,12 +119,10 @@ public class Skillz extends JavaPlugin {
                 }
             });
             this.metrics.addCustomData(new Plotter() {
-
                 @Override
                 public String getColumnName() {
                     return "Total XP-Gained";
                 }
-
                 @Override
                 public int getValue() {
                     int amount = CPU.xpUps;
@@ -523,5 +520,14 @@ public class Skillz extends JavaPlugin {
             }
         });
         t.start();
+    }
+
+    private void startUserSavingThread() {
+        this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable(){
+            @Override
+            public void run() {
+                getUserManager().save(true);
+            }
+        }, 24000, 24000);
     }
 }
