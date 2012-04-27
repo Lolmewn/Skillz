@@ -155,6 +155,12 @@ public class Skillz extends JavaPlugin {
 
     private void loadUserManager() {
         this.userManager = new UserManager(this);
+        if(this.getServer().getOnlinePlayers().length != 0){
+            //There are players in the server
+            for(Player p : this.getServer().getOnlinePlayers()){
+                this.userManager.loadPlayer(p.getName());
+            }
+        }
     }
 
     private void loadSkillz() {

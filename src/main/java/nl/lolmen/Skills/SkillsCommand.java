@@ -59,6 +59,7 @@ class getSkills extends Thread {
             data.put(count, new SkillData(skill, u.getXP(skill), u.getLevel(skill), (int)Math.pow(u.getLevel(skill), 2) * 10 - u.getXP(skill)));
             totalXP += u.getXP(skill);
             totalLVL += u.getLevel(skill);
+            count++;
         }
         /*
         if (this.plugin.useMySQL) {
