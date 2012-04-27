@@ -1,9 +1,7 @@
 package nl.lolmen.Skillz;
 
 import java.util.HashMap;
-
 import nl.lolmen.Skills.SkillsSettings;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
