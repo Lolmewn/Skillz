@@ -19,9 +19,6 @@ public class FastBreak {
             this.FBlock.remove(p.getName());
         }
         if (this.FCount.containsKey(p.getName())) {
-            if (SkillsSettings.isDebug()) {
-                //p.sendMessage("Ticks: " + this.FCount.get(p.getName()));
-            }
             this.FCount.remove(p.getName());
         }
     }
@@ -39,9 +36,6 @@ public class FastBreak {
         this.FBlock.put(p.getName(), b);
         this.FCount.put(p.getName(), 0);
         this.timed.put(p.getName(), ticks);
-        if (SkillsSettings.isDebug()) {
-            //p.sendMessage("Block damaged, added to Count and Block");
-        }
     }
 
     public void playerAnimate(Player p) {
@@ -50,9 +44,6 @@ public class FastBreak {
         }
         int totalTime = this.timed.get(p.getName());
         int done = this.FCount.get(p.getName());
-        if (SkillsSettings.isDebug()) {
-            //p.sendMessage("debug: " + totalTime + ":" + done);
-        }
         if (totalTime < 1) {
             totalTime = 1;
         }
@@ -70,9 +61,6 @@ public class FastBreak {
         } else {
             this.FCount.remove(p.getName());
             this.FCount.put(p.getName(), done++);
-        }
-        if (SkillsSettings.isDebug()) {
-           // p.sendMessage("Debug:" + totalTime + ":" + this.FCount.get(p.getName()));
         }
     }
 }

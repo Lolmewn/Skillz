@@ -14,18 +14,18 @@ import nl.lolmen.Skills.SkillsSettings;
  * @author Lolmewn <lolmewn@centrility.nl>
  */
 public class UserManager {
-    
+
     private Skillz plugin;
     private HashMap<String, User> users = new HashMap<String, User>();
-    
+
     public UserManager(Skillz plugin) {
         this.plugin = plugin;
     }
-    
+
     private Skillz getPlugin() {
         return this.plugin;
     }
-    
+
     public void loadPlayer(String name) {
         //check if MySQL is enabled
         if (this.getPlugin().useMySQL) {
@@ -54,7 +54,7 @@ public class UserManager {
             return;
         }
         //FlatFile
-        
+
         try {
             File f = new File("plugins" + File.separator + "Skillz" + File.separator + "players" + File.separator + name.toLowerCase() + ".txt");
             if (!f.exists()) {
@@ -64,48 +64,49 @@ public class UserManager {
             DataInputStream dis;
             BufferedReader br;
             User user = new User(name);
-                FileInputStream in = new FileInputStream(f);
-                dis = new DataInputStream(in);
-                br = new BufferedReader(new InputStreamReader(dis));
-                String strLine;
-                while ((strLine = br.readLine()) != null) {
-                    if (strLine.contains("#")) {
-                        continue;
-                    }
-                    if (!strLine.contains("=") || !strLine.contains(";")) {
-                        System.out.println("[Skillz] Don't know what to do with '" + strLine + "' in " + f.getAbsolutePath());
-                        continue;
-                    }
-                    String[] first = strLine.split("=");
-                    String skill = first[0];
-                    String[] second = first[1].split(";");
-                    int xp = Integer.parseInt(second[0]);
-                    int lvl = Integer.parseInt(second[1]);
-                    user.addData(skill, xp, lvl);
+            FileInputStream in = new FileInputStream(f);
+            dis = new DataInputStream(in);
+            br = new BufferedReader(new InputStreamReader(dis));
+            String strLine;
+            while ((strLine = br.readLine()) != null) {
+                if (strLine.contains("#")) {
+                    continue;
                 }
-                dis.close();
-                br.close();
-                in.close();
-
+                if (!strLine.contains("=") || !strLine.contains(";")) {
+                    System.out.println("[Skillz] Don't know what to do with '" + strLine + "' in " + f.getAbsolutePath());
+                    continue;
+                }
+                String[] first = strLine.split("=");
+                String skill = first[0];
+                String[] second = first[1].split(";");
+                int xp = Integer.parseInt(second[0]);
+                int lvl = Integer.parseInt(second[1]);
+                user.addData(skill, xp, lvl);
+            }
+            dis.close();
+            br.close();
+            in.close();
+            this.users.put(name, user);
         } catch (Exception e) {
             Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    
-    public User getPlayer(String name){
-        if(this.users.containsKey(name)){
+
+    public User getPlayer(String name) {
+        if (this.users.containsKey(name)) {
             return this.users.get(name);
         }
         return new User(name);
     }
-    
-    public boolean hasPlayer(String name){
+
+    public boolean hasPlayer(String name) {
         return this.users.containsKey(name);
     }
-    
-    public void save(boolean threaded){
-        if(threaded){
+
+    public void save(boolean threaded) {
+        if (threaded) {
             new Thread(new Runnable() {
+
                 @Override
                 public void run() {
                     save(false);
@@ -114,20 +115,20 @@ public class UserManager {
             return;
         }
         //save data
-        for(String username : this.users.keySet()){
+        for (String username : this.users.keySet()) {
             User user = this.users.get(username);
-            for(String skill : user.getSkills()){
-                if(this.plugin.useMySQL){
+            for (String skill : user.getSkills()) {
+                if (this.plugin.useMySQL) {
                     this.plugin.getMySQL().executeStatement("UPDATE " + this.plugin.getDatabaseTable()
                             + " xp=" + user.getXP(skill) + ", level=" + user.getLevel(skill) + " "
                             + " WHERE player='" + username + "' AND skill='" + skill + "'");
-                    if(SkillsSettings.isDebug()){
+                    if (SkillsSettings.isDebug()) {
                         this.plugin.getLogger().info("[Debug] Saved " + skill + " for " + username);
                     }
-                }else{
+                } else {
                     File f = new File(plugin.maindir + "player/" + username + ".txt");
                     f.getParentFile().mkdirs();
-                    if(!f.exists()){
+                    if (!f.exists()) {
                         try {
                             f.createNewFile();
                         } catch (IOException ex) {
@@ -143,12 +144,12 @@ public class UserManager {
                         prop.put(skill, user.getXP(skill) + ";" + user.getLevel(skill));
                         FileOutputStream out = new FileOutputStream(f);
                         prop.store(out, "Skill=XP;lvl");
-                        if(SkillsSettings.isDebug()){
+                        if (SkillsSettings.isDebug()) {
                             this.plugin.getLogger().info("[Debug] Saved " + skill + " for " + username);
                         }
                     } catch (FileNotFoundException ex) {
                         Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex){
+                    } catch (IOException ex) {
                         Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
