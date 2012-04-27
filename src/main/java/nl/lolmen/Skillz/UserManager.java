@@ -4,8 +4,10 @@ import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import nl.lolmen.Skills.SkillsSettings;
 
 /**
  *
@@ -62,7 +64,6 @@ public class UserManager {
             DataInputStream dis;
             BufferedReader br;
             User user = new User(name);
-            try {
                 FileInputStream in = new FileInputStream(f);
                 dis = new DataInputStream(in);
                 br = new BufferedReader(new InputStreamReader(dis));
@@ -85,9 +86,7 @@ public class UserManager {
                 dis.close();
                 br.close();
                 in.close();
-            } catch (Exception e) {
-                Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, e);
-            }
+
         } catch (Exception e) {
             Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -98,5 +97,62 @@ public class UserManager {
             return this.users.get(name);
         }
         return new User(name);
+    }
+    
+    public boolean hasPlayer(String name){
+        return this.users.containsKey(name);
+    }
+    
+    public void save(boolean threaded){
+        if(threaded){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    save(false);
+                }
+            }).start();
+            return;
+        }
+        //save data
+        for(String username : this.users.keySet()){
+            User user = this.users.get(username);
+            for(String skill : user.getSkills()){
+                if(this.plugin.useMySQL){
+                    this.plugin.getMySQL().executeStatement("UPDATE " + this.plugin.getDatabaseTable()
+                            + " xp=" + user.getXP(skill) + ", level=" + user.getLevel(skill) + " "
+                            + " WHERE player='" + username + "' AND skill='" + skill + "'");
+                    if(SkillsSettings.isDebug()){
+                        this.plugin.getLogger().info("[Debug] Saved " + skill + " for " + username);
+                    }
+                }else{
+                    File f = new File(plugin.maindir + "player/" + username + ".txt");
+                    f.getParentFile().mkdirs();
+                    if(!f.exists()){
+                        try {
+                            f.createNewFile();
+                        } catch (IOException ex) {
+                            Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
+                            this.plugin.getLogger().warning("Couldn't save data for " + username + ", see error above");
+                            continue;
+                        }
+                    }
+                    Properties prop = new Properties();
+                    try {
+                        FileInputStream in = new FileInputStream(f);
+                        prop.load(in);
+                        prop.put(skill, user.getXP(skill) + ";" + user.getLevel(skill));
+                        FileOutputStream out = new FileOutputStream(f);
+                        prop.store(out, "Skill=XP;lvl");
+                        if(SkillsSettings.isDebug()){
+                            this.plugin.getLogger().info("[Debug] Saved " + skill + " for " + username);
+                        }
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex){
+                        Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
     }
 }

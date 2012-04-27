@@ -380,18 +380,7 @@ public class Skillz extends JavaPlugin {
                             p.sendMessage(this.noPerm);
                             return true;
                         }
-                        if (!new File(this.maindir + "players" + File.separator + p.getName().toLowerCase() + ".txt").exists()) {
-                            p.sendMessage("You don't have a skillz file, nothing to reset!");
-                            return true;
-                        }
-                        File f = new File(this.maindir + "players/" + p.getName().toLowerCase() + ".txt");
-                        if (f.delete()) {
-                            this.player.onPlayerJoin(new PlayerJoinEvent(p, p.getName()));
-                            p.sendMessage("A new file should have been created!");
-                            return true;
-                        }
-                        p.sendMessage("For some reason, your file could not be deleted. It will be when the server gets restarted.");
-                        f.deleteOnExit();
+                        this.getUserManager().getPlayer(sender.getName()).reset();
                         return true;
                     }
                     if (!sender.hasPermission("skillz.reset.other")) {
@@ -400,30 +389,16 @@ public class Skillz extends JavaPlugin {
                     for (int i = 1; i < args.length; i++) {
                         Player target = getServer().getPlayer(args[i]);
                         if (target == null) {
-                            if (!new File(this.maindir + "players" + File.separator + args[i] + ".txt").exists()) {
-                                sender.sendMessage("You don't have a skillz file, nothing to reset!");
-                                return true;
-                            }
-                            File f = new File(this.maindir + "players/" + args[i] + ".txt");
-                            if (f.delete()) {
-                                sender.sendMessage("A new file will be created the next time he logs in!");
-                                return true;
-                            }
-                            sender.sendMessage("For some reason, " + args[i] + "'s file could not be deleted. It will be when the server gets restarted.");
-                            f.deleteOnExit();
+                            sender.sendMessage("Can't find player " + args[i]);
                             continue;
                         }
-                        if (!new File(maindir + "players" + File.separator + target.getName() + ".txt").exists()) {
-                            sender.sendMessage(target.getName() + " doesn't have a skillz file, nothing to reset!");
-                            return true;
-                        }
-                        File f = new File(maindir + "players/" + target.getName() + ".txt");
-                        if (f.delete()) {
-                            this.player.onPlayerJoin(new PlayerJoinEvent(target, target.getName()));
-                            sender.sendMessage(target.getName() + "'s player file deleted and regenerated!");
-                        } else {
-                            sender.sendMessage("For some reason,  " + target.getName() + "'s file could not be deleted. It will be when the server gets restarted.");
-                            f.deleteOnExit();
+                        if(this.getUserManager().hasPlayer(target.getName())){
+                            this.getUserManager().getPlayer(target.getName()).reset();
+                            sender.sendMessage("Resetted data for " + target.getName());
+                            continue;
+                        }else{
+                            sender.sendMessage(target.getName() + " doesn't have a User Profile! Nothing to reset!");
+                            continue;
                         }
                     }
                     return true;

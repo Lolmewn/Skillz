@@ -76,4 +76,9 @@ public class User {
         return this.lvl.put(skill, add);
     }
 
+    protected void reset() {
+        this.lvl.clear();
+        this.xp.clear();
+    }
+
 }

@@ -1,10 +1,5 @@
 package nl.lolmen.Skills;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Properties;
 import net.milkbowl.vault.economy.Economy;
 import nl.lolmen.API.SkillzLevelEvent;
 import nl.lolmen.Skillz.Skillz;
@@ -16,8 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 public class CPU {
-
-    private static File folder = new File("plugins" + File.separator + "Skillz" + File.separator + "players" + File.separator);
+    
     public static int levelUps = 0;
     public static int xpUps = 0;
 
@@ -82,6 +76,9 @@ public class CPU {
     }
 
     public static void setLevelWithXP(Player p, SkillBase skill, int level, Skillz main) {
+        User u = main.getUserManager().getPlayer(p.getName());
+        u.addData(skill.getSkillName(), (int)Math.pow(level - 1, 2) * 10, level);
+        /*
         if (main.useMySQL) {
             main.getMySQL().executeStatement("UPDATE " + main.dbTable + " SET level=" + level + " , xp=" + (level - 1) * (level - 1) * 10 + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "'");
             return;
@@ -102,7 +99,7 @@ public class CPU {
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public static void checkLeveling(User s, SkillBase skill, Skillz plugin) {
