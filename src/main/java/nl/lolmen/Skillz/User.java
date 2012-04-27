@@ -1,6 +1,7 @@
 package nl.lolmen.Skillz;
 
 import java.util.HashMap;
+import java.util.Set;
 import nl.lolmen.Skills.SkillsSettings;
 import org.bukkit.Bukkit;
 
@@ -45,6 +46,10 @@ public class User {
             Bukkit.getLogger().info("[Skillz][Debug] " + skill + " not found in lvl, returning 0");
         }
         return 0;
+    }
+    
+    public Set<String> getSkills(){
+        return this.xp.keySet();
     }
     
     public int addXP(String skill, int add){

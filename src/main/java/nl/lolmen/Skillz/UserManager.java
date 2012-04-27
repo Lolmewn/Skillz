@@ -29,7 +29,7 @@ public class UserManager {
         if (this.getPlugin().useMySQL) {
             ResultSet set = this.getPlugin().getMySQL().executeQuery(
                     "SELECT * FROM " + this.getPlugin().getDatabaseTable() + " WHERE player='"
-                    + name + "' LIMIT 1");
+                    + name + "'");
             if (set == null) {
                 //Something wrong with database
                 this.getPlugin().getLogger().warning("Something wrong with MySQL Resultset while loading " + name + "..");

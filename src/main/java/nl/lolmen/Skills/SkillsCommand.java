@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import nl.lolmen.Skillz.Skillz;
+import nl.lolmen.Skillz.User;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -49,10 +50,17 @@ class getSkills extends Thread {
         Map<Integer, SkillData> data = new HashMap<Integer, SkillData>();
         if (SkillsSettings.isDebug()) {
             if (this.sender instanceof Player) {
-                System.out.println("[Skillz - Debug] Fetching file from " + p + " to " + ((Player) this.sender).getDisplayName());
+                System.out.println("[Skillz - Debug] Fetching file from " + p + " to " + sender.getName());
             }
         }
         int count = 0, totalXP = 0, totalLVL = 0;
+        User u = this.plugin.getUserManager().getPlayer(p);
+        for(String skill : u.getSkills()){
+            data.put(count, new SkillData(skill, u.getXP(skill), u.getLevel(skill), (int)Math.pow(u.getLevel(skill), 2) * 10 - u.getXP(skill)));
+            totalXP += u.getXP(skill);
+            totalLVL += u.getLevel(skill);
+        }
+        /*
         if (this.plugin.useMySQL) {
             ResultSet set = this.plugin.getMySQL().executeQuery("SELECT * FROM " + this.plugin.dbTable + " WHERE player='" + p + "' ORDER BY skill DESC");
             if (set == null) {
@@ -118,7 +126,7 @@ class getSkills extends Thread {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }*/
         if (!(data.size() > this.page * 8 - 8)) {
             this.sender.sendMessage(ChatColor.RED + "There is no page " + this.page + "!");
             return;
