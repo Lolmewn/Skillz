@@ -155,13 +155,13 @@ class getSkills extends Thread {
                     sent++;
                 } else {
                     if (SkillsSettings.isDebug()) {
-                        this.plugin.log.info("[Skillz - Debug] Not showing disabled skill " + d.getSkill());
+                        this.plugin.getLogger().info("[Debug] Not showing disabled skill " + d.getSkill());
                     }
                     //The skill is not enabled, or doesn't exist in the managers.
                 }
             } else {
                 if (SkillsSettings.isDebug()) {
-                    this.plugin.log.info("[Skillz - Debug] No value: " + getCounter + ", breaking");
+                    this.plugin.getLogger().info("[Debug] No value: " + getCounter + ", breaking");
                 }
                 break;
             }

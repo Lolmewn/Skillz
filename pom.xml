@@ -44,12 +44,12 @@
             <version>1.1.6</version>
         </dependency>
     </dependencies>
-    <ciManagement>
-        <system>Jenkins</system>
-        <url>http://77.251.20.228:8080/</url>
-    </ciManagement>
     <issueManagement>
         <system>BukkitDev</system>
         <url>http://dev.bukkit.org/server-mods/skillz/tickets/</url>
     </issueManagement>
+    <ciManagement>
+        <system>hudson</system>
+        <url>http://localhost:8080/job/Skillz/</url>
+    </ciManagement>
 </project>

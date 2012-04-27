@@ -6,34 +6,33 @@ import nl.lolmen.Skillz.Skillz;
 
 import org.bukkit.entity.Player;
 
-public class Mining extends SkillBlockBase{
-	
-	private Skillz plugin;
-		public Mining(Skillz plugin) {
-		super(plugin);
-		this.plugin = plugin;
-	}
+public class Mining extends SkillBlockBase {
 
-	private int speed;
-	private int doubleDropChange;
+    private Skillz plugin;
 
-	public int getSpeed() {
-		return speed;
-	}
+    public Mining(Skillz plugin) {
+        super(plugin);
+        this.plugin = plugin;
+    }
+    private int speed;
+    private int doubleDropChange;
 
-	public void setSpeed(int speed) {
-		this.speed = speed;
-	}
+    public int getSpeed() {
+        return speed;
+    }
 
-	public boolean getWillDoubleDrop(Player p) {
-		if(CPU.getLevel(p, this, plugin) > Math.random() * doubleDropChange){
-			return true;
-		}
-		return false;
-	}
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
 
-	public void setDoubleDropChange(int doubleDropChange) {
-		this.doubleDropChange = doubleDropChange;
-	}
-	
+    public boolean getWillDoubleDrop(Player p) {
+        if (this.plugin.getUserManager().getPlayer(p.getName()).getLevel(this.getSkillName()) > Math.random() * doubleDropChange) {
+            return true;
+        }
+        return false;
+    }
+
+    public void setDoubleDropChange(int doubleDropChange) {
+        this.doubleDropChange = doubleDropChange;
+    }
 }
