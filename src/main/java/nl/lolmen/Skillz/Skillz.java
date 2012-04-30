@@ -154,10 +154,12 @@ public class Skillz extends JavaPlugin {
     }
 
     private void loadUserManager() {
-        this.userManager = new UserManager(this);
-        if(this.getServer().getOnlinePlayers().length != 0){
+        if (this.userManager == null) {
+            this.userManager = new UserManager(this);
+        }
+        if (this.getServer().getOnlinePlayers().length != 0) {
             //There are players in the server
-            for(Player p : this.getServer().getOnlinePlayers()){
+            for (Player p : this.getServer().getOnlinePlayers()) {
                 this.userManager.loadPlayer(p.getName());
             }
         }
@@ -441,7 +443,15 @@ public class Skillz extends JavaPlugin {
                     }
                     return true;
                 }
-
+                if(args[0].equalsIgnoreCase("debug")){
+                    //Just some debug code, removing when it works
+                    User u = this.getUserManager().getPlayer("Lolmewn");
+                    sender.sendMessage("Got Lolmewn's profile.. Sending data..");
+                    for(String skill : u.getSkills()){
+                        sender.sendMessage(skill + ":" + u.getLevel(skill) + ":" + u.getXP(skill));
+                    }
+                    return true;
+                }
                 //Get another players Skills
                 if (!sender.hasPermission("skillz.skills.other")) {
                     sender.sendMessage(this.noPerm);
@@ -477,7 +487,6 @@ public class Skillz extends JavaPlugin {
     private void getNextLevel(Player player, final String strings) {
         final String name = player.getName();
         Thread t = new Thread(new Runnable() {
-
             @Override
             public void run() {
                 Player p = Bukkit.getPlayer(name);
@@ -532,8 +541,9 @@ public class Skillz extends JavaPlugin {
         this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable(){
             @Override
             public void run() {
+                getLogger().info("Saving Skillz Users..");
                 getUserManager().save(true);
             }
-        }, 24000, 24000);
+        }, 24000L, 24000L);
     }
 }
