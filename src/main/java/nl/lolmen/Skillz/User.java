@@ -52,33 +52,39 @@ public class User {
         return this.xp.keySet();
     }
     
-    public int addXP(String skill, int add){
+    public void addXP(String skill, int add){
         if(SkillsSettings.isDebug()){
             Bukkit.getLogger().info("[Skillz][Debug] Adding " + add + " xp to " + skill );
         }
         if(this.xp.containsKey(skill)){
-            return this.xp.put(skill, this.xp.get(skill) + add);
+            this.xp.put(skill, this.xp.get(skill) + add);
+            return;
         }
-        return this.xp.put(skill, add);
+        this.xp.put(skill, add);
     }
     
-    public int addLevel(String skill){
-        return this.addLevel(skill, 1);
+    public void addLevel(String skill){
+        this.addLevel(skill, 1);
     }
     
-    public int addLevel(String skill, int add){
+    public void addLevel(String skill, int add){
         if(SkillsSettings.isDebug()){
             Bukkit.getLogger().info("[Skillz][Debug] Adding " + add + " lvl to " + skill );
         }
         if(this.lvl.containsKey(skill)){
-            return this.lvl.put(skill, this.lvl.get(skill) + add);
+            this.lvl.put(skill, this.lvl.get(skill) + add);
+            return;
         }
-        return this.lvl.put(skill, add);
+        this.lvl.put(skill, add);
     }
 
     protected void reset() {
-        this.lvl.clear();
-        this.xp.clear();
+        for(String key : this.lvl.keySet()){
+            this.lvl.put(key, 0);
+        }
+        for(String key : this.xp.keySet()){
+            this.xp.put(key, 0);
+        }
     }
 
 }

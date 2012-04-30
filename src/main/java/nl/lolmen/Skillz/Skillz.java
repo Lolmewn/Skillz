@@ -101,10 +101,13 @@ public class Skillz extends JavaPlugin {
     public void onEnable() {
         double time = System.nanoTime();
         this.makeSettings();
+        this.loadSkillz();
+        if (this.useMySQL) {
+            loadMySQL();
+        }
         this.loadUserManager();
         this.checkPlayers();
         this.startUserSavingThread();
-        this.loadSkillz();
         try {
             this.metrics = new Metrics(this);
             this.metrics.addCustomData(new Plotter() {
@@ -139,9 +142,6 @@ public class Skillz extends JavaPlugin {
         }
         if (this.update) {
             checkUpdate();
-        }
-        if (this.useMySQL) {
-            loadMySQL();
         }
         this.setupPlugins();
         this.high.loadMaps();
