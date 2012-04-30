@@ -550,7 +550,14 @@ public class Skillz extends JavaPlugin {
 
     private void checkPlayers() {
         Player[] online = this.getServer().getOnlinePlayers();
+        if(SkillsSettings.isDebug()){
+            this.getLogger().info("[Debug] Players: " + online);
+        }
         for(int i = 0; i < online.length; i++){
+            String name = online[i].getName();
+            if(SkillsSettings.isDebug()){
+                this.getLogger().info("[Debug] Reloading player " + name);
+            }
             this.getUserManager().loadPlayer(online[i].getName());
         }
     }

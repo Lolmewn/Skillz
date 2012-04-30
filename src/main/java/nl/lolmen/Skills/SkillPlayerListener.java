@@ -29,6 +29,7 @@ public class SkillPlayerListener implements Listener {
             }
         }
         if(!this.plugin.getUserManager().hasPlayer(p.getName())){
+            this.plugin.getLogger().info("Loading player " + event.getPlayer().getName() + "...");
             this.plugin.getUserManager().loadPlayer(p.getName());
         }        
         double time2 = System.nanoTime();
