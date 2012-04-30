@@ -102,6 +102,7 @@ public class Skillz extends JavaPlugin {
         double time = System.nanoTime();
         this.makeSettings();
         this.loadUserManager();
+        this.checkPlayers();
         this.startUserSavingThread();
         this.loadSkillz();
         try {
@@ -545,5 +546,12 @@ public class Skillz extends JavaPlugin {
                 getUserManager().save(true);
             }
         }, 24000L, 24000L);
+    }
+
+    private void checkPlayers() {
+        Player[] online = this.getServer().getOnlinePlayers();
+        for(int i = 0; i < online.length; i++){
+            this.getUserManager().loadPlayer(online[i].getName());
+        }
     }
 }
