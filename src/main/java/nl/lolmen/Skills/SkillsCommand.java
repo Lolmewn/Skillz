@@ -59,77 +59,10 @@ class getSkills extends Thread {
             data.put(count, new SkillData(skill, u.getXP(skill), u.getLevel(skill), (int)Math.pow(u.getLevel(skill), 2) * 10 - u.getXP(skill)));
             totalXP += u.getXP(skill);
             totalLVL += u.getLevel(skill);
-            count++;
+            count++; //Otherwise data gets overwritten
         }
-        /*
-        if (this.plugin.useMySQL) {
-            ResultSet set = this.plugin.getMySQL().executeQuery("SELECT * FROM " + this.plugin.dbTable + " WHERE player='" + p + "' ORDER BY skill DESC");
-            if (set == null) {
-                System.out.println("[Skillz] Something went wrong while reading the MySQL database.");
-                return;
-            }
-            try {
-                while (set.next()) {
-                    String skill = set.getString("skill").toLowerCase();
-                    data.put(count, new SkillData(skill, set.getInt("xp"), set.getInt("level"), (int) Math.pow(set.getInt("level"), 2) * 10 - set.getInt("xp")));
-                    totalXP += set.getInt("xp");
-                    totalLVL += set.getInt("level");
-                    if (SkillsSettings.isDebug()) {
-                        System.out.println("[Skillz - Debug] Added " + skill + " to data set");
-                    }
-                    count++;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                File f = new File("plugins" + File.separator + "Skillz" + File.separator + "players" + File.separator + p.toLowerCase() + ".txt");
-                if (!f.exists()) {
-                    this.sender.sendMessage("Something went wrong while trying to fetch your personal file!");
-                    this.sender.sendMessage("Tell an admin to take a look at his server.log , he'll know what to do ;)");
-                    System.out.println("[Skillz] File for player " + this.p + " not found at " + f.getAbsolutePath());
-                    return;
-                }
-                DataInputStream dis;
-                BufferedReader br;
-                try {
-                    FileInputStream in = new FileInputStream(f);
-                    dis = new DataInputStream(in);
-                    br = new BufferedReader(new InputStreamReader(dis));
-                    String strLine;
-                    while ((strLine = br.readLine()) != null) {
-                        if (strLine.contains("#")) {
-                            continue;
-                        }
-                        if (!strLine.contains("=") || !strLine.contains(";")) {
-                            System.out.println("[Skillz] Don't know what to do with '" + strLine + "' in " + f.getAbsolutePath());
-                            continue;
-                        }
-                        String[] first = strLine.split("=");
-                        String skill = first[0];
-                        String[] second = first[1].split(";");
-                        int xp = Integer.parseInt(second[0]);
-                        int lvl = Integer.parseInt(second[1]);
-                        int remaining = ((lvl) * (lvl) * 10) - xp;
-                        totalXP += xp;
-                        totalLVL += lvl;
-                        data.put(count, new SkillData(skill, xp, lvl, remaining));
-                        count++;
-                    }
-                    dis.close();
-                    br.close();
-                    in.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }*/
         if (!(data.size() > this.page * 8 - 8)) {
-            this.sender.sendMessage(ChatColor.RED + "There is no page " + this.page + "!");
+            this.sender.sendMessage(ChatColor.RED + "There is no page " + this.page + " for " + u.getUsername() + "!");
             return;
         }
         int sent = 0;
