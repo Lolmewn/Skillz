@@ -4,7 +4,6 @@ import nl.lolmen.Skills.skills.CustomSkill;
 import nl.lolmen.Skills.skills.Mining;
 import nl.lolmen.Skillz.Skillz;
 import nl.lolmen.Skillz.User;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -99,33 +98,35 @@ public class SkillBlockListener implements Listener {
     private void handleSkill(SkillBlockBase s, BlockBreakEvent event) {
         Player p = event.getPlayer();
         User u = this.plugin.getUserManager().getPlayer(p.getName());
-        if (s.hasBlock(event.getBlock())) {
+        if (!s.hasBlock(event.getBlock())) {
+            return;
+        }
             int lvlneeded = s.getLevelNeeded(event.getBlock());
-            if (!s.isAllFromFirstLevel() && u.getLevel(s.getSkillName()) < lvlneeded) {
-                p.sendMessage("You are not allowed to mine this block! "
-                        + s.getSkillName().substring(0, 1).toUpperCase()
-                        + s.getSkillName().substring(1).toLowerCase()
-                        + " level needed:" + lvlneeded);
-                event.setCancelled(true);
-                return;
+        if (!s.isAllFromFirstLevel() && u.getLevel(s.getSkillName()) < lvlneeded) {
+            p.sendMessage("You are not allowed to mine this block! "
+                    + s.getSkillName().substring(0, 1).toUpperCase()
+                    + s.getSkillName().substring(1).toLowerCase()
+                    + " level needed:" + lvlneeded);
+            event.setCancelled(true);
+            return;
+        }
+        int xpget = s.getXP(event.getBlock().getTypeId())
+                * s.getMultiplier();
+        s.addXP(p, xpget);
+        if (s.getSkillName().equalsIgnoreCase("mining")) {
+            if (SkillsSettings.isDebug()) {
+                System.out.println("It's mining, checking doubledrop");
             }
-            int xpget = s.getXP(event.getBlock().getTypeId())
-                    * s.getMultiplier();
-            s.addXP(p, xpget);
-            if (s.getSkillName().equalsIgnoreCase("mining")) {
-                if (SkillsSettings.isDebug()) {
-                    System.out.println("It's mining, checking doubledrop");
-                }
-                // Change calculating here
-                Mining m = (Mining) s;
-                if (m.getWillDoubleDrop(p)) {
-                    event.getBlock().breakNaturally();
-                }
+            // Change calculating here
+            Mining m = (Mining) s;
+            if (m.getWillDoubleDrop(p)) {
+                event.getBlock().breakNaturally();
             }
         }
+        
     }
 
-    @EventHandler
+    //@EventHandler
     public void onBlockDamage(BlockDamageEvent event) {
         if (event.isCancelled()) {
             return;

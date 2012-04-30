@@ -120,7 +120,7 @@ public class UserManager {
             for (String skill : user.getSkills()) {
                 if (this.plugin.useMySQL) {
                     this.plugin.getMySQL().executeStatement("UPDATE " + this.plugin.getDatabaseTable()
-                            + " xp=" + user.getXP(skill) + ", level=" + user.getLevel(skill) + " "
+                            + " SET xp=" + user.getXP(skill) + ", level=" + user.getLevel(skill)
                             + " WHERE player='" + username + "' AND skill='" + skill + "'");
                     if (SkillsSettings.isDebug()) {
                         this.plugin.getLogger().info("[Debug] Saved " + skill + " for " + username);
