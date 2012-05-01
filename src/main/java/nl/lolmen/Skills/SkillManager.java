@@ -343,4 +343,8 @@ public class SkillManager {
             plugin.getLogger().info("Error creating Skills file! Using default Skills!");
         }
     }
+
+    public void reload() {
+        this.loadSkillsSettings();
+    }
 }

@@ -119,12 +119,31 @@ public class UserManager {
             User user = this.users.get(username);
             for (String skill : user.getSkills()) {
                 if (this.plugin.useMySQL) {
-                    this.plugin.getMySQL().executeStatement("UPDATE " + this.plugin.getDatabaseTable()
-                            + " SET xp=" + user.getXP(skill) + ", level=" + user.getLevel(skill)
-                            + " WHERE player='" + username + "' AND skill='" + skill + "'");
-                    if (SkillsSettings.isDebug()) {
-                        this.plugin.getLogger().info("[Debug] Saved " + skill + " for " + username);
+                    ResultSet set = this.getPlugin().getMySQL().executeQuery("SELECT * FROM " + this.getPlugin().getDatabaseTable() + " WHERE player='" + username + "' AND skill='" + skill + "'");
+                    if(set == null){
+                        //dafuq?
+                        this.getPlugin().getLogger().info("Something went wrong while saving " + username + "'s skill " + skill + " to mysql, Resultset=null");
+                        break;
                     }
+                    try {
+                        while(set.next()){
+                            //Got a value, update it
+                            this.plugin.getMySQL().executeStatement("UPDATE " + this.plugin.getDatabaseTable()
+                                + " SET xp=" + user.getXP(skill) + ", level=" + user.getLevel(skill)
+                                + " WHERE player='" + username + "' AND skill='" + skill + "'");
+                            if (SkillsSettings.isDebug()) {
+                                this.plugin.getLogger().info("[Debug] Saved " + skill + " for " + username);
+                            }
+                            continue;
+                        }
+                        //It's not in the table, insert it
+                        this.getPlugin().getMySQL().executeStatement("INSERT INTO " + this.getPlugin().getDatabaseTable() + " (player, skill, xp, level) VALUES ('"
+                                + username + "', '" + skill + "', " + user.getXP(skill) + ", " + user.getLevel(skill) + ")");
+                    } catch (SQLException ex) {
+                        Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    
                 } else {
                     File f = new File(plugin.maindir + "player/" + username + ".txt");
                     f.getParentFile().mkdirs();

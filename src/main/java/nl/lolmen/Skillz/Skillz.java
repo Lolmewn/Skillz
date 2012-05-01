@@ -453,6 +453,15 @@ public class Skillz extends JavaPlugin {
                     }
                     return true;
                 }
+                if(args[0].equalsIgnoreCase("reload")){
+                    if(!sender.hasPermission("skillz.reload")){
+                        sender.sendMessage(this.noPerm);
+                        return true;
+                    }
+                    this.getSkillManager().reload();
+                    sender.sendMessage(ChatColor.GREEN + "Skillz Reloaded!");
+                    return true;
+                }
                 //Get another players Skills
                 if (!sender.hasPermission("skillz.skills.other")) {
                     sender.sendMessage(this.noPerm);
