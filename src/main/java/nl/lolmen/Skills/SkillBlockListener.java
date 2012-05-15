@@ -29,14 +29,11 @@ public class SkillBlockListener implements Listener {
         User u = this.plugin.getUserManager().getPlayer(event.getPlayer().getName());
         for (SkillBase base : this.plugin.getSkillManager().getSkills()) {
             if (base instanceof SkillBlockBase) {
-                if (SkillsSettings.isDebug()) {
-                    System.out.println("[Skillz - Debug] Skill " + base.getSkillName() + " = true");
-                }
-                SkillBlockBase s = (SkillBlockBase) base;
-                if (!s.isEnabled()) {
+                this.plugin.debug("[Skillz - Debug] Skill " + base.getSkillName() + " = true", 2);
+                if (!base.isEnabled()) {
                     continue;
                 }
-                handleSkill(s, event);
+                handleSkill((SkillBlockBase)base, event);
             }
         }
         for (CustomSkill skill : this.plugin.getCustomSkillManager().getSkillsUsing("BLOCK_BREAK")) {
@@ -56,12 +53,10 @@ public class SkillBlockListener implements Listener {
                 skill.addXP(event.getPlayer(), xpget);
             }
         }
-        this.plugin.fb.blockBreak(event.getPlayer());
-        if (SkillsSettings.isDebug()) {
+        //this.plugin.fb.blockBreak(event.getPlayer());
             double end = System.nanoTime();
             double taken = (end - time) / 1000000;
-            System.out.println("[Skillz - Debug] BLOCK_BREAK done in " + taken + "ms");
-        }
+            this.plugin.debug("[Skillz - Debug] BLOCK_BREAK done in " + taken + "ms", 2);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -132,6 +127,6 @@ public class SkillBlockListener implements Listener {
             return;
         }
         int ticks = 10; //TODO calculate
-        this.plugin.fb.blockDamage(event.getPlayer(), event.getBlock(), ticks);
+        //this.plugin.fb.blockDamage(event.getPlayer(), event.getBlock(), ticks);
     }
 }

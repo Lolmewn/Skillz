@@ -56,6 +56,8 @@ public class Skillz extends JavaPlugin {
     public boolean updateAvailable;
     public boolean hasVault;
     public boolean broadcast;
+    
+    private String debugPlayer;
 
     @Override
     public void onDisable() {
@@ -446,11 +448,41 @@ public class Skillz extends JavaPlugin {
                 }
                 if(args[0].equalsIgnoreCase("debug")){
                     //Just some debug code, removing when it works
-                    User u = this.getUserManager().getPlayer("Lolmewn");
-                    sender.sendMessage("Got Lolmewn's profile.. Sending data..");
-                    for(String skill : u.getSkills()){
-                        sender.sendMessage(skill + ":" + u.getLevel(skill) + ":" + u.getXP(skill));
+                    if(this.debugPlayer == null){
+                        this.debugPlayer = sender.getName();
+                        sender.sendMessage("Debug enabled on you");
+                        return true;
                     }
+                    if(this.debugPlayer.equals(sender.getName())){
+                        sender.sendMessage("Debug disabled on you");
+                        this.debugPlayer = null;
+                        return true;
+                    }
+                    this.getServer().getPlayer(this.debugPlayer).sendMessage("Disabling debug on you...");
+                    this.debugPlayer = sender.getName();
+                    sender.sendMessage("Debug enabled on you");
+                    return true;
+                }
+                if(args[0].equalsIgnoreCase("save")){
+                    if(!sender.hasPermission("skillz.save")){
+                        sender.sendMessage(this.noPerm);
+                        return true;
+                    }
+                    this.getUserManager().save(false);
+                    sender.sendMessage("Saving complete!");
+                    return true;
+                }
+                if(args[0].equalsIgnoreCase("clean")){
+                    if(!sender.hasPermission("skillz.clean")){
+                        sender.sendMessage(this.noPerm);
+                        return true;
+                    }
+                    if(!this.useMySQL){
+                        sender.sendMessage("You are not using MySQL, no need to clean.");
+                        return true;
+                    }
+                    this.getMySQL().clean(this.getDatabaseTable());
+                    sender.sendMessage("Database cleaned!");
                     return true;
                 }
                 if(args[0].equalsIgnoreCase("reload")){
@@ -559,15 +591,38 @@ public class Skillz extends JavaPlugin {
 
     private void checkPlayers() {
         Player[] online = this.getServer().getOnlinePlayers();
-        if(SkillsSettings.isDebug()){
-            this.getLogger().info("[Debug] Players: " + online);
-        }
         for(int i = 0; i < online.length; i++){
             String name = online[i].getName();
             if(SkillsSettings.isDebug()){
                 this.getLogger().info("[Debug] Reloading player " + name);
             }
             this.getUserManager().loadPlayer(online[i].getName());
+        }
+    }
+    
+    public void debug(String message){
+        this.debug(message, 2);
+    }
+    
+    public void debug(String message, int level){
+        // 1 = only if Debug is on, 2 is on Player, 3 is global
+        if(level == 3){
+            this.getLogger().info("[Debug] " + message);
+            return;
+        }
+        if(level == 2){
+            if(debugPlayer == null){
+                this.debug(message, 1);
+                // not debugging to player
+                return;
+            }
+            this.getServer().getPlayer(this.debugPlayer).sendMessage("[Debug] " + message);
+            return;
+        }
+        if(level == 1){
+            if(SkillsSettings.isDebug()){
+                this.getLogger().info("[Debug] " + message);
+            }
         }
     }
 }

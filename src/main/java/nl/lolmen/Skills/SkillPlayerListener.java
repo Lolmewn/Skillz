@@ -37,13 +37,13 @@ public class SkillPlayerListener implements Listener {
         this.plugin.getLogger().info("Loaded player in " + Double.toString(taken) + "ms!");
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    /*@EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerAnimation(PlayerAnimationEvent event) {
         if (event.isCancelled()) {
             return;
         }
         this.plugin.fb.playerAnimate(event.getPlayer());
-    }
+    }*/
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerChat(PlayerChatEvent event) {

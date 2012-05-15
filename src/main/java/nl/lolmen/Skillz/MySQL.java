@@ -1,6 +1,8 @@
 package nl.lolmen.Skillz;
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import nl.lolmen.Skills.SkillsSettings;
 
 public class MySQL {
@@ -113,6 +115,22 @@ public class MySQL {
             this.con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    void clean(String table) {
+        ResultSet set = this.executeQuery("SELECT COUNT(*), player, skill FROM " + table + " GROUP BY player,skill HAVING COUNT(*) >1;");
+        //finds duplicate entries
+        if(set == null){
+            System.out.println("Something is wrong with the database, query returned null");
+            return;
+        }
+        try {
+            while(set.next()){
+                this.executeStatement("DELETE FROM " + table + " WHERE player='" + set.getString("player") + "' AND skill='" + set.getString("skill") + "' LIMIT " + (set.getInt(1) - 1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

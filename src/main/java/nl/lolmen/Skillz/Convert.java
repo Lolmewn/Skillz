@@ -1,14 +1,9 @@
 package nl.lolmen.Skillz;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
-
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Convert {

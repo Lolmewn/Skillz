@@ -1,5 +1,5 @@
 package nl.lolmen.Skillz;
-
+/*
 import java.util.HashMap;
 import nl.lolmen.Skills.SkillsSettings;
 import org.bukkit.Bukkit;
@@ -7,9 +7,9 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
-
+*/
 public class FastBreak {
-
+/*
     protected HashMap<String, Integer> timed = new HashMap<String, Integer>();
     protected HashMap<String, Integer> FCount = new HashMap<String, Integer>();
     protected HashMap<String, Block> FBlock = new HashMap<String, Block>();
@@ -62,5 +62,5 @@ public class FastBreak {
             this.FCount.remove(p.getName());
             this.FCount.put(p.getName(), done++);
         }
-    }
+    }*/
 }

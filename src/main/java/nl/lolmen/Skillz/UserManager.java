@@ -31,7 +31,7 @@ public class UserManager {
         if (this.getPlugin().useMySQL) {
             ResultSet set = this.getPlugin().getMySQL().executeQuery(
                     "SELECT * FROM " + this.getPlugin().getDatabaseTable() + " WHERE player='"
-                    + name + "'");
+                    + name + "' ORDER BY skill");
             if (set == null) {
                 //Something wrong with database
                 this.getPlugin().getLogger().warning("Something wrong with MySQL Resultset while loading " + name + "..");
@@ -96,7 +96,9 @@ public class UserManager {
         if (this.users.containsKey(name)) {
             return this.users.get(name);
         }
-        return new User(name);
+        User u = new User(name);
+        this.users.put(name, u);
+        return u;
     }
 
     public boolean hasPlayer(String name) {
@@ -106,7 +108,6 @@ public class UserManager {
     public void save(boolean threaded) {
         if (threaded) {
             new Thread(new Runnable() {
-
                 @Override
                 public void run() {
                     save(false);
@@ -126,6 +127,7 @@ public class UserManager {
                         break;
                     }
                     try {
+                        boolean found = false;
                         while(set.next()){
                             //Got a value, update it
                             this.plugin.getMySQL().executeStatement("UPDATE " + this.plugin.getDatabaseTable()
@@ -134,6 +136,10 @@ public class UserManager {
                             if (SkillsSettings.isDebug()) {
                                 this.plugin.getLogger().info("[Debug] Saved " + skill + " for " + username);
                             }
+                            found = true;
+                            break;
+                        }
+                        if(found){
                             continue;
                         }
                         //It's not in the table, insert it
@@ -166,6 +172,9 @@ public class UserManager {
                         if (SkillsSettings.isDebug()) {
                             this.plugin.getLogger().info("[Debug] Saved " + skill + " for " + username);
                         }
+                        in.close();
+                        out.flush();
+                        out.close();
                     } catch (FileNotFoundException ex) {
                         Logger.getLogger(UserManager.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IOException ex) {

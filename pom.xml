@@ -50,6 +50,6 @@
     </issueManagement>
     <ciManagement>
         <system>hudson</system>
-        <url>http://77.251.20.228:8080/job/Skillz/</url>
+        <url>http://localhost:8080/job/Skillz/</url>
     </ciManagement>
 </project>
