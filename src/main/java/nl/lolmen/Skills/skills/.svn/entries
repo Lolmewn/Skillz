@@ -1,105 +1,0 @@
-10
-
-dir
-0
-svn://lolmewn@svn.bukkit.org/minecraft/skillz/mainline/trunk/src/main/java/nl/lolmen/Skills/skills
-svn://lolmewn@svn.bukkit.org/minecraft/skillz/mainline
-add
-
-
-
-
-
-
-
-svn:special svn:externals svn:needs-lock
-
-
-
-
-
-
-
-
-
-
-
-67813997-ed3d-40b4-8710-156d9e4664d7
-
-Acrobatics.java
-file
-
-
-
-add
-
-Archery.java
-file
-
-
-
-add
-
-Axes.java
-file
-
-
-
-add
-
-CustomSkill.java
-file
-
-
-
-add
-
-Digging.java
-file
-
-
-
-add
-
-Farming.java
-file
-
-
-
-add
-
-Mining.java
-file
-
-
-
-add
-
-Swimming.java
-file
-
-
-
-add
-
-Swords.java
-file
-
-
-
-add
-
-Unarmed.java
-file
-
-
-
-add
-
-Woodcutting.java
-file
-
-
-
-add
-
