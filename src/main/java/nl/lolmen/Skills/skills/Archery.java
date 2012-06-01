@@ -33,7 +33,7 @@ public class Archery extends SkillBase {
     }
 
     public int getCritChance(int level) {
-        if (critCalc != null && critCalc != "" && critCalc.contains("$LEVEL")) {
+        if (critCalc != null && !"".equals(critCalc) && critCalc.contains("$LEVEL")) {
             String send = critCalc.replace("$LEVEL", Integer.toString(level));
             return (int) MathProcessor.processEquation(send);
         } else if (SkillsSettings.isDebug()) {

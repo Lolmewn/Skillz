@@ -151,7 +151,7 @@ public class UserManager {
                     
                     
                 } else {
-                    File f = new File(plugin.maindir + "player/" + username + ".txt");
+                    File f = new File(plugin.maindir + "players/" + username + ".txt");
                     f.getParentFile().mkdirs();
                     if (!f.exists()) {
                         try {
