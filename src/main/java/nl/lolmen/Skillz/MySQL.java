@@ -78,6 +78,10 @@ public class MySQL {
             this.st.close();
             return re;
         } catch (SQLException e) {
+            if(e.getClass().getSimpleName().equals("MySQLNonTransientConnectionException")){
+                this.reconnect();
+                return this.executeStatement(statement);
+            }
             e.printStackTrace();
         }
         return 0;
@@ -97,10 +101,12 @@ public class MySQL {
         }
         try {
             this.st = this.con.createStatement();
-            ResultSet set = this.st.executeQuery(statement);
-            //this.st.close();
-            return set;
+            return this.st.executeQuery(statement);
         } catch (SQLException e) {
+            if(e.getClass().getSimpleName().equals("MySQLNonTransientConnectionException")){
+                this.reconnect();
+                return this.executeQuery(statement);
+            }
             e.printStackTrace();
         }
         return null;
@@ -132,5 +138,11 @@ public class MySQL {
         } catch (SQLException ex) {
             Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void reconnect(){
+        Logger.getLogger("minecraft").info("[Skillz] MySQLNonTransientConnectionException happened, attempting to reconnect..");
+        this.close();
+        this.connect();
     }
 }
