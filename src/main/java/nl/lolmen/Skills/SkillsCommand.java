@@ -1,8 +1,5 @@
 package nl.lolmen.Skills;
 
-import java.io.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import nl.lolmen.Skillz.Skillz;

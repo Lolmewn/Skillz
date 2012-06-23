@@ -33,7 +33,7 @@ public class SkillBlockListener implements Listener {
                 if (!base.isEnabled()) {
                     continue;
                 }
-                handleSkill((SkillBlockBase)base, event);
+                handleSkill((SkillBlockBase)base, event, u);
             }
         }
         for (CustomSkill skill : this.plugin.getCustomSkillManager().getSkillsUsing("BLOCK_BREAK")) {
@@ -90,9 +90,8 @@ public class SkillBlockListener implements Listener {
         }
     }
 
-    private void handleSkill(SkillBlockBase s, BlockBreakEvent event) {
+    private void handleSkill(SkillBlockBase s, BlockBreakEvent event, User u) {
         Player p = event.getPlayer();
-        User u = this.plugin.getUserManager().getPlayer(p.getName());
         if (!s.hasBlock(event.getBlock())) {
             return;
         }

@@ -63,10 +63,9 @@ public class SkillBase {
     public ItemStack getItemOnLevelup(int level) {
         String obv = this.itemOnLevelup;
         for (int i : this.every_many_levels.keySet()) {
-            double calc = (double) level / (double) i;
-            if (getDecimal(calc) == 0) {
+            if (level%i==0) {
                 if (SkillsSettings.isDebug()) {
-                    System.out.println("[Skillz - Debug] Found match (item) -> " + level + " " + i + "  with decimal " + getDecimal(calc) + " and calc " + calc);
+                    System.out.println("[Skillz - Debug] Found match (item) -> " + level + " " + i);
                 }
                 obv = this.every_many_levels.get(i);
             }
@@ -75,6 +74,9 @@ public class SkillBase {
             obv = this.fixed_levels.get(level).toLowerCase();
         }
         if (obv == null) {
+            return null;
+        }
+        if(!obv.contains(",")){
             return null;
         }
         if (SkillsSettings.isDebug()) {
@@ -87,12 +89,6 @@ public class SkillBase {
         return new ItemStack(Integer.parseInt(arg[0]), Integer.parseInt(arg[1]));
     }
 
-    public int getDecimal(double d) {
-        int multi = (int) Math.pow(10, 3);
-        long result = ((long) (d * multi)) - (((long) d) * multi);
-        return (int) result;
-    }
-
     public void setItemOnLevelup(String itemOnLevelup) {
         this.itemOnLevelup = itemOnLevelup;
     }
@@ -103,10 +99,9 @@ public class SkillBase {
         }
         int money = this.moneyOnLevelup;
         for (int i : this.every_many_levels_money.keySet()) {
-            double calc = (double) level / (double) i;
-            if (getDecimal(calc) == 0) {
+            if (level%i == 0) {
                 if (SkillsSettings.isDebug()) {
-                    System.out.println("[Skillz - Debug] Found match (money) -> " + level + " " + i + "  with decimal " + getDecimal(calc) + " and calc " + calc);
+                    System.out.println("[Skillz - Debug] Found match (money) -> " + level + " " + i);
                 }
                 money = this.every_many_levels_money.get(i);
             }

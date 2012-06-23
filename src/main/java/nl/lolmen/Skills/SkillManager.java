@@ -54,8 +54,8 @@ public class SkillManager {
                     continue;
                 }
                 int multiplier = c.getInt("skills." + key + ".XP-gain-multiplier", 1);
-                String item = null;
-                int money = -1;
+                String item;
+                int money;
                 if (c.contains("skills." + key + ".reward.item")) {
                     item = c.getString("skills." + key + ".reward.item");
                 } else {
