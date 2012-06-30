@@ -58,8 +58,7 @@ public class SkillsSettings {
 	}
 
 	public static String getFalldmg(int dmg) {
-		String mes = falldmg.replace("$DMG", Integer.toString(dmg));
-		return mes;
+		return falldmg.replace("$DMG", Integer.toString(dmg));
 	}
 
 	public static void setFalldmg(String falldmg) {
@@ -67,9 +66,7 @@ public class SkillsSettings {
 	}
 
 	public static String getLvlup(String skill, int level) {
-		String back = lvlup.replace("$SKILLNAME", skill).replace("$NEWLEVEL",
-				Integer.toString(level));
-		return back;
+		return lvlup.replace("$SKILLNAME", skill).replace("$NEWLEVEL", Integer.toString(level));
 	}
 
 	public static void setLvlup(String lvlup) {
