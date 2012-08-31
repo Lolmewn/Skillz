@@ -33,7 +33,7 @@ public class SkillBlockListener implements Listener {
                 if (!base.isEnabled()) {
                     continue;
                 }
-                handleSkill((SkillBlockBase)base, event, u);
+                handleSkill((SkillBlockBase) base, event, u);
             }
         }
         for (CustomSkill skill : this.plugin.getCustomSkillManager().getSkillsUsing("BLOCK_BREAK")) {
@@ -54,9 +54,9 @@ public class SkillBlockListener implements Listener {
             }
         }
         //this.plugin.fb.blockBreak(event.getPlayer());
-            double end = System.nanoTime();
-            double taken = (end - time) / 1000000;
-            this.plugin.debug("[Skillz - Debug] BLOCK_BREAK done in " + taken + "ms", 2);
+        double end = System.nanoTime();
+        double taken = (end - time) / 1000000;
+        this.plugin.debug("[Skillz - Debug] BLOCK_BREAK done in " + taken + "ms", 2);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -95,7 +95,7 @@ public class SkillBlockListener implements Listener {
         if (!s.hasBlock(event.getBlock())) {
             return;
         }
-            int lvlneeded = s.getLevelNeeded(event.getBlock());
+        int lvlneeded = s.getLevelNeeded(event.getBlock());
         if (!s.isAllFromFirstLevel() && u.getLevel(s.getSkillName()) < lvlneeded) {
             p.sendMessage("You are not allowed to mine this block! "
                     + s.getSkillName().substring(0, 1).toUpperCase()
@@ -117,7 +117,7 @@ public class SkillBlockListener implements Listener {
                 event.getBlock().breakNaturally();
             }
         }
-        
+
     }
 
     //@EventHandler
