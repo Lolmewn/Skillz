@@ -9,7 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class MySQLConnectionPool implements Closeable {
 
-    private final static int poolsize = 10;
+    private final static int poolsize = 3;
     private final static long timeToLive = 300000;
     private final Vector<JDCConnection> connections;
     private final ConnectionReaper reaper;
