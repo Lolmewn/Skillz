@@ -1,5 +1,6 @@
 package nl.lolmen.Skillz;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -53,9 +54,11 @@ public class MySQL {
             System.out.println("[Skillz - Debug] Statement: " + statement);
         }
         try {
-            Statement st = this.pool.getConnection().createStatement();
+            Connection con = this.pool.getConnection();
+            Statement st = con.createStatement();
             int re = st.executeUpdate(statement);
             st.close();
+            con.close();
             return re;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,7 +79,9 @@ public class MySQL {
             System.out.println("[Skillz - Debug] Query: " + statement);
         }
         try {
-            Statement st = this.pool.getConnection().createStatement();
+            Connection con = this.pool.getConnection();
+            Statement st = con.createStatement();
+            con.close();
             return st.executeQuery(statement);
         } catch (SQLException e) {
             e.printStackTrace();
