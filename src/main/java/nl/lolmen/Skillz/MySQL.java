@@ -1,48 +1,28 @@
 package nl.lolmen.Skillz;
 
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import nl.lolmen.Skills.SkillsSettings;
 
 public class MySQL {
 
-    private String host, username, password, database, table;
-    private int port;
+    private String table;
     private boolean fault;
-    private Statement st;
-    private Connection con;
+    
+    private MySQLConnectionPool pool;
 
     public MySQL(String host, int port, String username, String password, String database, String table) {
-        this.host = host;
-        this.username = username;
-        this.password = password;
-        this.database = database;
         this.table = table;
-        this.port = port;
-        this.connect();
-        this.setupDatabase();
-    }
-
-    private void connect() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            String url = "jdbc:mysql://" + this.host + ":" + this.port + "/" + this.database;
-            System.out.println("[Skillz] Connecting to database on " + url);
-            this.con = DriverManager.getConnection(url, this.username, this.password);
-            this.st = con.createStatement();
-            System.out.println("[Skillz] MySQL initiated succesfully!");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            this.pool = new MySQLConnectionPool("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, ex);
             this.setFault(true);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            this.setFault(true);
-        } finally {
-            if (this.fault) {
-                System.out.println("[Skillz] MySQL initialisation failed!");
-            }
         }
+        this.setupDatabase();
     }
 
     private void setupDatabase() {
@@ -73,15 +53,11 @@ public class MySQL {
             System.out.println("[Skillz - Debug] Statement: " + statement);
         }
         try {
-            this.st = this.con.createStatement();
-            int re = this.st.executeUpdate(statement);
-            this.st.close();
+            Statement st = this.pool.getConnection().createStatement();
+            int re = st.executeUpdate(statement);
+            st.close();
             return re;
         } catch (SQLException e) {
-            if(e.getClass().getSimpleName().equals("MySQLNonTransientConnectionException")){
-                this.reconnect();
-                return this.executeStatement(statement);
-            }
             e.printStackTrace();
         }
         return 0;
@@ -100,13 +76,9 @@ public class MySQL {
             System.out.println("[Skillz - Debug] Query: " + statement);
         }
         try {
-            this.st = this.con.createStatement();
-            return this.st.executeQuery(statement);
+            Statement st = this.pool.getConnection().createStatement();
+            return st.executeQuery(statement);
         } catch (SQLException e) {
-            if(e.getClass().getSimpleName().equals("MySQLNonTransientConnectionException")){
-                this.reconnect();
-                return this.executeQuery(statement);
-            }
             e.printStackTrace();
         }
         return null;
@@ -117,11 +89,7 @@ public class MySQL {
             System.out.println("[Skillz] Can't close connection, something wrong with it");
             return;
         }
-        try {
-            this.con.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        this.pool.close();
     }
 
     void clean(String table) {
@@ -138,11 +106,5 @@ public class MySQL {
         } catch (SQLException ex) {
             Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    public void reconnect(){
-        Logger.getLogger("minecraft").info("[Skillz] MySQLNonTransientConnectionException happened, attempting to reconnect..");
-        this.close();
-        this.connect();
     }
 }
