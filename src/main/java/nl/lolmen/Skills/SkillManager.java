@@ -7,6 +7,7 @@ import nl.lolmen.Skills.skills.*;
 import nl.lolmen.Skillz.Configurator;
 import nl.lolmen.Skillz.Skillz;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class SkillManager {
@@ -45,6 +46,7 @@ public class SkillManager {
             SkillsSettings.setLevelsReset(c.getString("lostLevels", "You lost levels because you died."));
             SkillsSettings.setFalldmg(c.getString("fallDamageMessage"));
             SkillsSettings.setLvlup(c.getString("levelupMessage"));
+            SkillsSettings.setCritStrike(c.getString("critMessage", "[Skillz] " + ChatColor.RED + "Critical strike!"));
             SkillsSettings.setUsePerSkillPerms(c.getBoolean("usePermissionsForEverySkill", false));
             // Now the actual skills
             for (String key : c.getConfigurationSection("skills").getKeys(false)) {

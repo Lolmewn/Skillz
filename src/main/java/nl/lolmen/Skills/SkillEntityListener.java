@@ -112,7 +112,7 @@ public class SkillEntityListener implements Listener {
                     }
                     if (sw.willCrit(u.getLevel(s.getSkillName()))) {
                         event.setDamage(event.getDamage() * 2);
-                        p.sendMessage("[Skillz] " + ChatColor.RED + "Critical strike!");
+                        p.sendMessage(SkillsSettings.getCritStrike());
                         if (SkillsSettings.isDebug()) {
                             this.plugin.getLogger().info("[Debug] Crit! Damage dealt: " + event.getDamage());
                         }
@@ -150,7 +150,7 @@ public class SkillEntityListener implements Listener {
                     }
                     if (sw.willCrit(u.getLevel(s.getSkillName()))) {
                         event.setDamage(event.getDamage() * 2);
-                        p.sendMessage("[Skillz] " + ChatColor.RED + "Critical strike!");
+                        p.sendMessage(SkillsSettings.getCritStrike());
                         if (SkillsSettings.isDebug()) {
                             this.plugin.getLogger().info("[Debug] Crit! Damage dealt: " + event.getDamage());
                         }
@@ -188,7 +188,7 @@ public class SkillEntityListener implements Listener {
                     }
                     if (sw.willCrit(u.getLevel(s.getSkillName()))) {
                         event.setDamage(event.getDamage() * 2);
-                        p.sendMessage("[Skillz] " + ChatColor.RED + "Critical strike!");
+                        p.sendMessage(SkillsSettings.getCritStrike());
                         if (SkillsSettings.isDebug()) {
                             this.plugin.getLogger().info("[Debug] Crit! Damage dealt: " + event.getDamage());
                         }
