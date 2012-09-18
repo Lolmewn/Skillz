@@ -83,7 +83,7 @@ public class SkillManager {
                     a.setBlocks_till_XP(c.getInt("skills." + key + ".blocks-till-1XP-add", 10));
                     a.setItemOnLevelup(item);
                     a.setMoneyOnLevelup(money);
-                    a.setSkillName(key);
+                    a.setSkillName(c.getString("skills." + key + ".name", key));
                     a.setEnabled(enabled);
                     a.setMultiplier(multiplier);
                     a.setCritCalc(c.getString("skills." + key + ".critChance", "$LEVEL/10"));
@@ -104,7 +104,7 @@ public class SkillManager {
                     Acrobatics a = new Acrobatics(this.plugin);
                     a.setItemOnLevelup(item);
                     a.setMoneyOnLevelup(money);
-                    a.setSkillName(keys);
+                    a.setSkillName(c.getString("skills." + key + ".name", key));
                     a.setEnabled(enabled);
                     a.setMultiplier(multiplier);
                     a.setLevelsTillLessDMG(c.getInt("skills." + key + ".levels-per-reducted-damage", 5));
@@ -125,7 +125,7 @@ public class SkillManager {
                     Mining a = new Mining(this.plugin);
                     a.setItemOnLevelup(item);
                     a.setMoneyOnLevelup(money);
-                    a.setSkillName(key);
+                    a.setSkillName(c.getString("skills." + key + ".name", key));
                     a.setEnabled(enabled);
                     a.setMultiplier(multiplier);
                     a.setAllFromFirstLevel(c.getBoolean("skills." + key + ".MineAllBlocksFromFirstLevel"));
@@ -154,7 +154,7 @@ public class SkillManager {
                     Woodcutting a = new Woodcutting(this.plugin);
                     a.setItemOnLevelup(item);
                     a.setMoneyOnLevelup(money);
-                    a.setSkillName(key);
+                    a.setSkillName(c.getString("skills." + key + ".name", key));
                     a.setEnabled(enabled);
                     a.setMultiplier(multiplier);
                     a.setAllFromFirstLevel(c.getBoolean("skills." + key + ".MineAllBlocksFromFirstLevel"));
@@ -181,7 +181,7 @@ public class SkillManager {
                     Digging a = new Digging(this.plugin);
                     a.setItemOnLevelup(item);
                     a.setMoneyOnLevelup(money);
-                    a.setSkillName(key);
+                    a.setSkillName(c.getString("skills." + key + ".name", key));
                     a.setEnabled(enabled);
                     a.setMultiplier(multiplier);
                     a.setAllFromFirstLevel(c.getBoolean("skills." + key + ".MineAllBlocksFromFirstLevel"));
@@ -208,7 +208,7 @@ public class SkillManager {
                     Swords a = new Swords(this.plugin);
                     a.setItemOnLevelup(item);
                     a.setMoneyOnLevelup(money);
-                    a.setSkillName("swords");
+                    a.setSkillName(c.getString("skills." + key + ".name", "swords"));
                     a.setEnabled(enabled);
                     a.setMultiplier(multiplier);
                     a.setLevelsPerExtraDamage(c.getInt("skills." + key + ".levelsPerExtraDamage", 20));
@@ -230,7 +230,7 @@ public class SkillManager {
                     Axes a = new Axes(this.plugin);
                     a.setItemOnLevelup(item);
                     a.setMoneyOnLevelup(money);
-                    a.setSkillName("axes");
+                    a.setSkillName(c.getString("skills." + key + ".name", "axes"));
                     a.setEnabled(enabled);
                     a.setMultiplier(multiplier);
                     a.setLevelsPerExtraDamage(c.getInt("skills." + key + ".levelsPerExtraDamage", 20));
@@ -252,7 +252,7 @@ public class SkillManager {
                     Unarmed a = new Unarmed(this.plugin);
                     a.setItemOnLevelup(item);
                     a.setMoneyOnLevelup(money);
-                    a.setSkillName("unarmed");
+                    a.setSkillName(c.getString("skills." + key + ".name", "unarmed"));
                     a.setEnabled(enabled);
                     a.setMultiplier(multiplier);
                     a.setLevelsPerExtraDamage(c.getInt("skills." + key + ".levelsPerExtraDamage", 20));
@@ -274,7 +274,7 @@ public class SkillManager {
                     Swimming a = new Swimming(this.plugin);
                     a.setItemOnLevelup(item);
                     a.setMoneyOnLevelup(money);
-                    a.setSkillName("swimming");
+                    a.setSkillName(c.getString("skills." + key + ".name", "swimming"));
                     a.setEnabled(enabled);
                     a.setMultiplier(multiplier);
                     a.setNoDrownChance(c.getString("skills." + key + ".critChance", "$LEVEL/10"));
@@ -294,7 +294,7 @@ public class SkillManager {
                 SkillBase a = new SkillBase(this.plugin);
                 a.setItemOnLevelup(item);
                 a.setMoneyOnLevelup(money);
-                a.setSkillName(key);
+                a.setSkillName(c.getString("skills." + key + ".name", key));
                 a.setEnabled(enabled);
                 a.setMultiplier(multiplier);
                 if (!optReward.isEmpty()) {
