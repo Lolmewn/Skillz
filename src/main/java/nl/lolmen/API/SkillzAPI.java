@@ -38,4 +38,24 @@ public class SkillzAPI {
     public int getLevel(Player player, SkillBase skill) {
         return plugin.getUserManager().getPlayer(player.getName()).getLevel(skill.getSkillName());
     }
+
+    public void addXP(Player p, String skills) {
+        addXP(p,skills,1);
+    }
+
+    public void addXP(Player p, String skills, int amount) {
+        SkillBase s = plugin.getSkillManager().skills.get(skills);
+        if(s == null){
+            return;
+        }
+        s.addXP(p, amount);
+    }
+
+    public int getLevel(Player p, String skills) {
+        SkillBase s = plugin.getSkillManager().skills.get(skills);
+        if(s == null){
+            return -1;
+        }
+        return this.getLevel(p, s);
+    }
 }
