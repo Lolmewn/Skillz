@@ -32,7 +32,7 @@ public class Skillz extends JavaPlugin {
     public HighScore high = new HighScore();
     private SkillPlayerListener player = new SkillPlayerListener(this);
     public FastBreak fb = new FastBreak();
-    public static SkillzAPI api = new SkillzAPI();
+    public static SkillzAPI api;
     private Metrics metrics;
     private SkillManager skillManager;
     private CustomSkillManager customManager;
@@ -101,6 +101,7 @@ public class Skillz extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        api = new SkillzAPI(this);
         double time = System.nanoTime();
         this.makeSettings();
         this.loadSkillz();
