@@ -96,9 +96,11 @@ public class UserManager {
         if (this.users.containsKey(name)) {
             return this.users.get(name);
         }
-        User u = new User(name);
-        this.users.put(name, u);
-        return u;
+        this.loadPlayer(name);
+        if (this.users.containsKey(name)) {
+            return this.users.get(name);
+        }
+        return new User(name);
     }
 
     public boolean hasPlayer(String name) {
