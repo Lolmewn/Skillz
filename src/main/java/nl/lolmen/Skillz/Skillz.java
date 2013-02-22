@@ -586,10 +586,9 @@ public class Skillz extends JavaPlugin {
     }
 
     private void startUserSavingThread() {
-        this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable(){
+        this.getServer().getScheduler().runTaskTimer(this, new Runnable(){
             @Override
             public void run() {
-                getLogger().info("Saving Skillz Users..");
                 getUserManager().save(true);
             }
         }, 24000L, 24000L);
