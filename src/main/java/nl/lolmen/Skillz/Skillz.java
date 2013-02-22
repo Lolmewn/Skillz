@@ -1,5 +1,6 @@
 package nl.lolmen.Skillz;
 
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -248,6 +249,10 @@ public class Skillz extends JavaPlugin {
             SkillsSettings.setHasVault(true);
             this.getLogger().info("Hooked into Vault, just in case :)");
             return;
+        }
+        test = getServer().getPluginManager().getPlugin("Worldguard");
+        if(test != null){
+            SkillsSettings.setWorldGuard((WorldGuardPlugin)test);
         }
         if (SkillsSettings.getMoneyOnLevelup() == 0) {
             return;

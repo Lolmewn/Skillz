@@ -1,5 +1,6 @@
 package nl.lolmen.Skills;
 
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import nl.lolmen.Skills.skills.*;
 import nl.lolmen.Skillz.Skillz;
 import nl.lolmen.Skillz.User;
@@ -24,11 +25,8 @@ public class SkillEntityListener implements Listener {
         this.plugin = main;
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         Entity e = event.getEntity();
         if (SkillsSettings.hasCitizens()) {
             if(e.hasMetadata("NPC")){
@@ -81,6 +79,11 @@ public class SkillEntityListener implements Listener {
             Entity att = ((EntityDamageByEntityEvent) event).getDamager();
             if (att instanceof Player) {
                 Player p = (Player) att;
+                if(SkillsSettings.hasWorldGuard()){
+                    if(!SkillsSettings.getWorldGuard().getRegionManager(event.getEntity().getWorld()).getApplicableRegions(event.getEntity().getLocation()).allows(DefaultFlag.PVP, SkillsSettings.getWorldGuard().wrapPlayer(p))){
+                        return;
+                    }
+                }
                 User u = this.plugin.getUserManager().getPlayer(p.getName());
                 Material m = p.getItemInHand().getType();
                 if (m.equals(Material.WOOD_SWORD) || m.equals(Material.IRON_SWORD) || m.equals(Material.STONE_SWORD) || m.equals(Material.DIAMOND_SWORD) || m.equals(Material.GOLD_SWORD)) {
@@ -201,6 +204,11 @@ public class SkillEntityListener implements Listener {
             if (att instanceof Arrow) {
                 LivingEntity ent = ((Arrow) att).getShooter();
                 if (ent instanceof Player) {
+                    if(SkillsSettings.hasWorldGuard()){
+                        if(!SkillsSettings.getWorldGuard().getRegionManager(event.getEntity().getWorld()).getApplicableRegions(event.getEntity().getLocation()).allows(DefaultFlag.PVP, SkillsSettings.getWorldGuard().wrapPlayer((Player)ent))){
+                            return;
+                        }
+                    }
                     Archery s = (Archery) this.plugin.getSkillManager().skills.get("archery");
                     User u = this.plugin.getUserManager().getPlayer(((Player)ent).getName());
                     if (s == null) {
@@ -239,12 +247,17 @@ public class SkillEntityListener implements Listener {
         if (!(event.getEntity() instanceof Player)) {
             return;
         }
+        Player p = (Player)event.getEntity();
         if (SkillsSettings.hasCitizens()) {
             if(event.getEntity().hasMetadata("NPC")){
                 return;
             }
         }
-        Player p = (Player) event.getEntity();
+        if(SkillsSettings.hasWorldGuard()){
+            if(!SkillsSettings.getWorldGuard().getRegionManager(event.getEntity().getWorld()).getApplicableRegions(event.getEntity().getLocation()).allows(DefaultFlag.PVP, SkillsSettings.getWorldGuard().wrapPlayer(p))){
+                return;
+            }
+        }
         if (SkillsSettings.isResetSkillsOnLevelup()) {
             for (SkillBase s : plugin.getSkillManager().getSkills()) {
                 CPU.setLevelWithXP(p, s, 1, plugin);

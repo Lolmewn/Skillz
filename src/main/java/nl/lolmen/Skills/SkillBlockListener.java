@@ -20,12 +20,14 @@ public class SkillBlockListener implements Listener {
         this.plugin = main;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         double time = System.nanoTime();
+        if(SkillsSettings.hasWorldGuard()){
+            if(!SkillsSettings.getWorldGuard().canBuild(event.getPlayer(), event.getBlock())){
+                return;
+            }
+        }
         User u = this.plugin.getUserManager().getPlayer(event.getPlayer().getName());
         for (SkillBase base : this.plugin.getSkillManager().getSkills()) {
             if (base instanceof SkillBlockBase) {
@@ -59,12 +61,14 @@ public class SkillBlockListener implements Listener {
         this.plugin.debug("[Skillz - Debug] BLOCK_BREAK done in " + taken + "ms", 2);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
         double time = System.nanoTime();
+        if(SkillsSettings.hasWorldGuard()){
+            if(!SkillsSettings.getWorldGuard().canBuild(event.getPlayer(), event.getBlock())){
+                return;
+            }
+        }
         User u = this.plugin.getUserManager().getPlayer(event.getPlayer().getName());
         for (CustomSkill skill : this.plugin.getCustomSkillManager().getSkillsUsing("BLOCK_PLACE")) {
             if (!skill.isEnabled()) {
@@ -118,14 +122,5 @@ public class SkillBlockListener implements Listener {
             }
         }
 
-    }
-
-    //@EventHandler
-    public void onBlockDamage(BlockDamageEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-        int ticks = 10; //TODO calculate
-        //this.plugin.fb.blockDamage(event.getPlayer(), event.getBlock(), ticks);
     }
 }

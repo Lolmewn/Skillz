@@ -1,5 +1,7 @@
 package nl.lolmen.Skills;
 
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+
 public class SkillsSettings {
 
     private static boolean lightningOnLevelup;
@@ -17,6 +19,7 @@ public class SkillsSettings {
     private static boolean hasSpout;
     private static boolean hasCitizens;
     private static boolean usePerSkillPerms;
+    private static WorldGuardPlugin worldguard;
 
     public static boolean isLightningOnLevelup() {
         return lightningOnLevelup;
@@ -136,5 +139,17 @@ public class SkillsSettings {
 
     public static void setCritStrike(String critStrike) {
         SkillsSettings.critStrike = critStrike;
+    }
+
+    public static void setWorldGuard(WorldGuardPlugin worldGuardPlugin) {
+        SkillsSettings.worldguard = worldGuardPlugin;
+    }
+    
+    public static boolean hasWorldGuard(){
+        return worldguard != null;
+    }
+    
+    public static WorldGuardPlugin getWorldGuard(){
+        return worldguard;
     }
 }
