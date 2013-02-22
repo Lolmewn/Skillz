@@ -1,9 +1,10 @@
 package nl.lolmen.Skillz;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Properties;
