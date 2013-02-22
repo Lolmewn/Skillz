@@ -59,6 +59,7 @@ public class Skillz extends JavaPlugin {
     public boolean broadcast;
     
     private String debugPlayer;
+    protected double newVersion;
 
     @Override
     public void onDisable() {
@@ -67,37 +68,8 @@ public class Skillz extends JavaPlugin {
             this.mysql.close();
         }
         this.high.saveMaps();
-        if (this.updateAvailable) {
-            this.downloadFile("http://dl.dropbox.com/u/7365249/Skillz.jar");
-        }
         this.getServer().getScheduler().cancelTasks(this);
         this.getLogger().info("Disabled!");
-    }
-
-    private void downloadFile(String site) {
-        try {
-            this.getLogger().info("Updating Skillz.. Please wait.");
-            BufferedInputStream in = new BufferedInputStream(new URL(site).openStream());
-            FileOutputStream fout = new FileOutputStream(nl.lolmen.Skillz.Skillz.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-            byte data[] = new byte[1024]; //Download 1 KB at a time
-            int count;
-            while ((count = in.read(data, 0, 1024)) != -1) {
-                fout.write(data, 0, count);
-            }
-            this.getLogger().info("Skillz has been updated!");
-            in.close();
-            fout.close();
-            YamlConfiguration c = new YamlConfiguration();
-            try {
-                c.load(this.skillzFile);
-                c.set("version", this.version);
-                c.save(this.skillzFile);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -139,13 +111,13 @@ public class Skillz extends JavaPlugin {
                 }
             });
             this.metrics.start();
-            this.getLogger().info("Metrics loaded! View them @ http://metrics.griefcraft.com/plugin/Skillz");
+            this.getLogger().info("Metrics loaded! View them @ http://mcstats.org/plugin/Skillz");
         } catch (IOException e) {
             e.printStackTrace();
             this.getLogger().info("Failed to load Metrics!");
         }
         if (this.update) {
-            checkUpdate();
+            new Updater(this, "skillz", this.getFile(), Updater.UpdateType.DEFAULT, true);
         }
         this.setupPlugins();
         this.high.loadMaps();
@@ -178,7 +150,7 @@ public class Skillz extends JavaPlugin {
         YamlConfiguration c = new YamlConfiguration();
         try {
             c.load(this.skillzFile);
-            this.version = c.getDouble("version", 5.51);
+            this.version = c.getDouble("version", 5.6);
             this.update = c.getBoolean("update", true);
             this.dbUser = c.getString("MySQL-User", "root");
             this.dbPass = c.getString("MySQL-Pass", "root");
@@ -188,26 +160,6 @@ public class Skillz extends JavaPlugin {
             this.dbTable = c.getString("MySQL-Table", "Skillz");
             this.useMySQL = c.getBoolean("useMySQL", false);
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void checkUpdate() {
-        try {
-            URL url = new URL("http://dl.dropbox.com/u/7365249/skillz.txt");
-            BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-            String str;
-            while ((str = in.readLine()) != null) {
-                if (this.version < Double.parseDouble(str)) {
-                    this.updateAvailable = true;
-                    this.getLogger().info("An update is available! Will be downloaded on Disable! Old version: " + this.version + " New version: " + str);
-                    this.version = Double.parseDouble(str);
-                }
-            }
-            in.close();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
