@@ -1,6 +1,5 @@
 package nl.lolmen.Skills;
 
-import net.citizensnpcs.api.CitizensManager;
 import nl.lolmen.Skills.skills.*;
 import nl.lolmen.Skillz.Skillz;
 import nl.lolmen.Skillz.User;
@@ -32,8 +31,7 @@ public class SkillEntityListener implements Listener {
         }
         Entity e = event.getEntity();
         if (SkillsSettings.hasCitizens()) {
-            if (CitizensManager.isNPC(e)) {
-                //No need to give NPC's XP
+            if(e.hasMetadata("NPC")){
                 return;
             }
         }
@@ -242,8 +240,7 @@ public class SkillEntityListener implements Listener {
             return;
         }
         if (SkillsSettings.hasCitizens()) {
-            //It's an NPC, no need to do anything with it
-            if (CitizensManager.isNPC(event.getEntity())) {
+            if(event.getEntity().hasMetadata("NPC")){
                 return;
             }
         }
