@@ -301,6 +301,26 @@ public class SkillManager {
                     skills.put(keys, a);
                     continue;
                 }
+                if(keys.equalsIgnoreCase("farming")){
+                    Farming a = new Farming(plugin);
+                    a.setItemOnLevelup(item);
+                    a.setMoneyOnLevelup(money);
+                    a.setSkillName(c.getString("skills." + key + ".name", "swimming"));
+                    a.setEnabled(enabled);
+                    a.setMultiplier(multiplier);
+                    if (!optReward.isEmpty()) {
+                        for (int i : optReward.keySet()) {
+                            a.add_to_every_many_levels(i, optReward.get(i));
+                        }
+                    }
+                    if (!optRewardFixed.isEmpty()) {
+                        for (int i : optRewardFixed.keySet()) {
+                            a.add_to_fixed_levels(i, optRewardFixed.get(i));
+                        }
+                    }
+                    skills.put(keys, a);
+                    continue;
+                }
                 SkillBase a = new SkillBase(this.plugin);
                 a.setItemOnLevelup(item);
                 a.setMoneyOnLevelup(money);
