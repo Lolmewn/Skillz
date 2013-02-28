@@ -3,6 +3,8 @@ package nl.lolmen.Skills;
 import java.io.*;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import nl.lolmen.Skills.skills.*;
 import nl.lolmen.Skillz.Configurator;
 import nl.lolmen.Skillz.Skillz;
@@ -31,6 +33,12 @@ public class SkillManager {
             Bukkit.getLogger().info("Going to ask OP to Config settings!");
         }
         YamlConfiguration c = YamlConfiguration.loadConfiguration(settings);
+        c.options().copyDefaults(true);
+        try {
+            c.save(settings);
+        } catch (IOException ex) {
+            Logger.getLogger(SkillManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
         try {
             if (!c.contains("moneyOnLevelup")) {
                 createSkillsSettings();

@@ -27,7 +27,7 @@ levelupMessage: You leveled up! Your $SKILLNAME level is now $NEWLEVEL!
 lostLevels: You died, causing your levels to get reset!
 
 update: true
-version: '5.51'
+version: 5.51
 
 
 ###Skills###
@@ -156,4 +156,7 @@ skills:
             
             #This means that at level 10 you'll get 8 glowstones and 50 moneys instead of the normal reward.
             10: ITEM;89,8:MONEY;50
-  
+  farming:
+    enabled: true
+    XP-gain-multiplier: 1
+    
