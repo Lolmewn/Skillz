@@ -33,16 +33,16 @@ public class SkillManager {
             Bukkit.getLogger().info("Going to ask OP to Config settings!");
         }
         YamlConfiguration c = YamlConfiguration.loadConfiguration(settings);
-        c.options().copyDefaults(true);
-        try {
-            c.save(settings);
-        } catch (IOException ex) {
-            Logger.getLogger(SkillManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
         try {
             if (!c.contains("moneyOnLevelup")) {
                 createSkillsSettings();
                 c = YamlConfiguration.loadConfiguration(settings); //load it again to not have an empty file
+            }
+            c.options().copyDefaults(true);
+            try {
+                c.save(settings);
+            } catch (IOException ex) {
+                Logger.getLogger(SkillManager.class.getName()).log(Level.SEVERE, null, ex);
             }
             SkillsSettings.setBroadcastOnLevelup(c.getBoolean("broadcastOnLevelup", true));
             SkillsSettings.setDebug(c.getBoolean("debug", false));
