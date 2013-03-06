@@ -39,7 +39,7 @@ public class CustomSkillManager {
                     }
                     if (c.contains(key + "." + use + ".block_xp")) {
                         for (String block : c.getConfigurationSection(key + "." + use + ".block_xp").getKeys(false)) {
-                            s.addBlockLevels(Integer.parseInt(block), c.getInt(key + "." + use + ".block_xp." + block));
+                            s.addBlock(Integer.parseInt(block), c.getInt(key + "." + use + ".block_xp." + block));
                         }
                     }
                 }
