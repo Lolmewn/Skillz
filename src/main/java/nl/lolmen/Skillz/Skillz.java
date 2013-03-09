@@ -431,6 +431,34 @@ public class Skillz extends JavaPlugin {
                     sender.sendMessage("Saving complete!");
                     return true;
                 }
+                if(args[0].equalsIgnoreCase("addxp")){
+                	if(sender.hasPermission("skills.addxp")){
+                	try{
+                	if(args[1] != null && args[2] != null && args[3] != null){
+                     SkillBase s;
+                     s = this.getSkillManager().skills.get(args[2]);
+
+                     if (s == null) {
+                                 s = this.getCustomSkillManager().getSkill(args[2]);
+                                 if(s == null)
+                                 {
+                                	 return false;
+                                 }
+                                 
+                             }  
+                             
+                             Player p = Bukkit.getPlayer(args[1]);
+
+                             s.addXP(p, Integer.parseInt(args[3]));
+            
+                             return true;
+                	}
+                	return false;
+                	}
+                	catch(Exception e)
+                	{}
+                	}
+                }
                 if(args[0].equalsIgnoreCase("clean")){
                     if(!sender.hasPermission("skillz.clean")){
                         sender.sendMessage(this.noPerm);
