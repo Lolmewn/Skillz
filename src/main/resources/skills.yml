@@ -27,7 +27,7 @@ levelupMessage: You leveled up! Your $SKILLNAME level is now $NEWLEVEL!
 lostLevels: You died, causing your levels to get reset!
 
 update: true
-version: 5.51
+version: 5.8
 
 
 ###Skills###

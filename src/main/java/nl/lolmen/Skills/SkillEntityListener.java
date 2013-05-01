@@ -2,9 +2,6 @@ package nl.lolmen.Skills;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.listeners.FactionsEntityListener;
-import com.massivecraft.factions.struct.FFlag;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import nl.lolmen.Skills.skills.*;
 import nl.lolmen.Skillz.Skillz;
