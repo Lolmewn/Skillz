@@ -52,11 +52,12 @@ public class SkillEntityListener implements Listener {
                     if (u.getLevel(s.getSkillName()) >= a.getLevelsTillLessDMG()) {
                         double deduct = u.getLevel(s.getSkillName()) / a.getLevelsTillLessDMG();
                         if (deduct >= event.getDamage()) {
+                            deduct = event.getDamage();
                             event.setDamage(0);
                         } else {
                             event.setDamage((int) (event.getDamage() - deduct));
                         }
-                        p.sendMessage(SkillsSettings.getFalldmg((int) deduct));
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', SkillsSettings.getFalldmg((int) deduct)));
                     }
                     return;
                 case DROWNING:
@@ -113,7 +114,7 @@ public class SkillEntityListener implements Listener {
                     }
                     if (sw.willCrit(u.getLevel(s.getSkillName()))) {
                         event.setDamage(event.getDamage() * 2);
-                        p.sendMessage(SkillsSettings.getCritStrike());
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', SkillsSettings.getCritStrike()));
                         if (SkillsSettings.isDebug()) {
                             this.plugin.getLogger().info("[Debug] Crit! Damage dealt: " + event.getDamage());
                         }
@@ -151,7 +152,7 @@ public class SkillEntityListener implements Listener {
                     }
                     if (sw.willCrit(u.getLevel(s.getSkillName()))) {
                         event.setDamage(event.getDamage() * 2);
-                        p.sendMessage(SkillsSettings.getCritStrike());
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', SkillsSettings.getCritStrike()));
                         if (SkillsSettings.isDebug()) {
                             this.plugin.getLogger().info("[Debug] Crit! Damage dealt: " + event.getDamage());
                         }
@@ -189,7 +190,7 @@ public class SkillEntityListener implements Listener {
                     }
                     if (sw.willCrit(u.getLevel(s.getSkillName()))) {
                         event.setDamage(event.getDamage() * 2);
-                        p.sendMessage(SkillsSettings.getCritStrike());
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', SkillsSettings.getCritStrike()));
                         if (SkillsSettings.isDebug()) {
                             this.plugin.getLogger().info("[Debug] Crit! Damage dealt: " + event.getDamage());
                         }
@@ -221,20 +222,20 @@ public class SkillEntityListener implements Listener {
                     Player p = (Player) ent;
                     int added = (int) distance / s.getBlocks_till_XP() * s.getMultiplier();
                     if (added == 2) {
-                        p.sendMessage("[Skillz] Double XP!");
+                        p.sendMessage(ChatColor.GREEN + "[Skillz] Double XP!");
                     }
                     if (added == 3) {
-                        p.sendMessage("[Skillz] " + ChatColor.LIGHT_PURPLE + "TRIPLE XP!");
+                        p.sendMessage(ChatColor.GREEN + "[Skillz] " + ChatColor.LIGHT_PURPLE + "TRIPLE XP!");
                     }
                     if (added == 4) {
-                        p.sendMessage("[Skillz] " + ChatColor.RED + "QUADRA XP!");
+                        p.sendMessage(ChatColor.GREEN + "[Skillz] " + ChatColor.RED + "QUADRA XP!");
                     }
                     if (added > 4) {
-                        p.sendMessage("[Skillz] " + ChatColor.DARK_RED + "MULTI XP!");
+                        p.sendMessage(ChatColor.GREEN + "[Skillz] " + ChatColor.DARK_RED + "MULTI XP!");
                     }
                     if (s.willCrit(u.getLevel(s.getSkillName()))) {
                         event.setDamage(event.getDamage() * 2);
-                        p.sendMessage("[Skillz] " + ChatColor.RED + "Critical hit!");
+                        p.sendMessage(ChatColor.GREEN + "[Skillz] " + ChatColor.RED + "Critical hit!");
                     }
                     s.addXP(p, added);
                 }
@@ -262,7 +263,7 @@ public class SkillEntityListener implements Listener {
             for (SkillBase s : plugin.getSkillManager().getSkills()) {
                 CPU.setLevelWithXP(p, s, 1, plugin);
             }
-            p.sendMessage(SkillsSettings.getLevelsReset());
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', SkillsSettings.getLevelsReset()));
             return;
         }
         if (SkillsSettings.getLevelsDownOnDeath() != 0) {
@@ -277,7 +278,7 @@ public class SkillEntityListener implements Listener {
                     CPU.setLevelWithXP(p, s, u.getLevel(s.getSkillName()) - SkillsSettings.getLevelsDownOnDeath(), plugin);
                 }
             }
-            p.sendMessage(SkillsSettings.getLevelsReset());
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', SkillsSettings.getLevelsReset()));
         }
     }
 }
