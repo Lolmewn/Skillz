@@ -19,7 +19,6 @@ public class SkillPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerJoin(PlayerJoinEvent event) {
-        double time = System.nanoTime();
         Player p = event.getPlayer();
         if (!this.plugin.getSkillManager().configed && p.isOp()) {
             p.sendMessage("To configure Skillz, type /skills config");
@@ -28,21 +27,9 @@ public class SkillPlayerListener implements Listener {
             }
         }
         if(!this.plugin.getUserManager().hasPlayer(p.getName())){
-            this.plugin.getLogger().info("Loading player " + event.getPlayer().getName() + "...");
             this.plugin.getUserManager().loadPlayer(p.getName());
-        }        
-        double time2 = System.nanoTime();
-        double taken = (time2 - time) / 1000000.0D;
-        this.plugin.getLogger().info("Loaded player in " + Double.toString(taken) + "ms!");
-    }
-
-    /*@EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerAnimation(PlayerAnimationEvent event) {
-        if (event.isCancelled()) {
-            return;
         }
-        this.plugin.fb.playerAnimate(event.getPlayer());
-    }*/
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
