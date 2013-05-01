@@ -31,7 +31,7 @@ public class CPU {
                     + ChatColor.WHITE + " and is now level "
                     + ChatColor.RED + lvl + ChatColor.WHITE + "!");
         } else {
-            p.sendMessage(SkillsSettings.getLvlup(skill.getSkillName(), lvl));
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', SkillsSettings.getLvlup(skill.getSkillName(), lvl)));
         }
         if (SkillsSettings.isLightningOnLevelup()) {
             p.getWorld().strikeLightningEffect(p.getLocation());
@@ -47,7 +47,7 @@ public class CPU {
             return;
         }
         ItemHandler.addItems(p, get);
-        p.sendMessage("You have been given " + ChatColor.RED + get.getAmount() + " " + get.getType().name().toLowerCase() + ChatColor.RED + " for leveling up!");
+        p.sendMessage(ChatColor.GREEN + "You have been given " + ChatColor.RED + get.getAmount() + " " + get.getType().name().toLowerCase() + ChatColor.RED + " for leveling up!");
     }
 
     private static void giveReward(Player p, SkillBase skill, int lvl) {
@@ -69,7 +69,7 @@ public class CPU {
                 return;
             }
             e.depositPlayer(p.getName(), money);
-            p.sendMessage("You have been given " + e.format(money) + " for leveling up!");
+            p.sendMessage(ChatColor.GREEN + "You have been given " + e.format(money) + " for leveling up!");
         } else {
             System.out.println("[Skillz] Couldn't give money reward, Vault not found!");
         }
@@ -78,28 +78,6 @@ public class CPU {
     public static void setLevelWithXP(Player p, SkillBase skill, int level, Skillz main) {
         User u = main.getUserManager().getPlayer(p.getName());
         u.addData(skill.getSkillName(), (int)Math.pow(level - 1, 2) * 10, level);
-        /*
-        if (main.useMySQL) {
-            main.getMySQL().executeStatement("UPDATE " + main.dbTable + " SET level=" + level + " , xp=" + (level - 1) * (level - 1) * 10 + " WHERE player='" + p.getName() + "' AND skill='" + skill.getSkillName() + "'");
-            return;
-        }
-        Properties prop = new Properties();
-        try {
-            FileInputStream in = new FileInputStream(new File(folder, p.getName().toLowerCase() + ".txt"));
-            prop.load(in);
-            String key = skill.getSkillName();
-            if (!prop.containsKey(key)) {
-                return;
-            }
-            prop.setProperty(key, (level - 1) * (level - 1) * 10 + ";" + level);
-            FileOutputStream out = new FileOutputStream(new File(folder, p.getName().toLowerCase() + ".txt"));
-            prop.store(out, "Skill=XP;lvl");
-            in.close();
-            out.flush();
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
     }
 
     public static void checkLeveling(User s, SkillBase skill, Skillz plugin) {
