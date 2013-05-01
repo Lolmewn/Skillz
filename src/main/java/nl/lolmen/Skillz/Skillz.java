@@ -207,6 +207,7 @@ public class Skillz extends JavaPlugin {
         if(test != null){
             SkillsSettings.setWorldGuard((WorldGuardPlugin)test);
         }
+        test = getServer().getPluginManager().getPlugin("Factions");
         if (SkillsSettings.getMoneyOnLevelup() == 0) {
             return;
         }

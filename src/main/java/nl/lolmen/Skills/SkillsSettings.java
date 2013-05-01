@@ -18,6 +18,7 @@ public class SkillsSettings {
     private static boolean hasVault;
     private static boolean hasSpout;
     private static boolean hasCitizens;
+    private static boolean hasFactions;
     private static boolean usePerSkillPerms;
     private static WorldGuardPlugin worldguard;
 
@@ -151,5 +152,9 @@ public class SkillsSettings {
     
     public static WorldGuardPlugin getWorldGuard(){
         return worldguard;
+    }
+
+    static boolean hasFactions() {
+        return hasFactions;
     }
 }

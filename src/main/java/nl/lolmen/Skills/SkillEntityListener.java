@@ -1,5 +1,10 @@
 package nl.lolmen.Skills;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.listeners.FactionsEntityListener;
+import com.massivecraft.factions.struct.FFlag;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import nl.lolmen.Skills.skills.*;
 import nl.lolmen.Skillz.Skillz;
@@ -35,6 +40,19 @@ public class SkillEntityListener implements Listener {
         }
         if (e instanceof Player) {
             Player p = (Player) e;
+            if(SkillsSettings.hasFactions()){
+                if(event instanceof EntityDamageByEntityEvent){
+                    Player attacker = (Player)((EntityDamageByEntityEvent)event).getDamager();
+                    FPlayer fPlayer = FPlayers.i.get(p);
+                    FPlayer fAttacker = FPlayers.i.get(attacker);
+                    if(fPlayer.hasFaction() && fAttacker.hasFaction()){
+                        if(fPlayer.getFactionId().equals(fAttacker.getFactionId())){
+                            return;
+                        }
+                    }
+                }
+                
+            }
             User u = this.plugin.getUserManager().getPlayer(p.getName());
             SkillBase s;
             switch (event.getCause()) {

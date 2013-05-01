@@ -6,7 +6,7 @@
     <artifactId>Skillz</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Skillz</name>
-    <url>http://metrics.griefcraft.com/plugin/Skillz</url>
+    <url>http://mcsats.org/plugin/Skillz</url>
     <repositories>
         <repository>
             <id>bukkit-repo</id>
@@ -20,6 +20,10 @@
             <id>vault-repo</id>
             <url>http://ci.herocraftonline.com/plugin/repository/everything</url>
         </repository>
+        <repository>
+            <id>plugin-repo</id>
+            <url>http://bukkit.jacekk.co.uk/plugin_repo/repo/</url>
+        </repository>
     </repositories>
     <build>
         <plugins>
@@ -32,7 +36,6 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
-			
         </plugins>
     </build>
     <dependencies>
@@ -50,6 +53,11 @@
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
             <version>5.7.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>dev.bukkit.org.server-mods</groupId>
+            <artifactId>factions</artifactId>
+            <version>1.8.2</version>
         </dependency>
     </dependencies>
     <issueManagement>
