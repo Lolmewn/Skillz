@@ -4,6 +4,7 @@ import nl.lolmen.Skills.skills.CustomSkill;
 import nl.lolmen.Skills.skills.Mining;
 import nl.lolmen.Skillz.Skillz;
 import nl.lolmen.Skillz.User;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -43,10 +44,10 @@ public class SkillBlockListener implements Listener {
             }
             if (skill.hasBlock(event.getBlock())) {
                 if (u.getLevel(skill.getSkillName()) < skill.getLevelNeeded(event.getBlock())) {
-                    event.getPlayer().sendMessage("You are not allowed to break this block! "
+                    event.getPlayer().sendMessage(ChatColor.RED + "You are not allowed to break this block! " + ChatColor.RESET
                             + skill.getSkillName().substring(0, 1).toUpperCase()
                             + skill.getSkillName().substring(1).toLowerCase()
-                            + " level needed:" + skill.getLevelNeeded(event.getBlock()));
+                            + " level needed:" + ChatColor.GREEN + skill.getLevelNeeded(event.getBlock()));
                     event.setCancelled(true);
                     return;
                 }
@@ -75,10 +76,10 @@ public class SkillBlockListener implements Listener {
             }
             if (skill.hasBlock(event.getBlock())) {
                 if (u.getLevel(skill.getSkillName()) < skill.getLevelNeeded(event.getBlock())) {
-                    event.getPlayer().sendMessage("You are not allowed to break this block! "
+                    event.getPlayer().sendMessage(ChatColor.RED + "You are not allowed to break this block! " + ChatColor.RESET
                             + skill.getSkillName().substring(0, 1).toUpperCase()
                             + skill.getSkillName().substring(1).toLowerCase()
-                            + " level needed:" + skill.getLevelNeeded(event.getBlock()));
+                            + " level needed:" + ChatColor.GREEN + skill.getLevelNeeded(event.getBlock()));
                     event.setCancelled(true);
                     return;
                 }
@@ -100,10 +101,10 @@ public class SkillBlockListener implements Listener {
         }
         int lvlneeded = s.getLevelNeeded(event.getBlock());
         if (!s.isAllFromFirstLevel() && u.getLevel(s.getSkillName()) < lvlneeded) {
-            p.sendMessage("You are not allowed to mine this block! "
-                    + s.getSkillName().substring(0, 1).toUpperCase()
-                    + s.getSkillName().substring(1).toLowerCase()
-                    + " level needed:" + lvlneeded);
+                    event.getPlayer().sendMessage(ChatColor.RED + "You are not allowed to break this block! " + ChatColor.RESET
+                            + s.getSkillName().substring(0, 1).toUpperCase()
+                            + s.getSkillName().substring(1).toLowerCase()
+                            + " level needed:" + ChatColor.GREEN + s.getLevelNeeded(event.getBlock()));
             event.setCancelled(true);
             return;
         }
