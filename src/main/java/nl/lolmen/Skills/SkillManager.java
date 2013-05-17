@@ -10,7 +10,9 @@ import nl.lolmen.Skillz.Configurator;
 import nl.lolmen.Skillz.Skillz;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 
 public class SkillManager {
 
@@ -150,10 +152,20 @@ public class SkillManager {
                         }
                     }
                     for (String s : c.getConfigurationSection("skills." + key + ".block_level").getKeys(false)) {
-                        a.addBlockLevels(Integer.parseInt(s), c.getInt("skills." + key + ".block_level." + s));
+                        if(s.contains(":")){
+                            String[] sp = s.split(":");
+                            a.addBlockLevels(new ItemStack(Integer.parseInt(sp[0]), 1, Byte.parseByte(sp[1])), c.getInt("skills." + key + ".block_level." + s));
+                        }else{
+                            a.addBlockLevels(new ItemStack(Integer.parseInt(s)), c.getInt("skills." + key + ".block_level." + s));
+                        }
                     }
                     for (String s : c.getConfigurationSection("skills." + key + ".block_XP").getKeys(false)) {
-                        a.addBlock(Integer.parseInt(s), c.getInt("skills." + key + ".block_XP." + s));
+                        if(s.contains(":")){
+                            String[] sp = s.split(":");
+                            a.addBlock(new ItemStack(Integer.parseInt(sp[0]), 1, Byte.parseByte(sp[1])), c.getInt("skills." + key + ".block_XP." + s));
+                        }else{
+                            a.addBlock(new ItemStack(Integer.parseInt(s)), c.getInt("skills." + key + ".block_XP." + s));
+                        }
                     }
                     a.setSpeed(c.getInt("miningspeed", 1));
                     a.setDoubleDropChange(c.getInt("change", 5000));
@@ -169,10 +181,20 @@ public class SkillManager {
                     a.setMultiplier(multiplier);
                     a.setAllFromFirstLevel(c.getBoolean("skills." + key + ".MineAllBlocksFromFirstLevel"));
                     for (String s : c.getConfigurationSection("skills." + key + ".block_level").getKeys(false)) {
-                        a.addBlockLevels(Integer.parseInt(s), c.getInt("skills." + key + ".block_level." + s));
+                        if(s.contains(":")){
+                            String[] sp = s.split(":");
+                            a.addBlockLevels(new ItemStack(Integer.parseInt(sp[0]), 1, Byte.parseByte(sp[1])), c.getInt("skills." + key + ".block_level." + s));
+                        }else{
+                            a.addBlockLevels(new ItemStack(Integer.parseInt(s)), c.getInt("skills." + key + ".block_level." + s));
+                        }
                     }
                     for (String s : c.getConfigurationSection("skills." + key + ".block_XP").getKeys(false)) {
-                        a.addBlock(Integer.parseInt(s), c.getInt("skills." + key + ".block_XP." + s));
+                        if(s.contains(":")){
+                            String[] sp = s.split(":");
+                            a.addBlock(new ItemStack(Integer.parseInt(sp[0]), 1, Byte.parseByte(sp[1])), c.getInt("skills." + key + ".block_XP." + s));
+                        }else{
+                            a.addBlock(new ItemStack(Integer.parseInt(s)), c.getInt("skills." + key + ".block_XP." + s));
+                        }
                     }
                     if (!optReward.isEmpty()) {
                         for (int i : optReward.keySet()) {
@@ -196,10 +218,20 @@ public class SkillManager {
                     a.setMultiplier(multiplier);
                     a.setAllFromFirstLevel(c.getBoolean("skills." + key + ".MineAllBlocksFromFirstLevel"));
                     for (String s : c.getConfigurationSection("skills." + key + ".block_level").getKeys(false)) {
-                        a.addBlockLevels(Integer.parseInt(s), c.getInt("skills." + key + ".block_level." + s));
+                        if(s.contains(":")){
+                            String[] sp = s.split(":");
+                            a.addBlockLevels(new ItemStack(Integer.parseInt(sp[0]), 1, Byte.parseByte(sp[1])), c.getInt("skills." + key + ".block_level." + s));
+                        }else{
+                            a.addBlockLevels(new ItemStack(Integer.parseInt(s)), c.getInt("skills." + key + ".block_level." + s));
+                        }
                     }
                     for (String s : c.getConfigurationSection("skills." + key + ".block_XP").getKeys(false)) {
-                        a.addBlock(Integer.parseInt(s), c.getInt("skills." + key + ".block_XP." + s));
+                        if(s.contains(":")){
+                            String[] sp = s.split(":");
+                            a.addBlock(new ItemStack(Integer.parseInt(sp[0]), 1, Byte.parseByte(sp[1])), c.getInt("skills." + key + ".block_XP." + s));
+                        }else{
+                            a.addBlock(new ItemStack(Integer.parseInt(s)), c.getInt("skills." + key + ".block_XP." + s));
+                        }
                     }
                     if (!optReward.isEmpty()) {
                         for (int i : optReward.keySet()) {
