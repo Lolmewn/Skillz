@@ -17,10 +17,6 @@
             <url>http://maven.sk89q.com/repo/</url>
         </repository>
         <repository>
-            <id>vault-repo</id>
-            <url>http://ci.herocraftonline.com/plugin/repository/everything</url>
-        </repository>
-        <repository>
             <id>plugin-repo</id>
             <url>http://bukkit.jacekk.co.uk/plugin_repo/repo/</url>
         </repository>
@@ -81,9 +77,9 @@
             <version>1.5.1-R0.1</version>
         </dependency>
         <dependency>
-            <groupId>net.milkbowl.vault</groupId>
-            <artifactId>Vault</artifactId>
-            <version>1.2.17-SNAPSHOT</version>
+            <groupId>dev.bukkit.org.server-mods</groupId>
+            <artifactId>vault</artifactId>
+            <version>1.2.25</version>
         </dependency>
         <dependency>
             <groupId>com.sk89q</groupId>
