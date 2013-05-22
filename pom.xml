@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.lolmewn.skillz</groupId>
     <artifactId>Skillz</artifactId>
-    <version>5.8</version>
+    <version>5.9-SNAPSHOT</version>
     <name>Skillz</name>
     <url>http://mcsats.org/plugin/Skillz</url>
     <repositories>
