@@ -74,7 +74,7 @@ public class SkillBlockListener implements Listener {
             if (!skill.isEnabled()) {
                 continue;
             }
-            if (skill.hasBlock(event.getBlock())) {
+            if (skill.hasBlock(event.getBlock()) || skill.getLevelNeeded(event.getBlock()) != 0) {
                 if (u.getLevel(skill.getSkillName()) < skill.getLevelNeeded(event.getBlock())) {
                     event.getPlayer().sendMessage(ChatColor.RED + "You are not allowed to break this block! " + ChatColor.RESET
                             + skill.getSkillName().substring(0, 1).toUpperCase()
@@ -96,7 +96,7 @@ public class SkillBlockListener implements Listener {
 
     private void handleSkill(SkillBlockBase s, BlockBreakEvent event, User u) {
         Player p = event.getPlayer();
-        if (!s.hasBlock(event.getBlock())) {
+        if (!s.hasBlock(event.getBlock()) && s.getLevelNeeded(event.getBlock()) <= 0) {
             return;
         }
         int lvlneeded = s.getLevelNeeded(event.getBlock());
@@ -104,7 +104,7 @@ public class SkillBlockListener implements Listener {
                     event.getPlayer().sendMessage(ChatColor.RED + "You are not allowed to break this block! " + ChatColor.RESET
                             + s.getSkillName().substring(0, 1).toUpperCase()
                             + s.getSkillName().substring(1).toLowerCase()
-                            + " level needed:" + ChatColor.GREEN + s.getLevelNeeded(event.getBlock()));
+                            + " level needed: " + ChatColor.GREEN + s.getLevelNeeded(event.getBlock()));
             event.setCancelled(true);
             return;
         }
