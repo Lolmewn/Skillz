@@ -42,22 +42,22 @@ public class SkillBlockBase extends SkillBase {
      * @param data BlockData
      */
     public boolean hasBlock(int block, byte data) {
-        return blocks.containsKey(block);
+        return blocks.containsKey(new ItemStack(block, 1, data));
     }
 
     public boolean hasBlock(Block b) {
         return hasBlock(b.getTypeId(), b.getData());
     }
 
-    public int getXP(int block) {
-        if (blocks.containsKey(block)) {
-            return blocks.get(block);
+    public int getXP(int block, byte data) {
+        if (blocks.containsKey(new ItemStack(block, 1, data))) {
+            return blocks.get(new ItemStack(block, 1, data));
         }
         return 0;
     }
 
     public int getXP(Block block) {
-        return this.getXP(block.getTypeId());
+        return this.getXP(block.getTypeId(), block.getData());
     }
 
     public int getLevelNeeded(ItemStack block) {

@@ -108,7 +108,7 @@ public class SkillBlockListener implements Listener {
             event.setCancelled(true);
             return;
         }
-        int xpget = s.getXP(event.getBlock().getTypeId())
+        int xpget = s.getXP(event.getBlock())
                 * s.getMultiplier();
         s.addXP(p, xpget);
         if (s.getSkillName().equalsIgnoreCase("mining")) {
