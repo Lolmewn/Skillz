@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.util.HashMap;
 import java.util.Properties;
 import nl.lolmen.API.SkillzAPI;
 import nl.lolmen.Skills.*;
@@ -14,7 +13,6 @@ import nl.lolmen.Skillz.Metrics.Plotter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -40,9 +38,6 @@ public class Skillz extends JavaPlugin {
     private CustomSkillManager customManager;
     private MySQL mysql = null;
     private UserManager userManager;
-    //For faster block breaking
-    public HashMap<Player, Block> FBlock = new HashMap<Player, Block>();
-    public HashMap<Player, Integer> FCount = new HashMap<Player, Integer>();
     //Settings
     public boolean useMySQL = false;
     protected String dbHost;
@@ -52,7 +47,7 @@ public class Skillz extends JavaPlugin {
     public String dbTable;
     protected int dbPort;
     public String noPerm = ChatColor.RED + "You do not have Permissions to do this!";
-    public double version;
+    public Version version;
     public boolean update;
     public boolean debug;
     public boolean updateAvailable;
@@ -60,7 +55,7 @@ public class Skillz extends JavaPlugin {
     public boolean broadcast;
     
     private String debugPlayer;
-    protected double newVersion;
+    protected Version newVersion;
 
     @Override
     public void onDisable() {
@@ -151,7 +146,7 @@ public class Skillz extends JavaPlugin {
         YamlConfiguration c = new YamlConfiguration();
         try {
             c.load(this.skillzFile);
-            this.version = c.getDouble("version", 5.6);
+            this.version = new Version(c.getString("version", "5.10.0"));
             this.update = c.getBoolean("update", true);
             this.dbUser = c.getString("MySQL-User", "root");
             this.dbPass = c.getString("MySQL-Pass", "root");
