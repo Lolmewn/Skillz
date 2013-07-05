@@ -20,6 +20,10 @@
             <id>plugin-repo</id>
             <url>http://bukkit.jacekk.co.uk/plugin_repo/repo/</url>
         </repository>
+        <repository>
+            <id>McStats</id>
+            <url>http://repo.mcstats.org/content/repositories/public/</url>
+        </repository>
     </repositories>
     <build>
         <finalName>${project.artifactId}</finalName>
@@ -35,6 +39,30 @@
             </resource>
         </resources>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.0</version>
+                <configuration>
+                    <minimizeJar>true</minimizeJar>
+                    <artifactSet>
+                        <includes>
+                            <include>org.mcstats.bukkit</include>
+                        </includes>
+                        <excludes>
+                            <exclude>*</exclude>
+                        </excludes>
+                    </artifactSet>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -90,6 +118,11 @@
             <groupId>dev.bukkit.org.server-mods</groupId>
             <artifactId>factions</artifactId>
             <version>1.8.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mcstats.bukkit</groupId>
+            <artifactId>metrics</artifactId>
+            <version>R7</version>
         </dependency>
     </dependencies>
     <issueManagement>

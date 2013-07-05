@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.util.Properties;
 import nl.lolmen.API.SkillzAPI;
 import nl.lolmen.Skills.*;
-import nl.lolmen.Skillz.Metrics.Plotter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -20,6 +19,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.Metrics;
+import org.mcstats.Metrics.Graph;
+import org.mcstats.Metrics.Plotter;
 
 public class Skillz extends JavaPlugin {
 
@@ -82,28 +84,33 @@ public class Skillz extends JavaPlugin {
         this.startUserSavingThread();
         try {
             this.metrics = new Metrics(this);
-            this.metrics.addCustomData(new Plotter() {
-                @Override
-                public String getColumnName() {
-                    return "Total Level-Ups";
-                }
-                @Override
-                public int getValue() {
-                    int amount = CPU.levelUps;
-                    CPU.levelUps = 0;
-                    return amount;
-                }
-            });
-            this.metrics.addCustomData(new Plotter() {
+            Graph g = metrics.createGraph("XP/Levels gained");
+            g.addPlotter(new Plotter() {
+
                 @Override
                 public String getColumnName() {
                     return "Total XP-Gained";
                 }
+                
                 @Override
                 public int getValue() {
-                    int amount = CPU.xpUps;
+                    int re = CPU.xpUps;
                     CPU.xpUps = 0;
-                    return amount;
+                    return re;
+                }
+            });
+            g.addPlotter(new Plotter() {
+
+                @Override
+                public String getColumnName() {
+                    return "Total Level-Ups";
+                }
+                
+                @Override
+                public int getValue() {
+                    int re = CPU.levelUps;
+                    CPU.levelUps = 0;
+                    return re;
                 }
             });
             this.metrics.start();
@@ -113,7 +120,7 @@ public class Skillz extends JavaPlugin {
             this.getLogger().info("Failed to load Metrics!");
         }
         if (this.update) {
-            new Updater(this, "skillz", this.getFile(), Updater.UpdateType.DEFAULT, true);
+            new Updater(this, "skillz", this.getFile(), Updater.UpdateType.DEFAULT, false);
         }
         this.setupPlugins();
         this.high.loadMaps();
