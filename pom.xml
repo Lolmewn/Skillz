@@ -46,12 +46,12 @@
                 <configuration>
                     <minimizeJar>true</minimizeJar>
                     <artifactSet>
-                        <includes>
-                            <include>org.mcstats.bukkit</include>
-                        </includes>
                         <excludes>
                             <exclude>*</exclude>
                         </excludes>
+                        <includes>
+                            <include>org.mcstats.bukkit</include>
+                        </includes>
                     </artifactSet>
                 </configuration>
                 <executions>
