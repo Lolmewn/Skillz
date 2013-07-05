@@ -46,9 +46,6 @@
                 <configuration>
                     <minimizeJar>true</minimizeJar>
                     <artifactSet>
-                        <excludes>
-                            <exclude>*</exclude>
-                        </excludes>
                         <includes>
                             <include>org.mcstats.bukkit</include>
                         </includes>
